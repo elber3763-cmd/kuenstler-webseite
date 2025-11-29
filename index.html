@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Künstler Webseite</title>
+    
+    <!-- Google Fonts Einbindung -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Design Datei -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- WICHTIG: Netlify Identity Widget (Damit Login & E-Mails funktionieren) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
+    <!-- Navigation -->
     <header class="site-header">
         <div class="container header-container">
             <!-- Wird per JS befüllt -->
@@ -29,6 +37,7 @@
         </div>
     </header>
 
+    <!-- Startseite (Hero Section) -->
     <section id="hero" class="hero-section">
         <div class="hero-background">
             <img id="hero-img" src="" alt="Hintergrund">
@@ -41,14 +50,16 @@
         </div>
     </section>
 
+    <!-- Galerie Sektion -->
     <section id="galerie" class="section-padding">
         <div class="container">
             <h2 class="section-title">Ausgewählte Werke</h2>
-            <!-- Der Grid-Container ist jetzt leer, JS füllt ihn -->
+            <!-- Der Grid-Container ist leer, JS füllt ihn aus dem CMS -->
             <div class="gallery-grid" id="gallery-container"></div>
         </div>
     </section>
 
+    <!-- Über mich Sektion -->
     <section id="ueber-mich" class="section-padding section-dark">
         <div class="container about-container">
             <div class="about-image">
@@ -57,12 +68,13 @@
             </div>
             <div class="about-text">
                 <h2 class="section-title text-left" id="about-title"></h2>
-                <div id="about-text-content"></div> <!-- Textblock -->
+                <div id="about-text-content"></div> 
                 <div class="signature" id="signature-text"></div>
             </div>
         </div>
     </section>
 
+    <!-- Kontakt Sektion -->
     <section id="kontakt" class="section-padding">
         <div class="container">
             <h2 class="section-title">Kontakt aufnehmen</h2>
@@ -90,20 +102,22 @@
                         </div>
                     </div>
                 </div>
-                <!-- Formular bleibt gleich -->
+                
+                <!-- Kontaktformular für Netlify -->
                 <div class="contact-form-container">
-                    <form id="contactForm" class="contact-form">
+                    <form id="contactForm" class="contact-form" name="kontaktformular" method="POST" data-netlify="true">
+                        <input type="hidden" name="form-name" value="kontaktformular" />
                         <div class="form-group">
                             <label>Ihr Name</label>
-                            <input type="text" required placeholder="Name">
+                            <input type="text" name="name" required placeholder="Name">
                         </div>
                         <div class="form-group">
                             <label>Ihre E-Mail</label>
-                            <input type="email" required placeholder="E-Mail">
+                            <input type="email" name="email" required placeholder="E-Mail">
                         </div>
                         <div class="form-group">
                             <label>Ihre Nachricht</label>
-                            <textarea rows="5" required placeholder="Nachricht"></textarea>
+                            <textarea name="message" rows="5" required placeholder="Nachricht"></textarea>
                         </div>
                         <button type="submit" class="btn btn-gold btn-full">Nachricht senden</button>
                     </form>
@@ -112,21 +126,36 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container footer-content">
             <p>&copy; 2023 <span id="footer-name"></span> Art. Alle Rechte vorbehalten.</p>
         </div>
     </footer>
 
+    <!-- Modal für Bilder -->
     <div id="imageModal" class="modal">
         <span class="close">&times;</span>
         <img class="modal-content" id="modalImg">
         <div id="caption"></div>
     </div>
 
-    <!-- WICHTIG: settings.js muss VOR script.js geladen werden -->
-    <script src="settings.js"></script>
+    <!-- Haupt-Javascript für die Seite -->
     <script src="script.js"></script>
+
+    <!-- WICHTIG: Weiterleitungs-Logik für den Admin-Login -->
+    <!-- Wenn man auf den E-Mail-Link klickt, wird man hiermit ins Dashboard geschickt -->
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>
