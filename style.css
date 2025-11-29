@@ -1,0 +1,596 @@
+/* =========================================
+   1. Variablen & Reset
+   ========================================= */
+:root {
+    /* Farben */
+    --bg-dark: #121212;      /* Tiefes Schwarzgrau für Hintergrund */
+    --bg-card: #1e1e1e;      /* Etwas helleres Grau für Karten/Formulare */
+    --gold: #d4af37;         /* Edles Gold */
+    --gold-hover: #b5952f;   /* Dunkleres Gold für Hover-Effekte */
+    --text-main: #f0f0f0;    /* Helles Grau für Text (besser als reines Weiß) */
+    --text-muted: #a0a0a0;   /* Abgedunkelter Text */
+    
+    /* Schriften */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+    
+    /* Layout */
+    --container-width: 1200px;
+    --spacing-section: 6rem; /* Großzügiger Weißraum (bzw. Schwarzraum) */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden; /* Verhindert horizontales Scrollen */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* =========================================
+   2. Globale Komponenten
+   ========================================= */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section-padding {
+    padding: var(--spacing-section) 0;
+}
+
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    letter-spacing: 1px;
+}
+
+/* Unterstrich unter Überschriften */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: var(--gold);
+    margin: 15px auto 0;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid var(--gold);
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-gold {
+    background-color: var(--gold);
+    color: var(--bg-dark);
+    font-weight: 700;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-hover);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   3. Header & Navigation
+   ========================================= */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(18, 18, 18, 0.95); /* Leicht transparent */
+    padding: 20px 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 30px;
+}
+
+.main-nav a {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-main);
+}
+
+.main-nav a:hover {
+    color: var(--gold);
+}
+
+/* Mobile Menu Icon (Standardmäßig versteckt) */
+.mobile-menu-icon {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mobile-menu-icon span {
+    width: 25px;
+    height: 2px;
+    background-color: var(--gold);
+}
+
+/* =========================================
+   4. Hero Section
+   ========================================= */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Dunkelt das Bild ab für Textlesbarkeit */
+}
+
+.hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   5. Galerie Grid
+   ========================================= */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.gallery-item {
+    background-color: var(--bg-card);
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+}
+
+.image-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/5; /* Einheitliches Hochformat */
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover .image-wrapper img {
+    transform: scale(1.05);
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.btn-zoom {
+    background: var(--gold);
+    border: none;
+    color: var(--bg-dark);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-zoom:hover {
+    transform: scale(1.1);
+}
+
+.artwork-info {
+    padding-top: 15px;
+    text-align: center;
+}
+
+.artwork-info h3 {
+    font-family: var(--font-serif);
+    color: var(--text-main);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.artwork-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* =========================================
+   6. Über mich
+   ========================================= */
+.section-dark {
+    background-color: #0a0a0a; /* Noch dunklerer Hintergrund zur Abgrenzung */
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-image {
+    position: relative;
+}
+
+.frame-border {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--gold);
+    z-index: 0;
+}
+
+.about-image img {
+    position: relative;
+    z-index: 1;
+    filter: sepia(20%) contrast(110%);
+}
+
+.about-text .section-title.text-left {
+    text-align: left;
+    margin-left: 0;
+}
+
+.about-text .section-title.text-left::after {
+    margin-left: 0;
+}
+
+.about-text p {
+    margin-bottom: 1.5rem;
+    color: #ccc;
+}
+
+.signature {
+    font-family: 'Playfair Display', serif; /* Simuliert Handschrift-Look durch Kursiv */
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--gold);
+    margin-top: 2rem;
+}
+
+/* =========================================
+   7. Kontakt
+   ========================================= */
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+}
+
+/* Linke Spalte: Infos */
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.contact-item .icon {
+    font-size: 1.5rem;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.details h4 {
+    color: var(--gold);
+    font-family: var(--font-serif);
+    margin-bottom: 5px;
+}
+
+.chat-link {
+    color: var(--gold);
+    text-decoration: underline;
+}
+
+/* Rechte Spalte: Formular */
+.contact-form {
+    background-color: var(--bg-card);
+    padding: 40px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--gold);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: 1px solid #444;
+    color: #fff;
+    font-family: var(--font-sans);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* =========================================
+   8. Footer
+   ========================================= */
+footer {
+    background-color: #000;
+    padding: 30px 0;
+    border-top: 1px solid #222;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.social-links a {
+    margin-left: 20px;
+    color: #888;
+}
+
+.social-links a:hover {
+    color: var(--gold);
+}
+
+/* =========================================
+   9. Modal (Popup für Bilder)
+   ========================================= */
+.modal {
+    display: none; /* Standardmäßig versteckt */
+    position: fixed;
+    z-index: 2000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80vh;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    animation: zoomIn 0.3s;
+}
+
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+#caption h3 {
+    color: var(--gold);
+    font-family: var(--font-serif);
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--gold);
+    text-decoration: none;
+}
+
+@keyframes zoomIn {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+/* =========================================
+   10. Responsivität (Mobile & Tablet)
+   ========================================= */
+@media screen and (max-width: 768px) {
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    /* Navigation Mobile */
+    .mobile-menu-icon {
+        display: flex;
+    }
+
+    .main-nav {
+        display: none; /* Wird per JS eingeblendet */
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-card);
+        border-bottom: 2px solid var(--gold);
+    }
+
+    .main-nav.active {
+        display: block;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        text-align: center;
+    }
+
+    /* Grid Anpassungen */
+    .about-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .frame-border {
+        display: none; /* Rahmen mobil ausblenden für Platz */
+    }
+
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-links a {
+        margin: 0 10px;
+    }
+}

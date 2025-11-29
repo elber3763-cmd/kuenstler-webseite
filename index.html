@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Künstler Webseite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-container">
+            <!-- Wird per JS befüllt -->
+            <div class="logo" id="logo-text"></div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#hero">Startseite</a></li>
+                    <li><a href="#galerie">Galerie</a></li>
+                    <li><a href="#ueber-mich">Über mich</a></li>
+                    <li><a href="#kontakt">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-icon" id="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <section id="hero" class="hero-section">
+        <div class="hero-background">
+            <img id="hero-img" src="" alt="Hintergrund">
+            <div class="overlay"></div>
+        </div>
+        <div class="hero-content container">
+            <h1 id="hero-headline"></h1>
+            <p class="subtitle" id="hero-subline"></p>
+            <a href="#galerie" class="btn btn-gold">Meine Werke ansehen</a>
+        </div>
+    </section>
+
+    <section id="galerie" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Ausgewählte Werke</h2>
+            <!-- Der Grid-Container ist jetzt leer, JS füllt ihn -->
+            <div class="gallery-grid" id="gallery-container"></div>
+        </div>
+    </section>
+
+    <section id="ueber-mich" class="section-padding section-dark">
+        <div class="container about-container">
+            <div class="about-image">
+                <img id="about-img" src="" alt="Portrait">
+                <div class="frame-border"></div>
+            </div>
+            <div class="about-text">
+                <h2 class="section-title text-left" id="about-title"></h2>
+                <div id="about-text-content"></div> <!-- Textblock -->
+                <div class="signature" id="signature-text"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontakt" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Kontakt aufnehmen</h2>
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="icon">📞</div>
+                        <div class="details">
+                            <h4>Telefon</h4>
+                            <p id="contact-phone"></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon">📧</div>
+                        <div class="details">
+                            <h4>E-Mail</h4>
+                            <p id="contact-email"></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon">💬</div>
+                        <div class="details">
+                            <h4>Live Chat</h4>
+                            <a href="#" class="chat-link" id="contact-chat"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Formular bleibt gleich -->
+                <div class="contact-form-container">
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label>Ihr Name</label>
+                            <input type="text" required placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Ihre E-Mail</label>
+                            <input type="email" required placeholder="E-Mail">
+                        </div>
+                        <div class="form-group">
+                            <label>Ihre Nachricht</label>
+                            <textarea rows="5" required placeholder="Nachricht"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gold btn-full">Nachricht senden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2023 <span id="footer-name"></span> Art. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="caption"></div>
+    </div>
+
+    <!-- WICHTIG: settings.js muss VOR script.js geladen werden -->
+    <script src="settings.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
