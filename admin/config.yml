@@ -1,0 +1,38 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "bilder/uploads"
+public_folder: "bilder/uploads"
+
+collections:
+  - name: "einstellungen"
+    label: "Webseite bearbeiten"
+    files:
+      - file: "inhalt.json"
+        label: "Inhalte & Texte"
+        name: "home"
+        format: "json"
+        fields:
+          - {label: "Künstler Name (Logo)", name: "titel", widget: "string"}
+          - {label: "Untertitel", name: "untertitel", widget: "string"}
+          - {label: "Hero Überschrift", name: "heroHeadline", widget: "string"}
+          - {label: "Hero Untertitel", name: "heroSubline", widget: "string"}
+          - {label: "Hintergrundbild", name: "heroBild", widget: "image"}
+          - {label: "Biografie Titel", name: "biografieTitel", widget: "string"}
+          - {label: "Biografie Text", name: "biografieText", widget: "text"}
+          - {label: "Künstler Foto", name: "kuenstlerFoto", widget: "image"}
+          - label: "Kontakt Infos"
+            name: "kontakt"
+            widget: "object"
+            fields:
+              - {label: "Telefon", name: "telefon", widget: "string"}
+              - {label: "E-Mail", name: "email", widget: "string"}
+              - {label: "Chat Button Text", name: "chatText", widget: "string"}
+          - label: "Galerie"
+            name: "galerieBilder"
+            widget: "list"
+            fields:
+              - {label: "Titel", name: "titel", widget: "string"}
+              - {label: "Beschreibung", name: "beschreibung", widget: "string"}
+              - {label: "Bild", name: "bild", widget: "image"}
