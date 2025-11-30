@@ -1,161 +1,257 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Künstler Webseite</title>
+    <title id="page-title">Thomas Müller | Bildende Kunst</title>
     
-    <!-- Google Fonts Einbindung -->
+    <!-- 1. SCHRIFTARTEN (Playfair Display & Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
-    <!-- Design Datei -->
+    <!-- 2. BIBLIOTHEKEN (CSS) -->
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- 3. TAILWIND CSS KONFIGURATION -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0078D4',    /* Das geforderte Blau */
+                        secondary: '#666666',  /* Das geforderte Grau */
+                        dark: '#1a1a1a',       /* Dunkler Hintergrund */
+                        light: '#f3f4f6',      /* Heller Text/Hintergrund */
+                        accent: '#F97316',     /* Orange Akzent */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS (für Parallax & Details) -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- WICHTIG: Netlify Identity Widget (Damit Login & E-Mails funktionieren) -->
+    <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<body>
+<body class="bg-dark text-light overflow-x-hidden antialiased">
 
-    <!-- Navigation -->
-    <header class="site-header">
-        <div class="container header-container">
-            <!-- Wird per JS befüllt -->
-            <div class="logo" id="logo-text"></div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#hero">Startseite</a></li>
-                    <li><a href="#galerie">Galerie</a></li>
-                    <li><a href="#ueber-mich">Über mich</a></li>
-                    <li><a href="#kontakt">Kontakt</a></li>
+    <!-- NAVIGATION -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300 bg-dark/90 backdrop-blur-md border-b border-white/10" id="main-header">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="logo font-serif text-2xl font-bold text-white tracking-widest cursor-pointer hover:text-primary transition-colors duration-300" id="logo-text">
+                THOMAS MÜLLER
+            </div>
+            
+            <!-- Desktop Menu -->
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8">
+                    <li><a href="#hero" class="uppercase text-sm tracking-widest hover:text-primary transition-all duration-300 relative group">Startseite<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span></a></li>
+                    <li><a href="#galerie" class="uppercase text-sm tracking-widest hover:text-primary transition-all duration-300 relative group">Galerie<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span></a></li>
+                    <li><a href="#ueber-mich" class="uppercase text-sm tracking-widest hover:text-primary transition-all duration-300 relative group">Über mich<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span></a></li>
+                    <li><a href="#kontakt" class="uppercase text-sm tracking-widest hover:text-primary transition-all duration-300 relative group">Kontakt<span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span></a></li>
                 </ul>
             </nav>
-            <div class="mobile-menu-icon" id="mobile-menu-icon">
-                <span></span><span></span><span></span>
+
+            <!-- Mobile Menu Icon -->
+            <div class="md:hidden cursor-pointer text-white hover:text-primary transition" id="mobile-menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
             </div>
         </div>
+        
+        <!-- Mobile Dropdown -->
+        <nav class="md:hidden hidden bg-dark border-t border-white/10 absolute w-full" id="mobile-nav">
+            <ul class="flex flex-col p-6 space-y-4 text-center">
+                <li><a href="#hero" class="block text-lg hover:text-primary">Startseite</a></li>
+                <li><a href="#galerie" class="block text-lg hover:text-primary">Galerie</a></li>
+                <li><a href="#ueber-mich" class="block text-lg hover:text-primary">Über mich</a></li>
+                <li><a href="#kontakt" class="block text-lg hover:text-primary">Kontakt</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Startseite (Hero Section) -->
-    <section id="hero" class="hero-section">
-        <div class="hero-background">
-            <img id="hero-img" src="" alt="Hintergrund">
-            <div class="overlay"></div>
+    <!-- HERO SECTION (GSAP Parallax) -->
+    <section id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Hintergrundbild (wird per JS gefüllt) -->
+        <div class="absolute inset-0 z-0">
+            <img id="hero-img" src="" alt="Hero Hintergrund" class="w-full h-full object-cover opacity-60 scale-110 will-change-transform">
+            <div class="absolute inset-0 bg-gradient-to-b from-dark/30 via-dark/50 to-dark"></div>
         </div>
-        <div class="hero-content container">
-            <h1 id="hero-headline"></h1>
-            <p class="subtitle" id="hero-subline"></p>
-            <a href="#galerie" class="btn btn-gold">Meine Werke ansehen</a>
+
+        <!-- Content -->
+        <div class="container mx-auto px-6 relative z-10 text-center gs_reveal">
+            <h1 id="hero-headline" class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight drop-shadow-lg opacity-0 translate-y-10">
+                <!-- Wird geladen -->
+            </h1>
+            <p id="hero-subline" class="text-lg md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto tracking-wide opacity-0 translate-y-10">
+                <!-- Wird geladen -->
+            </p>
+            
+            <!-- Button mit Hover Effekt -->
+            <a href="#galerie" class="opacity-0 translate-y-10 inline-block px-10 py-4 bg-primary text-white font-bold rounded-full shadow-[0_0_20px_rgba(0,120,212,0.5)] hover:shadow-[0_0_40px_rgba(0,120,212,0.8)] hover:scale-105 hover:bg-white hover:text-primary transition-all duration-300 transform" id="hero-btn">
+                MEINE WERKE ANSEHEN
+            </a>
+        </div>
+        
+        <!-- Scroll Down Indicator (Lottie) -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-12 h-12 opacity-70">
+            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_w51pcehl.json" background="transparent" speed="1" loop autoplay></lottie-player>
         </div>
     </section>
 
-    <!-- Galerie Sektion -->
-    <section id="galerie" class="section-padding">
-        <div class="container">
-            <h2 class="section-title">Ausgewählte Werke</h2>
-            <!-- Der Grid-Container ist leer, JS füllt ihn aus dem CMS -->
-            <div class="gallery-grid" id="gallery-container"></div>
-        </div>
-    </section>
-
-    <!-- Über mich Sektion -->
-    <section id="ueber-mich" class="section-padding section-dark">
-        <div class="container about-container">
-            <div class="about-image">
-                <img id="about-img" src="" alt="Portrait">
-                <div class="frame-border"></div>
+    <!-- GALERIE SECTION -->
+    <section id="galerie" class="py-24 bg-dark relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-serif text-4xl md:text-5xl text-primary mb-4">Ausgewählte Werke</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
             </div>
-            <div class="about-text">
-                <h2 class="section-title text-left" id="about-title"></h2>
-                <div id="about-text-content"></div> 
-                <div class="signature" id="signature-text"></div>
+
+            <!-- Grid Container (CMS befüllt diesen) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-container">
+                <!-- Javascript fügt hier die Bilder ein -->
             </div>
         </div>
     </section>
 
-    <!-- Kontakt Sektion -->
-    <section id="kontakt" class="section-padding">
-        <div class="container">
-            <h2 class="section-title">Kontakt aufnehmen</h2>
-            <div class="contact-wrapper">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="icon">📞</div>
-                        <div class="details">
-                            <h4>Telefon</h4>
-                            <p id="contact-phone"></p>
+    <!-- ÜBER MICH SECTION -->
+    <section id="ueber-mich" class="py-24 bg-[#111] relative overflow-hidden">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            
+            <!-- Bild -->
+            <div class="w-full md:w-1/2 relative" data-aos="fade-right">
+                <div class="absolute inset-0 border-2 border-primary translate-x-4 translate-y-4 rounded-lg"></div>
+                <img id="about-img" src="" alt="Portrait" class="relative z-10 w-full rounded-lg shadow-2xl grayscale hover:grayscale-0 transition-all duration-700">
+            </div>
+
+            <!-- Text -->
+            <div class="w-full md:w-1/2" data-aos="fade-left">
+                <h2 class="font-serif text-4xl text-white mb-6" id="about-title"></h2>
+                <div id="about-text-content" class="text-gray-400 leading-relaxed space-y-4 mb-8 text-lg"></div>
+                <div class="signature font-serif text-3xl text-primary italic" id="signature-text"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTAKT SECTION -->
+    <section id="kontakt" class="py-24 relative bg-dark">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16" data-aos="zoom-in">
+                <h2 class="font-serif text-4xl md:text-5xl text-white mb-4">Kontakt aufnehmen</h2>
+                <p class="text-gray-400">Lassen Sie uns über Kunst sprechen.</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
+                
+                <!-- Info Cards -->
+                <div class="w-full lg:w-1/3 space-y-6">
+                    <!-- Telefon -->
+                    <div class="bg-[#1e1e1e] p-6 rounded-xl border border-white/5 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-dark rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">📞</div>
+                            <div>
+                                <h4 class="text-primary font-bold">Telefon</h4>
+                                <p id="contact-phone" class="text-gray-300"></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <div class="icon">📧</div>
-                        <div class="details">
-                            <h4>E-Mail</h4>
-                            <p id="contact-email"></p>
+
+                    <!-- Email -->
+                    <div class="bg-[#1e1e1e] p-6 rounded-xl border border-white/5 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="200">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-dark rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">📧</div>
+                            <div>
+                                <h4 class="text-primary font-bold">E-Mail</h4>
+                                <p id="contact-email" class="text-gray-300"></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <div class="icon">💬</div>
-                        <div class="details">
-                            <h4>Live Chat</h4>
-                            <a href="#" class="chat-link" id="contact-chat"></a>
+
+                    <!-- Chat -->
+                    <div class="bg-[#1e1e1e] p-6 rounded-xl border border-white/5 hover:border-primary/50 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-dark rounded-full flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">💬</div>
+                            <div>
+                                <h4 class="text-primary font-bold">Live Chat</h4>
+                                <a href="#" id="contact-chat" class="text-gray-300 underline hover:text-white"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Kontaktformular für Netlify -->
-                <div class="contact-form-container">
-                    <form id="contactForm" class="contact-form" name="kontaktformular" method="POST" data-netlify="true">
+
+                <!-- Formular -->
+                <div class="w-full lg:w-2/3 bg-[#1e1e1e] p-8 md:p-10 rounded-2xl shadow-2xl border-t-4 border-primary" data-aos="fade-up" data-aos-delay="400">
+                    <form id="contactForm" name="kontaktformular" method="POST" data-netlify="true" class="space-y-6">
                         <input type="hidden" name="form-name" value="kontaktformular" />
-                        <div class="form-group">
-                            <label>Ihr Name</label>
-                            <input type="text" name="name" required placeholder="Name">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-400">IHR NAME</label>
+                                <input type="text" name="name" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-400">IHRE E-MAIL</label>
+                                <input type="email" name="email" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Ihre E-Mail</label>
-                            <input type="email" name="email" required placeholder="E-Mail">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-400">NACHRICHT</label>
+                            <textarea name="message" rows="5" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label>Ihre Nachricht</label>
-                            <textarea name="message" rows="5" required placeholder="Nachricht"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-gold btn-full">Nachricht senden</button>
+                        <button type="submit" class="w-full py-4 bg-primary text-white font-bold rounded-lg shadow-lg hover:bg-white hover:text-primary hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+                            NACHRICHT SENDEN
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <p>&copy; 2023 <span id="footer-name"></span> Art. Alle Rechte vorbehalten.</p>
+    <!-- FOOTER -->
+    <footer class="bg-black py-8 border-t border-white/10">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>&copy; 2025 <span id="footer-name"></span>. Alle Rechte vorbehalten. | <span class="text-primary">Art & Design</span></p>
         </div>
     </footer>
 
-    <!-- Modal für Bilder -->
-    <div id="imageModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modalImg">
-        <div id="caption"></div>
+    <!-- MODAL (Zoom) -->
+    <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <span class="close absolute top-5 right-8 text-white text-5xl cursor-pointer hover:text-primary transition">&times;</span>
+        <div class="max-w-5xl w-full text-center">
+            <img class="max-h-[80vh] mx-auto rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10" id="modalImg">
+            <div id="caption" class="mt-4 text-white font-serif text-xl"></div>
+        </div>
     </div>
 
-    <!-- Haupt-Javascript für die Seite -->
-    <script src="script.js"></script>
+    <!-- BIBLIOTHEKEN SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-    <!-- WICHTIG: Weiterleitungs-Logik für den Admin-Login -->
-    <!-- Wenn man auf den E-Mail-Link klickt, wird man hiermit ins Dashboard geschickt -->
+    <!-- WICHTIG: Weiterleitungs-Logik (Admin Login) -->
     <script>
         if (window.netlifyIdentity) {
             window.netlifyIdentity.on("init", user => {
                 if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
+                    window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
                 }
             });
         }
     </script>
+
+    <!-- Eigene Scripts -->
+    <script src="script.js"></script>
 
 </body>
 </html>
