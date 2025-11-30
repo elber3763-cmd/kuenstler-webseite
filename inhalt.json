@@ -1,0 +1,32 @@
+{
+  "kontakt": {
+    "telefon": "+49 170 123 4567",
+    "email": "kontakt@thomas-mueller-art.de",
+    "chatText": "Jetzt WhatsApp Chat starten"
+  },
+  "biografieText": "`Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.\nIn meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.`",
+  "titel": "THOMAS MÜLLER",
+  "galerieBilder": [
+    {
+      "titel": "Stille Wasser",
+      "beschreibung": "Öl auf Leinwand, 120x80cm, 2023",
+      "bild": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "titel": "Goldener Herbst",
+      "beschreibung": "Acryl & Blattgold, 100x100cm, 2024",
+      "bild": "https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "titel": "Urbane Schatten",
+      "beschreibung": "Mischtechnik auf Holz, 2022",
+      "bild": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop"
+    }
+  ],
+  "kuenstlerFoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop",
+  "heroHeadline": "Die Ästhetik des Augenblicks",
+  "biografieTitel": "Der Künstler",
+  "heroBild": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920&auto=format&fit=crop",
+  "heroSubline": "Zeitgenössische Malerei, die Räume transformiert und Emotionen weckt.",
+  "untertitel": "Contemporary Art & Design"
+}
