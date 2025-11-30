@@ -29,6 +29,7 @@ collections:
               - {label: "Telefon", name: "telefon", widget: "string"}
               - {label: "E-Mail", name: "email", widget: "string"}
               - {label: "Chat Button Text", name: "chatText", widget: "string"}
+              - {label: "Chat Link (z.B. https://wa.me/49170...)", name: "chatLink", widget: "string", required: false}
           - label: "Galerie"
             name: "galerieBilder"
             widget: "list"
