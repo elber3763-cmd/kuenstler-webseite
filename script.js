@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Start: Webseite wird geladen...");
 
     // 1. INITIALISIERUNG DER EFFEKTE
-    // Wir registrieren die Plugins sicher
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
     }
@@ -21,32 +20,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            console.log("Daten erfolgreich geladen:", data);
             updateContent(data);
-            
-            // WICHTIG: Kurze Pause, damit der Browser die Bilder rendern kann, dann Animation
+            // Kurze Pause für Rendering, dann Animationen
             setTimeout(() => initAnimations(), 100);
         })
         .catch(error => {
             console.error('Fehler:', error);
-            // NOTFALL-PLAN: Falls Daten fehlen, mach trotzdem alles sichtbar!
-            makeVisible();
+            makeVisible(); // Notfall-Plan
         });
 
     function updateContent(activeData) {
-        // Sicherer Helfer für Texte
         const safeSetText = (id, text) => {
             const el = document.getElementById(id);
-            if (el && text) el.innerText = text.replace(/`/g, ''); // Entfernt versehentliche Backticks
+            if (el && text) el.innerText = text.replace(/`/g, '');
         };
 
-        // Sicherer Helfer für Bilder
         const safeSetImage = (id, src) => {
             const el = document.getElementById(id);
-            if (el && src) {
-                el.src = src;
-                el.onload = () => console.log(`Bild geladen: ${id}`);
-            }
+            if (el && src) el.src = src;
         };
 
         // Header & Hero
@@ -67,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const bioContainer = document.getElementById('about-text-content');
         if(bioContainer && activeData.biografieText) {
-            // Text säubern (Backticks entfernen) und Zeilenumbrüche beachten
             const cleanText = activeData.biografieText.replace(/`/g, '');
             bioContainer.innerHTML = cleanText.split('\n').map(p => `<p>${p}</p>`).join('');
         }
@@ -83,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const galleryContainer = document.getElementById('gallery-container');
         if (galleryContainer && activeData.galerieBilder) {
             galleryContainer.innerHTML = "";
-            
             activeData.galerieBilder.forEach((werk, index) => {
                 const delay = index * 100;
                 const html = `
@@ -106,43 +95,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ===========================================================
-       3. ANIMATIONEN (Der Motor)
+       3. ANIMATIONEN
        =========================================================== */
-    
     function initAnimations() {
-        console.log("Starte Animationen...");
-        
-        // Falls GSAP nicht da ist, Notfall-Plan
         if (typeof gsap === 'undefined') {
             makeVisible();
             return;
         }
-
-        // Hero Texte sichtbar machen und animieren
         gsap.to(["#hero-headline", "#hero-subline", "#hero-btn"], {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: "power3.out"
+            opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out"
         });
-
-        // Parallax
         if(document.getElementById('hero-img')) {
             gsap.to("#hero-img", {
-                scrollTrigger: {
-                    trigger: "#hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                },
-                yPercent: 50,
-                ease: "none"
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true },
+                yPercent: 50, ease: "none"
             });
         }
     }
 
-    // Notfall-Funktion: Macht alles sofort sichtbar, falls Animationen versagen
     function makeVisible() {
         document.querySelectorAll('.opacity-0').forEach(el => {
             el.style.opacity = 1;
@@ -150,22 +120,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Navbar Scroll Effekt ---
+    // Scroll Navbar
     window.addEventListener('scroll', () => {
         const header = document.getElementById('main-header');
-        if (header) {
-            window.scrollY > 50 ? header.classList.add('py-2') : header.classList.remove('py-2');
-        }
+        if (header) window.scrollY > 50 ? header.classList.add('py-2') : header.classList.remove('py-2');
     });
 
-    // --- Mobile Menu ---
+    // Mobile Menu
     const menuIcon = document.getElementById('mobile-menu-icon');
     const mobileNav = document.getElementById('mobile-nav');
     if(menuIcon && mobileNav) {
         menuIcon.addEventListener('click', () => mobileNav.classList.toggle('active'));
     }
 
-    // --- Modal Logic ---
+    // Modal Logic
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
     const captionText = document.getElementById('caption');
@@ -182,4 +150,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     if(modal) modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
+
+    /* ===========================================================
+       4. KONTAKTFORMULAR (FIX GEGEN 404 FEHLER)
+       =========================================================== */
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Verhindert das Neuladen der Seite (WICHTIG!)
+            
+            const btn = contactForm.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "Wird gesendet...";
+            btn.disabled = true;
+            
+            // Daten sammeln und an Netlify senden
+            const formData = new FormData(contactForm);
+            
+            fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams(formData).toString()
+            })
+            .then(() => {
+                alert("Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.");
+                contactForm.reset();
+                btn.innerText = "Gesendet!";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error(error);
+                alert("Ups, da ist etwas schiefgelaufen. Bitte versuchen Sie es später.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+        });
+    }
 });
