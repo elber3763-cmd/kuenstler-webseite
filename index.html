@@ -118,11 +118,7 @@
                     <p class="text-gray-400 mt-2">Einblicke in mein Atelier und kommende Events</p>
                 </div>
             </div>
-
-            <!-- News Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="news-container">
-                <!-- Wird per JS gefüllt -->
-            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="news-container"></div>
         </div>
     </section>
 
@@ -149,7 +145,7 @@
                 <p class="opacity-90">Melden Sie sich für den Newsletter an und erhalten Sie Einladungen zu Vernissagen.</p>
             </div>
             <div class="w-full lg:w-1/2">
-                <form name="newsletter" method="POST" data-netlify="true" class="flex gap-4">
+                <form name="newsletter" method="POST" data-netlify="true" action="/danke.html" class="flex gap-4">
                     <input type="hidden" name="form-name" value="newsletter" />
                     <input type="email" name="email" placeholder="Ihre E-Mail Adresse" required class="flex-1 px-6 py-4 rounded-full text-dark border-none outline-none focus:ring-4 focus:ring-white/30">
                     <button type="submit" class="px-8 py-4 bg-dark text-white rounded-full font-bold hover:bg-white hover:text-primary transition-all">Anmelden</button>
@@ -202,7 +198,7 @@
                 </div>
 
                 <div class="w-full lg:w-2/3 bg-[#1e1e1e] p-8 md:p-10 rounded-2xl shadow-2xl border-t-4 border-primary" data-aos="fade-up" data-aos-delay="300">
-                    <form id="contactForm" name="kontaktformular" method="POST" data-netlify="true" action="/" class="space-y-6">
+                    <form id="contactForm" name="kontaktformular" method="POST" data-netlify="true" action="/danke.html" class="space-y-6">
                         <input type="hidden" name="form-name" value="kontaktformular" />
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <input type="text" name="name" required placeholder="Name" class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all">
@@ -257,4 +253,4 @@
     <script src="script.js"></script>
 
 </body>
-</html>```
+</html>
