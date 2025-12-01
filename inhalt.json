@@ -3,7 +3,9 @@
     "telefon": "+49 170 123 4567",
     "email": "elber3763@gmail.com",
     "chatText": "Jetzt WhatsApp Chat starten",
-    "chatLink": " https://wa.me/491784232626"
+    "chatLink": " https://wa.me/491784232626",
+    "socialInsta": "https://instagram.com",
+    "socialLink": "https://linkedin.com"
   },
   "biografieText": "`Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.\nIn meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.`",
   "titel": "THOMAS MÜLLER",
@@ -27,6 +29,22 @@
   "kuenstlerFoto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop",
   "heroHeadline": "Die Ästhetik des Augenblicks",
   "biografieTitel": "Der Künstler",
+  "metaTitle": "Thomas Müller | Zeitgenössische Kunst & Malerei",
+  "metaDesc": "Offizielle Webseite des Künstlers Thomas Müller. Entdecken Sie abstrakte Gemälde, aktuelle Ausstellungen und exklusive Einblicke in das Atelier in Berlin.",
+  "newsEintraege": [
+    {
+      "headline": "Vernissage: Licht & Schatten",
+      "datum": "15.12.2025",
+      "text": " Ich lade Sie herzlich zu meiner neuen Einzelausstellung in der Galerie 'Mitte' in Berlin ein. Eröffnung ist um 19:00 Uhr.\n",
+      "bild": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "headline": "Neue Werkreihe: 'Silence'",
+      "datum": "20.11.2025",
+      "text": "Der Herbst bringt Ruhe in mein Atelier. Aktuell arbeite ich an minimalistischen Strukturen mit Fokus auf die Farbe Blau.",
+      "bild": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=800&auto=format&fit=crop"
+    }
+  ],
   "heroBild": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920&auto=format&fit=crop",
   "heroSubline": "Zeitgenössische Malerei, die Räume transformiert und Emotionen weckt.",
   "untertitel": "Contemporary Art & Design"
