@@ -94,3 +94,12 @@ body {
     transition: left 0.7s ease;
     left: 150%;
 }
+/* NOTFALL: Chat komplett ausblenden */
+#tawkchat-minified-wrapper, 
+.tawk-min-container, 
+iframe[title*="chat"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
