@@ -18,8 +18,9 @@ collections:
           - {label: "Browser Titel (SEO)", name: "metaTitle", widget: "string", default: "Thomas Müller | Kunst"}
           - {label: "Seitenbeschreibung (SEO)", name: "metaDesc", widget: "text", default: "Zeitgenössische Kunst und Gemälde."}
           
-          # --- Header ---
-          - {label: "Künstler Name (Logo)", name: "titel", widget: "string"}
+          # --- Header (Logo) ---
+          - {label: "Künstler Name (Text-Logo Fallback)", name: "titel", widget: "string"}
+          - {label: "Logo Bild (Ersetzt den Namen)", name: "logoBild", widget: "image", required: false}
           - {label: "Untertitel", name: "untertitel", widget: "string"}
           
           # --- Hero ---
@@ -53,7 +54,7 @@ collections:
               - {label: "Beschreibung", name: "beschreibung", widget: "string"}
               - {label: "Bild", name: "bild", widget: "image"}
 
-          # --- NEU: Blog / News ---
+          # --- News / Blog ---
           - label: "News & Ausstellungen"
             name: "newsEintraege"
             widget: "list"
