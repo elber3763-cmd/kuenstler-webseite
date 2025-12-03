@@ -14,21 +14,26 @@ collections:
         name: "home"
         format: "json"
         fields:
+          # --- SEO & Meta ---
           - {label: "Browser Titel (SEO)", name: "metaTitle", widget: "string", default: "Thomas Müller | Kunst"}
-          - {label: "Seitenbeschreibung (SEO)", name: "metaDesc", widget: "text", default: "Zeitgenössische Kunst."}
+          - {label: "Seitenbeschreibung (SEO)", name: "metaDesc", widget: "text", default: "Zeitgenössische Kunst und Gemälde."}
           
+          # --- Header (Logo) ---
           - {label: "Künstler Name (Text-Logo Fallback)", name: "titel", widget: "string"}
           - {label: "Logo Bild (Ersetzt den Namen)", name: "logoBild", widget: "image", required: false}
           - {label: "Untertitel", name: "untertitel", widget: "string"}
           
+          # --- Hero ---
           - {label: "Hero Überschrift", name: "heroHeadline", widget: "string"}
           - {label: "Hero Untertitel", name: "heroSubline", widget: "string"}
           - {label: "Hintergrundbild", name: "heroBild", widget: "image"}
           
+          # --- Über mich ---
           - {label: "Biografie Titel", name: "biografieTitel", widget: "string"}
           - {label: "Biografie Text", name: "biografieText", widget: "text"}
           - {label: "Künstler Foto", name: "kuenstlerFoto", widget: "image"}
           
+          # --- Kontakt ---
           - label: "Kontakt Infos"
             name: "kontakt"
             widget: "object"
@@ -36,11 +41,11 @@ collections:
               - {label: "Telefon", name: "telefon", widget: "string"}
               - {label: "E-Mail", name: "email", widget: "string"}
               - {label: "Chat Button Text", name: "chatText", widget: "string"}
-              - {label: "WhatsApp Link (optional)", name: "chatLink", widget: "string", required: false}
-              - {label: "Tawk.to Chat ID (z.B. 65a.../1hk...)", name: "tawkId", widget: "string", required: false, hint: "Hier die 'Direct Chat Link' ID von Tawk.to einfügen"}
+              - {label: "WhatsApp Link (https://wa.me/49...)", name: "chatLink", widget: "string", required: false}
               - {label: "Instagram Link", name: "socialInsta", widget: "string", required: false}
               - {label: "LinkedIn Link", name: "socialLink", widget: "string", required: false}
 
+          # --- Galerie ---
           - label: "Galerie"
             name: "galerieBilder"
             widget: "list"
@@ -49,6 +54,7 @@ collections:
               - {label: "Beschreibung", name: "beschreibung", widget: "string"}
               - {label: "Bild", name: "bild", widget: "image"}
 
+          # --- News / Blog ---
           - label: "News & Ausstellungen"
             name: "newsEintraege"
             widget: "list"
