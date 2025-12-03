@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el && src) el.src = src;
         };
 
-        // Meta
+        // Meta & Header
         if(activeData.metaTitle) document.title = activeData.metaTitle;
         if(activeData.metaDesc) {
             const metaDesc = document.getElementById('meta-desc');
@@ -70,16 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
             bioContainer.innerHTML = activeData.biografieText.replace(/`/g, '').split('\n').map(p => `<p>${p}</p>`).join('');
         }
 
-        // Kontakt & Chat
+        // Kontakt
         if (activeData.kontakt) {
             safeSetText('contact-phone', activeData.kontakt.telefon);
             safeSetText('contact-email', activeData.kontakt.email);
             safeSetText('contact-chat', activeData.kontakt.chatText);
             
+            // Einfacher Link (z.B. WhatsApp)
             const chatBtn = document.getElementById('contact-chat');
             if(chatBtn && activeData.kontakt.chatLink) {
                 chatBtn.href = activeData.kontakt.chatLink;
                 chatBtn.target = "_blank";
+                chatBtn.style.cursor = "pointer";
             }
 
             // Social Icons
@@ -89,20 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(activeData.kontakt.socialInsta) socialHTML += `<a href="${activeData.kontakt.socialInsta}" target="_blank" class="text-gray-400 hover:text-primary text-2xl transition transform hover:scale-110">Instagram</a>`;
                 if(activeData.kontakt.socialLink) socialHTML += `<a href="${activeData.kontakt.socialLink}" target="_blank" class="text-gray-400 hover:text-primary text-2xl transition transform hover:scale-110 ml-4">LinkedIn</a>`;
                 socialContainer.innerHTML = socialHTML;
-            }
-
-            // --- TAWK.TO LIVE CHAT INTEGRATION ---
-            if(activeData.kontakt.tawkId && !window.Tawk_API) {
-                // Wir laden das Chat-Skript nur, wenn eine ID da ist
-                var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-                (function(){
-                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                s1.async=true;
-                s1.src='https://embed.tawk.to/' + activeData.kontakt.tawkId;
-                s1.charset='UTF-8';
-                s1.setAttribute('crossorigin','*');
-                s0.parentNode.insertBefore(s1,s0);
-                })();
             }
         }
 
@@ -178,6 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('.btn-zoom');
         if (btn && modal) { modal.classList.add('active'); modalImg.src = btn.getAttribute('data-img'); captionText.innerText = btn.getAttribute('data-title'); }
+        if(e.target.classList.contains('like-btn')) {
+            e.target.style.color = "#ef4444";
+            e.target.classList.add("animate-ping");
+            setTimeout(() => e.target.classList.remove("animate-ping"), 500);
+        }
     });
     if(closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     if(modal) modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
