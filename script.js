@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true, offset: 50 });
 
-    // 2. BESUCHER ZÄHLER LOGIK (Simuliert)
+    // 2. BESUCHER ZÄHLER LOGIK
     initVisitorCounter();
 
     // 3. DATEN LADEN
@@ -36,15 +36,40 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el && src) el.src = src;
         };
 
-        // Meta & Header
+        // Meta
         if(activeData.metaTitle) document.title = activeData.metaTitle;
         if(activeData.metaDesc) {
             const metaDesc = document.getElementById('meta-desc');
             if(metaDesc) metaDesc.content = activeData.metaDesc;
         }
         
+        // --- HEADER LOGO LOGIK (NEU) ---
+        // Prüfen, ob ein Logo-Bild vorhanden ist
+        const logoImg = document.getElementById('logo-img');
+        const logoText = document.getElementById('logo-text');
+
+        if (activeData.logoBild) {
+            // Bild vorhanden: Bild anzeigen, Text verstecken
+            if (logoImg) {
+                logoImg.src = activeData.logoBild;
+                logoImg.classList.remove('hidden');
+            }
+            if (logoText) {
+                logoText.classList.add('hidden');
+            }
+        } else {
+            // Kein Bild: Text anzeigen, Bild verstecken
+            if (logoText) {
+                logoText.innerText = activeData.titel || "THOMAS MÜLLER";
+                logoText.classList.remove('hidden');
+            }
+            if (logoImg) {
+                logoImg.classList.add('hidden');
+            }
+        }
+
+        // Footer Name & Signatur
         if(activeData.titel) {
-            safeSetText('logo-text', activeData.titel);
             safeSetText('footer-name', activeData.titel);
             safeSetText('signature-text', activeData.titel);
         }
@@ -74,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 chatBtn.target = "_blank";
             }
 
-            // Social Icons generieren
             const socialContainer = document.getElementById('social-container');
             if(socialContainer) {
                 let socialHTML = '';
@@ -102,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6">
                             <h3 class="text-2xl font-serif text-white">${werk.titel}</h3>
                             <p class="text-gray-300 text-sm mb-4">${werk.beschreibung}</p>
-                            
                             <div class="flex justify-between items-center">
                                 <button class="btn-zoom px-5 py-2 border border-white text-white rounded-full uppercase text-xs hover:bg-white hover:text-black transition"
                                     data-img="${werk.bild}" data-title="${werk.titel}">Details</button>
@@ -114,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // News / Blog
+        // News
         const newsContainer = document.getElementById('news-container');
         if (newsContainer && activeData.newsEintraege) {
             newsContainer.innerHTML = "";
@@ -129,12 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h3 class="text-xl font-serif text-white mt-2 mb-3 group-hover:text-primary transition">${news.headline}</h3>
                             <p class="text-gray-400 text-sm line-clamp-3">${news.text}</p>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 newsContainer.insertAdjacentHTML('beforeend', html);
             });
         } else if (newsContainer) {
-            // Fallback wenn keine News da sind
             newsContainer.innerHTML = '<p class="text-gray-500 col-span-3 text-center">Aktuell keine Neuigkeiten verfügbar.</p>';
         }
     }
@@ -161,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. HELFER FUNKTIONEN (Navbar, Menu, Modal, Form)
+    // 5. HELFER
     window.addEventListener('scroll', () => {
         const header = document.getElementById('main-header');
         if(header) window.scrollY > 50 ? header.classList.add('py-2') : header.classList.remove('py-2');
@@ -183,10 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
             modalImg.src = btn.getAttribute('data-img');
             captionText.innerText = btn.getAttribute('data-title');
         }
-        // Like Button Fun
         if(e.target.classList.contains('like-btn')) {
-            e.target.style.color = "#ef4444"; // Rot färben
-            e.target.classList.add("animate-ping"); // Kurz pulsieren
+            e.target.style.color = "#ef4444";
+            e.target.classList.add("animate-ping");
             setTimeout(() => e.target.classList.remove("animate-ping"), 500);
         }
     });
@@ -194,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     if(modal) modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
 
-    // Kontakt Formular AJAX
+    // Kontakt AJAX
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
@@ -214,23 +234,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- VISITOR COUNTER LOGIC ---
+    // Visitor Counter
     function initVisitorCounter() {
-        // Live Counter (Zufall + Basis, ändert sich leicht)
         const liveCountEl = document.getElementById('live-visitor-count');
         const totalCountEl = document.getElementById('total-visitor-count');
-        
         if(liveCountEl && totalCountEl) {
-            // Live: Zufall zwischen 3 und 15
             let live = Math.floor(Math.random() * 12) + 3;
             liveCountEl.innerText = live;
-
-            // Total: Basis (z.B. 12500) + Lokaler Zähler
             let visits = localStorage.getItem('site_visits') || 0;
             visits++;
             localStorage.setItem('site_visits', visits);
-            
-            // Formatierung: 12.543
             let total = 12500 + parseInt(visits); 
             totalCountEl.innerText = total.toLocaleString('de-DE');
         }
