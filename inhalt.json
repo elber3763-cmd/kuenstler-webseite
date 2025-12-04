@@ -28,43 +28,43 @@
     },
     {
       "bild": "bilder/uploads/bauernhof.jpg",
-      "titel": "TEST1",
-      "beschreibung": "TEST1"
+      "titel": " Ländliche Idylle",
+      "beschreibung": "Eine nostalgische Szenerie, die das einfache Leben auf dem Land einfängt. Sanftes Sonnenlicht fällt durch das dichte Blätterdach alter Eichen auf einen rustikalen Bauernhof. Schafe grasen friedlich am Wegesrand, während das warme Licht eine Atmosphäre von Ruhe und Beständigkeit schafft. Ein klassisches Werk der Romantik."
     },
     {
       "bild": "bilder/uploads/blumen.jpg",
-      "titel": "TEST2",
-      "beschreibung": "TEST2"
+      "titel": "Stillleben der Vergänglichkeit",
+      "beschreibung": "Ein opulentes Blumenarrangement vor dunklem Hintergrund, das an die alten niederländischen Meister erinnert. Die leuchtenden Farben der Tulpen, Rosen und Nelken stehen im dramatischen Kontrast zur Schwärze, was die Schönheit und gleichzeitige Zerbrechlichkeit der Natur symbolisiert. Ein Spiel aus Licht und Schatten."
     },
     {
       "bild": "bilder/uploads/eisberge.jpg",
-      "titel": "TEST3",
-      "beschreibung": "TEST3"
+      "titel": "Spiegelung der Stille",
+      "beschreibung": "Eine majestätische Berglandschaft, die sich kristallklar in einem ruhigen See spiegelt. Die kühlen Blautöne des Himmels und des Wassers verschmelzen mit den schroffen Felsen zu einer harmonischen Komposition. Das Bild strahlt eine tiefe, meditative Ruhe und die Erhabenheit der unberührten Natur aus."
     },
     {
       "bild": "bilder/uploads/fabverläufe.jpg",
-      "titel": "TEST4",
-      "beschreibung": "TEST4"
+      "titel": "Goldene Fusion",
+      "beschreibung": "Ein dynamisches abstraktes Werk, in dem flüssiges Gold auf tiefes Schwarz und Weiß trifft. Die organischen Formen erinnern an Marmorstrukturen oder fließende Lava. Der Kontrast zwischen den harten dunklen Linien und den weichen gelben Verläufen erzeugt eine Spannung voller Energie und Eleganz."
     },
     {
       "bild": "bilder/uploads/himmel.jpg",
-      "titel": "TEST5",
-      "beschreibung": "TEST5"
+      "titel": "Kosmischer Nebel",
+      "beschreibung": "Eine traumartige Komposition aus violetten und magentafarbenen Tönen, die an einen Sonnenuntergang oder ferne Galaxien erinnert. Durchscheinende Ebenen und geometrische Fragmente überlagern sich und schaffen eine Tiefe, die den Betrachter in eine surrealistische Traumwelt entführt."
     },
     {
       "bild": "bilder/uploads/pexels-photo-354939.jpeg",
-      "titel": "TEST6",
-      "beschreibung": "TEST6"
+      "titel": "Erinnerungswand",
+      "beschreibung": "Ein modernes Interieur-Arrangement vor einer dunkelgrünen Wand. Verschiedene gerahmte Kunstwerke und Fotografien sind in einer Petersburger Hängung angeordnet, beleuchtet von warmem, punktuellem Licht. Das Werk thematisiert das Sammeln von Momenten und die Inszenierung von Kunst im privaten Raum."
     },
     {
       "bild": "bilder/uploads/pexels-photo-1070527.jpeg",
-      "titel": "TEST7",
-      "beschreibung": "TEST7"
+      "titel": "Der kreative Funke",
+      "beschreibung": " Minimalismus trifft auf Chaos. Auf einem reinweißen Hintergrund explodiert ein zentraler Farbklecks aus Rot, Pink und Gold. Das Bild symbolisiert den Moment der Inspiration – den plötzlichen Ausbruch von Kreativität aus der Leere heraus. Ein Werk voller Dynamik und Frische."
     },
     {
       "bild": "bilder/uploads/pexels-photo-1193743.jpeg",
-      "titel": "TEST8",
-      "beschreibung": "TEST8"
+      "titel": "Ozeanische Tiefe",
+      "beschreibung": "Abstrakte Farbflächen in tiefen Blau- und Türkistönen überlagern sich wie Wellen unter Wasser. Die Struktur wirkt wie verwittertes Holz oder alte Farbe, was dem Bild eine Vintage-Patina verleiht. Es lädt den Betrachter ein, in die kühlen Tiefen der Farbe einzutauchen."
     },
     {
       "bild": "bilder/uploads/pexels-photo-1509534.jpeg",
@@ -73,23 +73,23 @@
     },
     {
       "bild": "bilder/uploads/pexels-photo-1570779.jpeg",
-      "titel": "TEST10",
-      "beschreibung": "TEST10"
+      "titel": "Urbane Fragmente",
+      "beschreibung": "Ein modernes Werk im Street-Art-Stil. Auf einem grauen, betonartigen Hintergrund kreuzen sich kräftige Balken in leuchtendem Blau und Neon-Orange. Die Komposition wirkt wie ein Graffiti oder ein Abrissplakat an einer Stadtmauer – roh, direkt und voller urbaner Energie."
     },
     {
       "bild": "bilder/uploads/pexels-photo-1585325.jpeg",
-      "titel": "TEST11",
-      "beschreibung": "TEST11"
+      "titel": "Farbsymphonie",
+      "beschreibung": "Ein Fest der Farben. Vertikale und horizontale Spachtelstriche in Primärfarben (Gelb, Rot, Blau) verdichten sich zu einer komplexen Struktur. Das Bild wirkt wie ein gewebter Teppich aus reiner Farbe und strahlt Optimismus und Lebensfreude aus."
     },
     {
       "bild": "bilder/uploads/pexels-photo-1762973.jpeg",
-      "titel": "TEST12",
-      "beschreibung": "TEST12"
+      "titel": "Mitternachtsblau",
+      "beschreibung": " Eine tiefblaue, texturierte Oberfläche, die an einen Nachthimmel oder dunklen Samt erinnert. Subtile hellere Strukturen durchziehen das Dunkel und geben dem Bild Tiefe und Geheimnis. Ein sehr elegantes, ruhiges Werk, das Raum für Interpretation lässt."
     },
     {
       "bild": "bilder/uploads/pexels-photo-1988686.jpeg",
-      "titel": "TEST13",
-      "beschreibung": "TEST13"
+      "titel": "Wolkengedanken",
+      "beschreibung": " Eine surrealistische Fotomontage oder Malerei. Ein Frauengesicht, vollständig in Blau getönt, verschmilzt mit Wolken und Himmelstexturen. Das Bild visualisiert den Zustand des Tagträumens oder der Melancholie – der Kopf ist buchstäblich \"in den Wolken\". Ein poetisches und verträumtes Kunstwerk."
     }
   ],
   "kuenstlerFoto": "bilder/uploads/nicola.jpg",
