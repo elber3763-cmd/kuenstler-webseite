@@ -25,6 +25,71 @@
       "titel": "Urbane Schatten",
       "beschreibung": "Mischtechnik auf Holz, 2022",
       "bild": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      "bild": "bilder/uploads/bauernhof.jpg",
+      "titel": "TEST1",
+      "beschreibung": "TEST1"
+    },
+    {
+      "bild": "bilder/uploads/blumen.jpg",
+      "titel": "TEST2",
+      "beschreibung": "TEST2"
+    },
+    {
+      "bild": "bilder/uploads/eisberge.jpg",
+      "titel": "TEST3",
+      "beschreibung": "TEST3"
+    },
+    {
+      "bild": "bilder/uploads/fabverläufe.jpg",
+      "titel": "TEST4",
+      "beschreibung": "TEST4"
+    },
+    {
+      "bild": "bilder/uploads/himmel.jpg",
+      "titel": "TEST5",
+      "beschreibung": "TEST5"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-354939.jpeg",
+      "titel": "TEST6",
+      "beschreibung": "TEST6"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1070527.jpeg",
+      "titel": "TEST7",
+      "beschreibung": "TEST7"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1193743.jpeg",
+      "titel": "TEST8",
+      "beschreibung": "TEST8"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1509534.jpeg",
+      "titel": "TEST9",
+      "beschreibung": "TEST9"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1570779.jpeg",
+      "titel": "TEST10",
+      "beschreibung": "TEST10"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1585325.jpeg",
+      "titel": "TEST11",
+      "beschreibung": "TEST11"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1762973.jpeg",
+      "titel": "TEST12",
+      "beschreibung": "TEST12"
+    },
+    {
+      "bild": "bilder/uploads/pexels-photo-1988686.jpeg",
+      "titel": "TEST13",
+      "beschreibung": "TEST13"
     }
   ],
   "kuenstlerFoto": "bilder/uploads/nicola.jpg",
@@ -33,20 +98,7 @@
   "biografieTitel": "Die Künstlerin",
   "metaTitle": "Nico | Zeitgenössische Kunst & Malerei",
   "metaDesc": "Offizielle Webseite der Künstlerin Nicola Krummland. Entdecken Sie abstrakte Gemälde, aktuelle Ausstellungen und exklusive Einblicke in das Atelier in Hannover.",
-  "newsEintraege": [
-    {
-      "headline": "Vernissage: Licht & Schatten",
-      "datum": "15.12.2025",
-      "text": " Ich lade Sie herzlich zu meiner neuen Einzelausstellung in der Galerie 'Mitte' in Hannover ein. Eröffnung ist um 19:00 Uhr.\n",
-      "bild": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      "headline": "Neue Werkreihe: 'Silence'",
-      "datum": "20.11.2025",
-      "text": "Der Herbst bringt Ruhe in mein Atelier. Aktuell arbeite ich an minimalistischen Strukturen mit Fokus auf die Farbe Blau.",
-      "bild": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=800&auto=format&fit=crop"
-    }
-  ],
+  "newsEintraege": [],
   "heroBild": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1920&auto=format&fit=crop",
   "heroSubline": "Zeitgenössische Malerei, die Räume transformiert und Emotionen weckt.",
   "untertitel": "Contemporary Art & Design."
