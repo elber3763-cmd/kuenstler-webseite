@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impressum | Thomas Müller</title>
+    <title>Impressum</title>
     
-    <!-- Fonts & Design (Gleicher Look wie Hauptseite) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -14,75 +13,67 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#0078D4',
-                        dark: '#1a1a1a',
-                        light: '#f3f4f6'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
+                    colors: { primary: '#0078D4', dark: '#1a1a1a', light: '#f3f4f6' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-dark text-light antialiased">
+<body class="bg-dark text-light antialiased min-h-screen flex flex-col">
 
     <!-- Header -->
     <header class="py-6 border-b border-white/10 bg-black">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="font-serif text-2xl font-bold text-white tracking-widest">IMPRESSUM</div>
             <a href="index.html" class="text-sm font-bold uppercase tracking-widest text-primary hover:text-white transition">
-                ← Zurück zur Startseite
+                ← Zurück
             </a>
         </div>
     </header>
 
     <!-- Inhalt -->
-    <main class="container mx-auto px-6 py-16 max-w-3xl">
+    <main class="container mx-auto px-6 py-16 max-w-3xl flex-grow">
         
         <h1 class="text-4xl font-serif mb-8 text-white">Angaben gemäß § 5 TMG</h1>
 
         <div class="space-y-8 text-gray-300 leading-relaxed">
             
             <!-- Adresse -->
-            <div>
-                <h2 class="text-xl font-bold text-white mb-2">Inhaber & Kontakt</h2>
-                <p>Thomas Müller (Künstlername / Einzelunternehmer)</p>
-                <p>Musterstraße 123</p>
-                <p>12345 Musterstadt</p>
+            <div class="bg-[#1e1e1e] p-8 rounded-xl border border-white/5">
+                <h2 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Betreiber & Kontakt</h2>
+                <p id="imp-name" class="font-bold text-lg text-primary mb-1">Lade Daten...</p>
+                <p id="imp-strasse"></p>
+                <p id="imp-ort"></p>
                 <br>
-                <p><strong>Telefon:</strong> +49 170 123 4567</p>
-                <p><strong>E-Mail:</strong> kontakt@thomas-mueller-art.de</p>
+                <p><strong>Telefon:</strong> <span id="imp-tel"></span></p>
+                <p><strong>E-Mail:</strong> <span id="imp-mail"></span></p>
             </div>
 
-            <!-- Steuer -->
-            <div>
-                <h2 class="text-xl font-bold text-white mb-2">Umsatzsteuer-ID</h2>
-                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:</p>
-                <p>DE 123 456 789</p>
-            </div>
-
-            <!-- Verantwortung -->
-            <div>
-                <h2 class="text-xl font-bold text-white mb-2">Verantwortlich für den Inhalt</h2>
-                <p>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</p>
-                <p>Thomas Müller</p>
-                <p>Musterstraße 123</p>
-                <p>12345 Musterstadt</p>
-            </div>
-
-            <!-- Haftungsausschluss -->
-            <div class="pt-8 border-t border-white/10">
-                <h2 class="text-xl font-bold text-white mb-4">Haftungsausschluss (Disclaimer)</h2>
+            <!-- Steuer & Inhalt -->
+            <div class="bg-[#1e1e1e] p-8 rounded-xl border border-white/5">
+                <h2 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Rechtliche Angaben</h2>
                 
-                <h3 class="font-bold text-white mt-4">Haftung für Inhalte</h3>
-                <p class="mt-2 text-sm">Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
-                
-                <h3 class="font-bold text-white mt-4">Urheberrecht</h3>
-                <p class="mt-2 text-sm">Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+                <div class="mb-4">
+                    <h3 class="font-bold text-white text-sm uppercase tracking-wide opacity-70">Umsatzsteuer-ID / Steuernummer</h3>
+                    <p id="imp-steuer">-</p>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-white text-sm uppercase tracking-wide opacity-70">Verantwortlich für den Inhalt</h3>
+                    <p>Verantwortlich nach § 55 Abs. 2 RStV:</p>
+                    <p id="imp-verantwortlich"></p>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="pt-8">
+                <h2 class="text-xl font-bold text-white mb-4">Haftungsausschluss & Rechtliches</h2>
+                <div id="imp-disclaimer" class="prose prose-invert max-w-none text-gray-400 text-sm">
+                    <!-- Standard Text, falls nichts im Dashboard steht -->
+                    <p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+                    <p class="mt-2">Urheberrecht: Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.</p>
+                </div>
             </div>
 
         </div>
@@ -91,9 +82,48 @@
     <!-- Footer -->
     <footer class="bg-black py-8 border-t border-white/10 mt-12">
         <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
-            &copy; 2025 Thomas Müller. Alle Rechte vorbehalten.
+            &copy; 2025 <span id="footer-copy">Nico Art</span>. Alle Rechte vorbehalten.
         </div>
     </footer>
+
+    <!-- LOGIK ZUM LADEN DER DATEN -->
+    <script>
+        // Wir hängen eine Zufallszahl an, damit immer die neuesten Daten geladen werden
+        const cacheBuster = new Date().getTime();
+
+        fetch(`inhalt.json?v=${cacheBuster}`)
+            .then(response => response.json())
+            .then(data => {
+                // Daten aus dem neuen "impressum" Block im JSON holen
+                const imp = data.impressum || {};
+
+                // Funktion zum sicheren Einfügen
+                const setText = (id, text) => {
+                    const el = document.getElementById(id);
+                    if(el) el.innerText = text || "-";
+                };
+
+                // Felder befüllen
+                setText('imp-name', imp.name);
+                setText('imp-verantwortlich', imp.name); // Verantwortlicher ist meist der Inhaber
+                setText('imp-strasse', imp.strasse);
+                setText('imp-ort', imp.ort);
+                setText('imp-tel', imp.telefon);
+                setText('imp-mail', imp.email);
+                setText('imp-steuer', imp.steuer);
+                
+                // Disclaimer (Markdown/Text)
+                if(imp.disclaimer) {
+                    document.getElementById('imp-disclaimer').innerText = imp.disclaimer;
+                }
+
+                // Footer Name aus den Hauptdaten
+                if(data.titel) {
+                    document.getElementById('footer-copy').innerText = data.titel;
+                }
+            })
+            .catch(err => console.error("Fehler beim Laden des Impressums:", err));
+    </script>
 
 </body>
 </html>
