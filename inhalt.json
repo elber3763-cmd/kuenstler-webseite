@@ -93,6 +93,14 @@
   "biografieTitel": "Die Künstlerin",
   "metaTitle": "Nico | Zeitgenössische Kunst & Malerei",
   "metaDesc": "Offizielle Webseite der Künstlerin Nicola Krummland. Entdecken Sie abstrakte Gemälde, aktuelle Ausstellungen und exklusive Einblicke in das Atelier in Hannover.",
+  "impressum": {
+    "name": "Thomas Müller",
+    "strasse": "Muster Str. 10",
+    "ort": "12345 Berlin",
+    "email": "thomas@gmx.de",
+    "telefon": "0174456123",
+    "steuer": "1234456 / 14789"
+  },
   "newsEintraege": [],
   "heroBild": " https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1920&auto=format&fit=crop",
   "heroSubline": "Zeitgenössische Malerei, die Räume transformiert und Emotionen weckt.",
