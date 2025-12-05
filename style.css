@@ -1,105 +1,66 @@
-/* 
-   PREMIUM STYLING & OVERRIDES 
-   Das Hauptdesign kommt von Tailwind. Hier sind die Feinheiten.
-*/
-
-/* 1. Edle Scrollbar (Dunkelgrau & Blau) */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: #0f0f0f; 
-}
-::-webkit-scrollbar-thumb {
-    background: #333; 
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #0078D4; /* Primary Blue Akzent */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* 2. Text Markierung (Blau statt Standard-Blau) */
-::selection {
-    background: rgba(0, 120, 212, 0.3);
-    color: #fff;
+html {
+    scroll-behavior: smooth;
 }
 
-/* 3. Globale Einstellungen */
 body {
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* 4. Modal (Bild Zoom) Animation */
-/* Tailwind steuert das Layout, hier steuern wir das Einblenden */
-#imageModal {
-    display: flex !important; /* Erzwingt Flexbox für Zentrierung */
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none; /* Klicks gehen durch wenn unsichtbar */
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.font-serif {
+    font-family: 'Playfair Display', serif;
 }
 
-#imageModal.active {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    backdrop-filter: blur(10px); /* Starker Blur-Effekt im Hintergrund */
+::-webkit-scrollbar {
+    width: 12px;
 }
 
-#imageModal img {
-    transform: scale(0.9);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
 }
 
-#imageModal.active img {
-    transform: scale(1);
+::-webkit-scrollbar-thumb {
+    background: #0078D4;
+    border-radius: 6px;
 }
 
-/* 5. Mobiles Menü Animation */
-#mobile-nav {
-    transform: translateY(-20px);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
+::-webkit-scrollbar-thumb:hover {
+    background: #005a9e;
 }
 
-#mobile-nav.active {
-    display: block;
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
+.animate-ping {
+    animation: ping 0.5s cubic-bezier(0, 0, 0.2, 1);
 }
 
-/* 6. Galerie Hover Effekte für die Bild-Container */
-.gallery-item-wrapper {
-    position: relative;
-    overflow: hidden;
+@keyframes ping {
+    75%, 100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
 }
 
-/* Shine Effekt beim Hover über Bilder */
-.gallery-item-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-25deg);
-    transition: none;
+.grayscale {
+    filter: grayscale(100%);
 }
 
-.gallery-item-wrapper:hover::after {
-    transition: left 0.7s ease;
-    left: 150%;
+.grayscale:hover {
+    filter: grayscale(0%);
 }
-/* NOTFALL: Chat komplett ausblenden */
-#tawkchat-minified-wrapper, 
-.tawk-min-container, 
-iframe[title*="chat"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
