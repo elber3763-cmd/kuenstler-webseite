@@ -78,3 +78,6 @@ collections:
               - {label: "Telefon (Impressum)", name: "telefon", widget: "string"}
               - {label: "Steuernummer / USt-ID", name: "steuer", widget: "string", required: false}
               - {label: "Haftungsausschluss Text", name: "disclaimer", widget: "markdown", required: false}
+              - {label: "Datenschutz Text (DSGVO)", name: "privacy", widget: "markdown", required: false}
+
+
