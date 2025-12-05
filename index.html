@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Thomas Müller | Bildende Kunst</title>
+    <meta name="description" content="Offizielle Website des Künstlers Thomas Müller - Bildende Kunst, Galerie und Kontakt">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +34,6 @@
         }
     </script>
     <link rel="stylesheet" href="style.css">
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="bg-dark text-light overflow-x-hidden antialiased">
 
@@ -138,11 +138,13 @@
                     <div class="flex gap-4 pt-6 justify-center lg:justify-start" id="social-container"></div>
                 </div>
 
-                <!-- Formular mit dem neuen Namen "kontakt_final" -->
+                <!-- Formular -->
                 <div class="w-full lg:w-2/3 bg-[#1e1e1e] p-8 md:p-10 rounded-2xl shadow-2xl border-t-4 border-primary" data-aos="fade-up" data-aos-delay="300">
-                    <form id="contactForm" name="kontakt_final" method="POST" data-netlify="true" action="/" class="space-y-6">
-                        <!-- WICHTIG: Das versteckte Feld muss exakt stimmen -->
-                        <input type="hidden" name="form-name" value="kontakt_final" />
+                    <form name="kontakt" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/danke.html" class="space-y-6">
+                        <input type="hidden" name="form-name" value="kontakt" />
+                        <p class="hidden">
+                            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                        </p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
@@ -165,24 +167,17 @@
         </div>
     </section>
 
-<!-- FOOTER (Korrigiert: Impressum ist jetzt sicher vor dem Skript) -->
+    <!-- FOOTER -->
     <footer class="bg-black py-10 border-t border-white/10">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            
-            <!-- Linker Bereich: Copyright & Links -->
             <div class="text-gray-500 text-sm text-center md:text-left">
-                <!-- Der Name wird per JS hier in das span geladen -->
                 <p class="mb-2">&copy; 2025 <span id="footer-name">Thomas Müller</span>. Alle Rechte vorbehalten.</p>
-                
-                <!-- SICHERER BEREICH FÜR LINKS (Das JS fasst diesen Teil nicht an) -->
                 <div class="flex gap-4 justify-center md:justify-start">
                     <a href="impressum.html" class="hover:text-primary transition underline decoration-gray-700 hover:decoration-primary">Impressum</a>
                     <span class="text-gray-700">|</span>
                     <a href="datenschutz.html" class="hover:text-primary transition underline decoration-gray-700 hover:decoration-primary">Datenschutz</a>
                 </div>
             </div>
-            
-            <!-- Rechter Bereich: Besucherzähler -->
             <div class="text-xs text-gray-600 flex items-center gap-2 bg-[#111] px-4 py-2 rounded-full border border-white/5">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -211,7 +206,7 @@
     <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <span class="close absolute top-5 right-8 text-white text-5xl cursor-pointer hover:text-primary transition">&times;</span>
         <div class="max-w-5xl w-full text-center">
-            <img class="max-h-[80vh] mx-auto rounded-lg shadow-2xl border border-white/10" id="modalImg">
+            <img class="max-h-[80vh] mx-auto rounded-lg shadow-2xl border border-white/10" id="modalImg" alt="Detailansicht">
             <div id="caption" class="mt-4 text-white font-serif text-xl"></div>
         </div>
     </div>
@@ -220,20 +215,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
-                }
-            });
-        }
-    </script>
     <script src="script.js"></script>
 
 </body>
 </html>
-
-
-
-
