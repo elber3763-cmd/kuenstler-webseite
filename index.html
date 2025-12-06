@@ -37,22 +37,23 @@
 </head>
 <body class="bg-dark text-light overflow-x-hidden antialiased">
 
-<!-- NAVIGATION -->
-<header class="fixed w-full top-0 z-50 bg-black border-b border-white/10 shadow-2xl h-20 md:h-24 transition-all duration-300" id="main-header">
-    <div class="container mx-auto px-6 h-full flex justify-between items-center relative">
+    <!-- FLOATING LOGO (Außerhalb der Menüleiste, doppelte Größe) -->
+    <a href="#hero" class="fixed top-0 left-0 z-[60] p-4 md:p-6 block group transition-transform duration-300 origin-top-left hover:scale-105">
+        <!-- Logo Bild: h-24 (96px) mobil, h-32 (128px) desktop -->
+        <img id="logo-img" src="" alt="Logo" class="h-24 md:h-32 w-auto object-contain hidden drop-shadow-2xl filter brightness-110 contrast-125">
         
-        <!-- LOGO BEREICH -->
-        <a href="#hero" class="block group absolute top-0 left-6 z-50 h-full flex items-center">
-            <!-- Logo Bild (Standardmäßig versteckt via 'hidden', wird per JS aktiviert) -->
-            <!-- h-16 entspricht 64px Höhe -->
-            <img id="logo-img" src="" alt="Logo" class="h-12 md:h-16 w-auto object-contain hidden transition-transform duration-300 group-hover:scale-105">
+        <!-- Logo Text (Fallback): text-4xl mobil, text-6xl desktop -->
+        <div id="logo-text" class="font-serif text-4xl md:text-6xl font-bold text-white tracking-[0.1em] cursor-pointer hover:text-primary transition-colors duration-300 drop-shadow-lg">
+            THOMAS MÜLLER
+        </div>
+    </a>
+
+    <!-- NAVIGATION (Header nur für Menü rechts) -->
+    <header class="fixed w-full top-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl h-20 md:h-24 transition-all duration-300" id="main-header">
+        <!-- justify-end schiebt das Menü nach rechts, da links das Logo darüber schwebt -->
+        <div class="container mx-auto px-6 h-full flex justify-end items-center relative">
             
-            <!-- Logo Text (Fallback, wenn kein Bild da ist) -->
-            <div id="logo-text" class="font-serif text-2xl md:text-3xl font-bold text-white tracking-[0.2em] cursor-pointer hover:text-primary transition-colors duration-300">
-                THOMAS MÜLLER
-            </div>
-        </a>
-            <nav class="hidden md:block ml-auto">
+            <nav class="hidden md:block">
                 <ul class="flex space-x-10 items-center h-full">
                     <li><a href="#hero" class="text-sm font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-all duration-300 hover:scale-105">Startseite</a></li>
                     <li><a href="#galerie" class="text-sm font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-all duration-300 hover:scale-105">Galerie</a></li>
@@ -60,11 +61,13 @@
                     <li><a href="#kontakt" class="px-8 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-full transition-all duration-300 uppercase text-xs tracking-widest font-bold shadow-[0_0_20px_rgba(0,120,212,0.3)]">Kontakt</a></li>
                 </ul>
             </nav>
-            <div class="md:hidden cursor-pointer text-white hover:text-primary transition transform hover:rotate-90 duration-300 ml-auto" id="mobile-menu-icon">
+
+            <div class="md:hidden cursor-pointer text-white hover:text-primary transition transform hover:rotate-90 duration-300 ml-6" id="mobile-menu-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
             </div>
         </div>
-        <nav class="md:hidden hidden bg-black border-t border-white/10 absolute w-full shadow-2xl h-screen" id="mobile-nav">
+
+        <nav class="md:hidden hidden bg-black border-t border-white/10 absolute w-full shadow-2xl h-screen top-20 left-0" id="mobile-nav">
             <ul class="flex flex-col p-10 space-y-10 text-center justify-center h-3/4">
                 <li><a href="#hero" class="block text-2xl tracking-widest hover:text-primary font-serif">Startseite</a></li>
                 <li><a href="#galerie" class="block text-2xl tracking-widest hover:text-primary font-serif">Galerie</a></li>
@@ -227,4 +230,3 @@
 
 </body>
 </html>
-
