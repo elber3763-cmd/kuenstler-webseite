@@ -60,9 +60,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Header & Hero Sektion ---
         if(activeData.titel) {
             document.title = activeData.titel;
-            safeSetText('logo-text', activeData.titel);
             safeSetText('footer-name', activeData.titel);
             safeSetText('signature-text', activeData.titel);
+
+            // LOGO LOGIK: Entscheidet ob Bild oder Text angezeigt wird
+            const logoImg = document.getElementById('logo-img');
+            const logoText = document.getElementById('logo-text');
+
+            if (logoImg && logoText) {
+                // Prüfen, ob ein Logo-Bild im CMS hinterlegt wurde und nicht leer ist
+                if (activeData.logoBild && activeData.logoBild.trim() !== "") {
+                    // Bild setzen und sichtbar machen, Text verstecken
+                    logoImg.src = activeData.logoBild;
+                    logoImg.classList.remove('hidden');
+                    logoText.classList.add('hidden');
+                } else {
+                    // Kein Bild vorhanden -> Bild verstecken, Text anzeigen
+                    logoImg.classList.add('hidden');
+                    logoText.classList.remove('hidden');
+                    logoText.innerText = activeData.titel;
+                }
+            } else {
+                // Fallback falls HTML Elemente fehlen
+                safeSetText('logo-text', activeData.titel);
+            }
         }
 
         safeSetText('hero-headline', activeData.heroHeadline);
