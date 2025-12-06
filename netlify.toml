@@ -1,0 +1,15 @@
+# netlify.toml
+
+[build]
+  # Kein Build nötig – nur statische Dateien
+  command = ""
+  publish = "/"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  # Deaktiviert – du nutzt keine Netlify Functions
+  directory = ""
