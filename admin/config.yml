@@ -1,6 +1,13 @@
 backend:
   name: git-gateway
   branch: main
+  commit_messages:
+    create: 'Create {{collection}} "{{slug}}"'
+    update: 'Update {{collection}} "{{slug}}"'
+    delete: 'Delete {{collection}} "{{slug}}"'
+    uploadMedia: '[skip ci] Upload "{{path}}"'
+    deleteMedia: '[skip ci] Delete "{{path}}"'
+publish_mode: editorial_workflow
 
 # WICHTIG: Das löst dein Problem zu 100 %
 publish_mode: editorial_workflow   # ← NEU & ENTSCHEIDEND
@@ -92,3 +99,4 @@ collections:
               - { label: "Steuernummer / USt-ID", name: "steuer", widget: "string", required: false }
               - { label: "Haftungsausschluss", name: "disclaimer", widget: "markdown", required: false }
               - { label: "Datenschutzerklärung", name: "privacy", widget: "markdown", required: false }
+
