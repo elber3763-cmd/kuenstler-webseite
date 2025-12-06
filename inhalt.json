@@ -1,45 +1,12 @@
 {
+  "heroBild": "/bilder/uploads/bauernhof.jpg",
+  "galerieBilder": [],
+  "titel": " ",
+  "heroHeadline": " ",
+  "heroSubline": " ",
+  "biografieText": " ",
   "kontakt": {
-    "telefon": "+49 170 123 4567",
-    "email": "elber3763@gmail.com",
-    "chatText": "Whatsapp Chat",
-    "chatLink": "https://wa.me/491764232626",
-    "socialInsta": "https://instagram.com",
-    "socialLink": "https://linkedin.com",
-    "tawkId": "69301435f90e3a197e54094f/1jbhsttc2"
-  },
-  "biografieText": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.\nIn meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.",
-  "titel": "NICO",
-  "galerieBilder": [
-    {
-      "titel": "Stille Wasser",
-      "beschreibung": "Öl auf Leinwand, 120x80cm, 2023",
-      "bild": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      "titel": "Goldener Herbst",
-      "beschreibung": "Acryl & Blattgold, 100x100cm, 2024",
-      "bild": "https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      "titel": "Urbane Schatten",
-      "beschreibung": "Mischtechnik auf Holz, 2022",
-      "bild": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      "bild": "bilder/uploads/bauernhof.jpg",
-      "titel": "Ländliche Idylle",
-      "beschreibung": "Eine nostalgische Szenerie, die das einfache Leben auf dem Land einfängt. Sanftes Sonnenlicht fällt durch das dichte Blätterdach alter Eichen auf einen rustikalen Bauernhof. Schafe grasen friedlich am Wegesrand, während das warme Licht eine Atmosphäre von Ruhe und Beständigkeit schafft. Ein klassisches Werk der Romantik."
-    }
-    // ... (alle weiteren Bilder – ebenfalls ohne Leerzeichen in URLs)
-  ],
-  "kuenstlerFoto": "bilder/uploads/nicola.jpg",
-  "logoBild": "bilder/uploads/logo5.png",
-  "heroHeadline": "Die Ästhetik des Augenblicks.",
-  "biografieTitel": "Die Künstlerin",
-  "metaTitle": "Nico | Zeitgenössische Kunst & Malerei",
-  "metaDesc": "Offizielle Webseite der Künstlerin Nicola Krummland. Entdecken Sie abstrakte Gemälde, aktuelle Ausstellungen und exklusive Einblicke in das Atelier in Hannover.",
-  "heroBild": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1920&auto=format&fit=crop",
-  "heroSubline": "Zeitgenössische Malerei, die Räume transformiert und Emotionen weckt.",
-  "untertitel": "Contemporary Art & Design."
+    "telefon": " ",
+    "email": " "
+  }
 }
