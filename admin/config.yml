@@ -3,26 +3,63 @@ backend:
   branch: main
 
 media_folder: "bilder/uploads"
-public_folder: "/bilder/uploads"
+public_folder: "bilder/uploads"
 
 collections:
-  - name: "pages"
-    label: "Seiteninhalte"
+  - name: "einstellungen"
+    label: "Webseite bearbeiten"
     files:
-      - label: "Startseite"
+      - file: "inhalt.json"
+        label: "Inhalte & Texte"
         name: "home"
-        file: "inhalt.json"
+        format: "json"
         fields:
-          - {label: "Titel", name: "titel", widget: "string"}
+          # --- SEO & Meta ---
+          - {label: "Browser Titel (SEO)", name: "metaTitle", widget: "string", default: "Thomas Müller | Kunst"}
+          - {label: "Seitenbeschreibung (SEO)", name: "metaDesc", widget: "text", default: "Zeitgenössische Kunst und Gemälde."}
+          
+          # --- Header ---
+          - {label: "Künstler Name (Logo)", name: "titel", widget: "string"}
+          - {label: "Untertitel", name: "untertitel", widget: "string"}
+          
+          # --- Hero ---
           - {label: "Hero Überschrift", name: "heroHeadline", widget: "string"}
-          - {label: "Hero Text", name: "heroSubline", widget: "string"}
-          - {label: "Hero Bild", name: "heroBild", widget: "image"}
+          - {label: "Hero Untertitel", name: "heroSubline", widget: "string"}
+          - {label: "Hintergrundbild", name: "heroBild", widget: "image"}
+          
+          # --- Über mich ---
+          - {label: "Biografie Titel", name: "biografieTitel", widget: "string"}
           - {label: "Biografie Text", name: "biografieText", widget: "text"}
-          - {label: "Telefon", name: "kontakt", widget: "object", fields: [{label: "Nummer", name: "telefon", widget: "string"}, {label: "Email", name: "email", widget: "string"}]}
+          - {label: "Künstler Foto", name: "kuenstlerFoto", widget: "image"}
+          
+          # --- Kontakt ---
+          - label: "Kontakt Infos"
+            name: "kontakt"
+            widget: "object"
+            fields:
+              - {label: "Telefon", name: "telefon", widget: "string"}
+              - {label: "E-Mail", name: "email", widget: "string"}
+              - {label: "Chat Button Text", name: "chatText", widget: "string"}
+              - {label: "WhatsApp Link (https://wa.me/49...)", name: "chatLink", widget: "string", required: false}
+              - {label: "Instagram Link", name: "socialInsta", widget: "string", required: false}
+              - {label: "LinkedIn Link", name: "socialLink", widget: "string", required: false}
+
+          # --- Galerie ---
           - label: "Galerie"
             name: "galerieBilder"
             widget: "list"
             fields:
               - {label: "Titel", name: "titel", widget: "string"}
               - {label: "Beschreibung", name: "beschreibung", widget: "string"}
+              - {label: "Bild", name: "bild", widget: "image"}
+
+          # --- NEU: Blog / News ---
+          - label: "News & Ausstellungen"
+            name: "newsEintraege"
+            widget: "list"
+            required: false
+            fields:
+              - {label: "Überschrift", name: "headline", widget: "string"}
+              - {label: "Datum", name: "datum", widget: "string"}
+              - {label: "Kurztext", name: "text", widget: "text"}
               - {label: "Bild", name: "bild", widget: "image"}
