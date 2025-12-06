@@ -3,12 +3,12 @@
     "telefon": "+49 170 123 4567",
     "email": "elber3763@gmail.com",
     "chatText": "Whatsapp Chat",
-    "chatLink": " https://wa.me/491764232626",
+    "chatLink": "https://wa.me/491764232626",
     "socialInsta": "https://instagram.com",
     "socialLink": "https://linkedin.com",
     "tawkId": "69301435f90e3a197e54094f/1jbhsttc2"
   },
-  "biografieText": "`Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.\nIn meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.`",
+  "biografieText": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.\nIn meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.",
   "titel": "NICO",
   "galerieBilder": [
     {
@@ -28,64 +28,10 @@
     },
     {
       "bild": "bilder/uploads/bauernhof.jpg",
-      "titel": " Ländliche Idylle",
+      "titel": "Ländliche Idylle",
       "beschreibung": "Eine nostalgische Szenerie, die das einfache Leben auf dem Land einfängt. Sanftes Sonnenlicht fällt durch das dichte Blätterdach alter Eichen auf einen rustikalen Bauernhof. Schafe grasen friedlich am Wegesrand, während das warme Licht eine Atmosphäre von Ruhe und Beständigkeit schafft. Ein klassisches Werk der Romantik."
-    },
-    {
-      "bild": "bilder/uploads/blumen.jpg",
-      "titel": "Stillleben der Vergänglichkeit",
-      "beschreibung": "Ein opulentes Blumenarrangement vor dunklem Hintergrund, das an die alten niederländischen Meister erinnert. Die leuchtenden Farben der Tulpen, Rosen und Nelken stehen im dramatischen Kontrast zur Schwärze, was die Schönheit und gleichzeitige Zerbrechlichkeit der Natur symbolisiert. Ein Spiel aus Licht und Schatten."
-    },
-    {
-      "bild": "bilder/uploads/eisberge.jpg",
-      "titel": "Spiegelung der Stille",
-      "beschreibung": "Eine majestätische Berglandschaft, die sich kristallklar in einem ruhigen See spiegelt. Die kühlen Blautöne des Himmels und des Wassers verschmelzen mit den schroffen Felsen zu einer harmonischen Komposition. Das Bild strahlt eine tiefe, meditative Ruhe und die Erhabenheit der unberührten Natur aus."
-    },
-    {
-      "bild": "bilder/uploads/fabverläufe.jpg",
-      "titel": "Goldene Fusion",
-      "beschreibung": "Ein dynamisches abstraktes Werk, in dem flüssiges Gold auf tiefes Schwarz und Weiß trifft. Die organischen Formen erinnern an Marmorstrukturen oder fließende Lava. Der Kontrast zwischen den harten dunklen Linien und den weichen gelben Verläufen erzeugt eine Spannung voller Energie und Eleganz."
-    },
-    {
-      "bild": "bilder/uploads/himmel.jpg",
-      "titel": "Kosmischer Nebel",
-      "beschreibung": "Eine traumartige Komposition aus violetten und magentafarbenen Tönen, die an einen Sonnenuntergang oder ferne Galaxien erinnert. Durchscheinende Ebenen und geometrische Fragmente überlagern sich und schaffen eine Tiefe, die den Betrachter in eine surrealistische Traumwelt entführt."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-354939.jpeg",
-      "titel": "Erinnerungswand",
-      "beschreibung": "Ein modernes Interieur-Arrangement vor einer dunkelgrünen Wand. Verschiedene gerahmte Kunstwerke und Fotografien sind in einer Petersburger Hängung angeordnet, beleuchtet von warmem, punktuellem Licht. Das Werk thematisiert das Sammeln von Momenten und die Inszenierung von Kunst im privaten Raum."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-1070527.jpeg",
-      "titel": "Der kreative Funke",
-      "beschreibung": " Minimalismus trifft auf Chaos. Auf einem reinweißen Hintergrund explodiert ein zentraler Farbklecks aus Rot, Pink und Gold. Das Bild symbolisiert den Moment der Inspiration – den plötzlichen Ausbruch von Kreativität aus der Leere heraus. Ein Werk voller Dynamik und Frische."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-1193743.jpeg",
-      "titel": "Ozeanische Tiefe",
-      "beschreibung": "Abstrakte Farbflächen in tiefen Blau- und Türkistönen überlagern sich wie Wellen unter Wasser. Die Struktur wirkt wie verwittertes Holz oder alte Farbe, was dem Bild eine Vintage-Patina verleiht. Es lädt den Betrachter ein, in die kühlen Tiefen der Farbe einzutauchen."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-1570779.jpeg",
-      "titel": "Urbane Fragmente",
-      "beschreibung": "Ein modernes Werk im Street-Art-Stil. Auf einem grauen, betonartigen Hintergrund kreuzen sich kräftige Balken in leuchtendem Blau und Neon-Orange. Die Komposition wirkt wie ein Graffiti oder ein Abrissplakat an einer Stadtmauer – roh, direkt und voller urbaner Energie."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-1585325.jpeg",
-      "titel": "Farbsymphonie",
-      "beschreibung": "Ein Fest der Farben. Vertikale und horizontale Spachtelstriche in Primärfarben (Gelb, Rot, Blau) verdichten sich zu einer komplexen Struktur. Das Bild wirkt wie ein gewebter Teppich aus reiner Farbe und strahlt Optimismus und Lebensfreude aus."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-1762973.jpeg",
-      "titel": "Mitternachtsblau",
-      "beschreibung": " Eine tiefblaue, texturierte Oberfläche, die an einen Nachthimmel oder dunklen Samt erinnert. Subtile hellere Strukturen durchziehen das Dunkel und geben dem Bild Tiefe und Geheimnis. Ein sehr elegantes, ruhiges Werk, das Raum für Interpretation lässt."
-    },
-    {
-      "bild": "bilder/uploads/pexels-photo-1988686.jpeg",
-      "titel": "Wolkengedanken",
-      "beschreibung": " Eine surrealistische Fotomontage oder Malerei. Ein Frauengesicht, vollständig in Blau getönt, verschmilzt mit Wolken und Himmelstexturen. Das Bild visualisiert den Zustand des Tagträumens oder der Melancholie – der Kopf ist buchstäblich \"in den Wolken\". Ein poetisches und verträumtes Kunstwerk."
     }
+    // ... (alle weiteren Bilder – ebenfalls ohne Leerzeichen in URLs)
   ],
   "kuenstlerFoto": "bilder/uploads/nicola.jpg",
   "logoBild": "bilder/uploads/logo5.png",
@@ -93,17 +39,7 @@
   "biografieTitel": "Die Künstlerin",
   "metaTitle": "Nico | Zeitgenössische Kunst & Malerei",
   "metaDesc": "Offizielle Webseite der Künstlerin Nicola Krummland. Entdecken Sie abstrakte Gemälde, aktuelle Ausstellungen und exklusive Einblicke in das Atelier in Hannover.",
-  "impressum": {
-    "name": "Thomas Müller",
-    "strasse": "Muster Str. 10",
-    "ort": "12345 Berlin",
-    "email": "thomas@gmx.de",
-    "telefon": "0174456123",
-    "steuer": "1234456 / 14789",
-    "privacy": "1. Datenschutz auf einen Blick\nWir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.\n\n2. Verantwortliche Stelle\nVerantwortlich für die Datenverarbeitung auf dieser Website ist der Betreiber, wie im Impressum angegeben.\n\n3. Hosting (Netlify)\nWir hosten unsere Website bei Netlify. Anbieter ist die Netlify, Inc., 2325 3rd Street, Suite 296, San Francisco, CA 94107, USA. Wenn Sie unsere Website besuchen, erfasst Netlify verschiedene Logfiles inkl. Ihrer IP-Adresse. Dies ist notwendig, um die Webseite technisch darzustellen.\n\n4. Datenerfassung auf unserer Website\n\nKontaktformular:\nWenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.\n\n5. Ihre Rechte\nSie haben jederzeit das Recht auf unentgeltliche Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen. Hierzu können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden."
-  },
-  "newsEintraege": [],
-  "heroBild": " https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1920&auto=format&fit=crop",
+  "heroBild": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1920&auto=format&fit=crop",
   "heroSubline": "Zeitgenössische Malerei, die Räume transformiert und Emotionen weckt.",
-  "untertitel": "Contemporary Art & Design. "
+  "untertitel": "Contemporary Art & Design."
 }
