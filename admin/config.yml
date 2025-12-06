@@ -20,6 +20,7 @@ collections:
           
           # --- Header ---
           - {label: "Künstler Name (Logo)", name: "titel", widget: "string"}
+          - {label: "Logo Bild", name: "logoBild", widget: "image", required: false, hint: "Optional. Ersetzt den Text-Titel. Max Höhe 64px."}
           - {label: "Untertitel", name: "untertitel", widget: "string"}
           
           # --- Hero ---
@@ -63,3 +64,18 @@ collections:
               - {label: "Datum", name: "datum", widget: "string"}
               - {label: "Kurztext", name: "text", widget: "text"}
               - {label: "Bild", name: "bild", widget: "image"}
+
+          # --- Rechtliches (Impressum & Datenschutz) ---
+          - label: "Rechtliches & Impressum"
+            name: "impressum"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Firmenname / Inhaber", name: "name", widget: "string"}
+              - {label: "Straße & Hausnummer", name: "strasse", widget: "string"}
+              - {label: "PLZ & Ort", name: "ort", widget: "string"}
+              - {label: "Telefon (Impressum)", name: "telefon", widget: "string"}
+              - {label: "E-Mail (Impressum)", name: "email", widget: "string"}
+              - {label: "USt-ID / Steuernummer", name: "steuer", widget: "string", required: false}
+              - {label: "Haftungsausschluss (Disclaimer)", name: "disclaimer", widget: "markdown", required: false}
+              - {label: "Datenschutzerklärung", name: "privacy", widget: "markdown", required: false}
