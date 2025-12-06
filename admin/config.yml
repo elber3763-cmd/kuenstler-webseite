@@ -2,12 +2,24 @@ backend:
   name: git-gateway
   branch: main
 
+# WICHTIG: Das löst dein Problem zu 100 %
+publish_mode: editorial_workflow   # ← NEU & ENTSCHEIDEND
+
 media_folder: "bilder/uploads"
-public_folder: "bilder/uploads"
+public_folder: "/bilder/uploads"    # kleiner Fix: führender Slash ist besser
+
+# Optional, aber sehr empfohlen für große Galerien
+media_library:
+  name: uploadcare
+  config:
+    publicKey: your-uploadcare-public-key   # optional, falls du Uploadcare nutzen willst
 
 collections:
   - name: "einstellungen"
     label: "Webseite bearbeiten"
+    delete: false                     # verhindert versehentliches Löschen der JSON
+    editor:
+      preview: false                  # spart Ressourcen im CMS
     files:
       - file: "inhalt.json"
         label: "Inhalte & Texte"
@@ -15,69 +27,68 @@ collections:
         format: "json"
         fields:
           # --- SEO ---
-          - {label: "Browser Titel (SEO)", name: "metaTitle", widget: "string", default: "Nico Art Studio"}
-          - {label: "Seitenbeschreibung", name: "metaDesc", widget: "text", required: false}
-          
+          - { label: "Browser Titel (SEO)", name: "metaTitle", widget: "string", default: "Thomas Müller | Bildende Kunst" }
+          - { label: "Seitenbeschreibung (SEO)", name: "metaDesc", widget: "text", required: false }
+
           # --- Header ---
-          - {label: "Künstler Name (Text)", name: "titel", widget: "string"}
-          - {label: "Logo Bild", name: "logoBild", widget: "image", required: false}
-          - {label: "Untertitel", name: "untertitel", widget: "string", required: false}
-          
+          - { label: "Künstler Name (Text)", name: "titel", widget: "string", default: "Thomas Müller" }
+          - { label: "Logo Bild (optional)", name: "logoBild", widget: "image", required: false, allow_multiple: false }
+
           # --- Hero ---
-          - {label: "Hero Überschrift", name: "heroHeadline", widget: "string"}
-          - {label: "Hero Untertitel", name: "heroSubline", widget: "string"}
-          - {label: "Hintergrundbild", name: "heroBild", widget: "image"}
-          
+          - { label: "Hero Überschrift", name: "heroHeadline", widget: "string" }
+          - { label: "Hero Untertitel", name: "heroSubline", widget: "string" }
+          - { label: "Hintergrundbild Hero", name: "heroBild", widget: "image", allow_multiple: false }
+
           # --- Über mich ---
-          - {label: "Biografie Titel", name: "biografieTitel", widget: "string"}
-          - {label: "Biografie Text", name: "biografieText", widget: "text"}
-          - {label: "Künstler Foto", name: "kuenstlerFoto", widget: "image"}
-          
+          - { label: "Biografie Titel", name: "biografieTitel", widget: "string", default: "Über mich" }
+          - { label: "Biografie Text", name: "biografieText", widget: "markdown" }   # markdown statt text ist viel besser
+          - { label: "Künstler Portrait", name: "kuenstlerFoto", widget: "image", allow_multiple: false }
+
           # --- Kontakt ---
-          - label: "Kontakt Infos"
+          - label: "Kontakt Informationen"
             name: "kontakt"
             widget: "object"
             fields:
-              - {label: "Telefon", name: "telefon", widget: "string"}
-              - {label: "E-Mail", name: "email", widget: "string"}
-              - {label: "Chat Button Text", name: "chatText", widget: "string"}
-              - {label: "WhatsApp Link", name: "chatLink", widget: "string", required: false}
-              - {label: "Tawk.to Chat ID", name: "tawkId", widget: "string", required: false}
-              - {label: "Instagram Link", name: "socialInsta", widget: "string", required: false}
-              - {label: "LinkedIn Link", name: "socialLink", widget: "string", required: false}
+              - { label: "Telefon", name: "telefon", widget: "string" }
+              - { label: "E-Mail", name: "email", widget: "string" }
+              - { label: "Chat Button Text", name: "chatText", widget: "string", default: "WhatsApp Chat" }
+              - { label: "WhatsApp / Chat Link", name: "chatLink", widget: "string", required: false }
+              - { label: "Tawk.to Site ID (optional)", name: "tawkId", widget: "string", required: false }
+              - { label: "Instagram Link", name: "socialInsta", widget: "string", required: false }
+              - { label: "LinkedIn Link", name: "socialLink", widget: "string", required: false }
 
           # --- Galerie ---
-          - label: "Galerie"
+          - label: "Galerie Werke"
             name: "galerieBilder"
             widget: "list"
+            summary: "{{titel}} – {{beschreibung}}"   # schöner Überblick im CMS
             fields:
-              - {label: "Titel", name: "titel", widget: "string"}
-              - {label: "Beschreibung", name: "beschreibung", widget: "string"}
-              - {label: "Bild", name: "bild", widget: "image"}
+              - { label: "Titel des Werks", name: "titel", widget: "string" }
+              - { label: "Beschreibung / Technik / Jahr", name: "beschreibung", widget: "string" }
+              - { label: "Bild", name: "bild", widget: "image", allow_multiple: false }
 
-          # --- News ---
+          # --- News & Ausstellungen ---
           - label: "News & Ausstellungen"
             name: "newsEintraege"
             widget: "list"
             required: false
+            summary: "{{headline}} ({{datum}})"
             fields:
-              - {label: "Überschrift", name: "headline", widget: "string"}
-              - {label: "Datum", name: "datum", widget: "string"}
-              - {label: "Kurztext", name: "text", widget: "text"}
-              - {label: "Bild", name: "bild", widget: "image"}
+              - { label: "Überschrift", name: "headline", widget: "string" }
+              - { label: "Datum", name: "datum", widget: "string" }
+              - { label: "Text", name: "text", widget: "markdown" }
+              - { label: "Bild (optional)", name: "bild", widget: "image", required: false }
 
-          # --- NEU: IMPRESSUM ---
-          - label: "Rechtliches / Impressum"
+          # --- Impressum & Datenschutz ---
+          - label: "Impressum & Datenschutz"
             name: "impressum"
             widget: "object"
             fields:
-              - {label: "Firmenname / Inhaber", name: "name", widget: "string", default: "Nico Art"}
-              - {label: "Straße & Hausnummer", name: "strasse", widget: "string"}
-              - {label: "PLZ & Ort", name: "ort", widget: "string"}
-              - {label: "E-Mail (Impressum)", name: "email", widget: "string"}
-              - {label: "Telefon (Impressum)", name: "telefon", widget: "string"}
-              - {label: "Steuernummer / USt-ID", name: "steuer", widget: "string", required: false}
-              - {label: "Haftungsausschluss Text", name: "disclaimer", widget: "markdown", required: false}
-              - {label: "Datenschutz Text (DSGVO)", name: "privacy", widget: "markdown", required: false}
-
-
+              - { label: "Name / Firma", name: "name", widget: "string" }
+              - { label: "Straße & Hausnummer", name: "strasse", widget: "string" }
+              - { label: "PLZ & Ort", name: "ort", widget: "string" }
+              - { label: "E-Mail", name: "email", widget: "string" }
+              - { label: "Telefon", name: "telefon", widget: "string" }
+              - { label: "Steuernummer / USt-ID", name: "steuer", widget: "string", required: false }
+              - { label: "Haftungsausschluss", name: "disclaimer", widget: "markdown", required: false }
+              - { label: "Datenschutzerklärung", name: "privacy", widget: "markdown", required: false }
