@@ -1,49 +1,28 @@
 backend:
   name: git-gateway
-  branch: main # Achte darauf, dass dein Branch auf GitHub 'main' heißt (im Bild ist es so)
+  branch: main
 
-media_folder: "bilder/uploads" # Hier landen neue Bilder, die du hochlädst
+media_folder: "bilder/uploads"
 public_folder: "/bilder/uploads"
 
 collections:
   - name: "pages"
     label: "Seiteninhalte"
     files:
-      - label: "Startseite & Inhalte"
+      - label: "Startseite"
         name: "home"
-        file: "inhalt.json" # Hier werden die Daten gespeichert
+        file: "inhalt.json"
         fields:
-          - {label: "Webseite Titel (Tab & Footer)", name: "titel", widget: "string"}
-          
-          - label: "Hero Bereich (Startbildschirm)"
-            name: "hero"
-            widget: "object"
-            fields:
-              - {label: "Überschrift (Groß)", name: "heroHeadline", widget: "string"}
-              - {label: "Unterüberschrift", name: "heroSubline", widget: "string"}
-              - {label: "Hintergrundbild", name: "heroBild", widget: "image"}
-
-          - label: "Über Mich"
-            name: "biografie"
-            widget: "object"
-            fields:
-              - {label: "Titel", name: "biografieTitel", widget: "string"}
-              - {label: "Text", name: "biografieText", widget: "text"}
-              - {label: "Künstler Foto", name: "kuenstlerFoto", widget: "image"}
-
-          - label: "Kontakt Daten"
-            name: "kontakt"
-            widget: "object"
-            fields:
-              - {label: "Telefon", name: "telefon", widget: "string"}
-              - {label: "E-Mail", name: "email", widget: "string"}
-              - {label: "WhatsApp Text", name: "chatText", widget: "string", required: false}
-              - {label: "WhatsApp Link", name: "chatLink", widget: "string", required: false}
-
-          - label: "Galerie Bilder"
+          - {label: "Titel", name: "titel", widget: "string"}
+          - {label: "Hero Überschrift", name: "heroHeadline", widget: "string"}
+          - {label: "Hero Text", name: "heroSubline", widget: "string"}
+          - {label: "Hero Bild", name: "heroBild", widget: "image"}
+          - {label: "Biografie Text", name: "biografieText", widget: "text"}
+          - {label: "Telefon", name: "kontakt", widget: "object", fields: [{label: "Nummer", name: "telefon", widget: "string"}, {label: "Email", name: "email", widget: "string"}]}
+          - label: "Galerie"
             name: "galerieBilder"
             widget: "list"
             fields:
-              - {label: "Bild Titel", name: "titel", widget: "string"}
-              - {label: "Beschreibung/Technik", name: "beschreibung", widget: "string"}
-              - {label: "Bild Datei", name: "bild", widget: "image"}
+              - {label: "Titel", name: "titel", widget: "string"}
+              - {label: "Beschreibung", name: "beschreibung", widget: "string"}
+              - {label: "Bild", name: "bild", widget: "image"}
