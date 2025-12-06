@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Thomas Müller | Bildende Kunst</title>
-    <meta name="description" content="Offizielle Website des Künstlers Thomas Müller - Bildende Kunst, Galerie und Kontakt">
+    <title id="page-title">Nico | Zeitgenössische Kunst & Malerei</title>
+    <meta name="description" content="Offizielle Website der Künstlerin Nicola Krummland. Entdecken Sie abstrakte Gemälde, aktuelle Ausstellungen und exklusive Einblicke in das Atelier in Hannover.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +42,7 @@
         <div class="container mx-auto px-6 h-full flex justify-between items-center relative">
             <a href="#hero" class="block group absolute top-0 left-6 z-50 h-full flex items-start pt-2">
                 <img id="logo-img" src="" alt="Logo" class="h-20 md:h-48 w-auto object-contain hidden transition-transform duration-300 group-hover:scale-105 drop-shadow-2xl filter brightness-110 contrast-125">
-                <div id="logo-text" class="font-serif text-3xl font-bold text-white tracking-[0.2em] cursor-pointer hover:text-primary transition-colors duration-300 mt-4">THOMAS MÜLLER</div>
+                <div id="logo-text" class="font-serif text-3xl font-bold text-white tracking-[0.2em] cursor-pointer hover:text-primary transition-colors duration-300 mt-4">NICO</div>
             </a>
             <nav class="hidden md:block ml-auto">
                 <ul class="flex space-x-10 items-center h-full">
@@ -171,7 +171,7 @@
     <footer class="bg-black py-10 border-t border-white/10">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-gray-500 text-sm text-center md:text-left">
-                <p class="mb-2">&copy; 2025 <span id="footer-name">Thomas Müller</span>. Alle Rechte vorbehalten.</p>
+                <p class="mb-2">&copy; 2025 <span id="footer-name">Nico</span>. Alle Rechte vorbehalten.</p>
                 <div class="flex gap-4 justify-center md:justify-start">
                     <a href="impressum.html" class="hover:text-primary transition underline decoration-gray-700 hover:decoration-primary">Impressum</a>
                     <span class="text-gray-700">|</span>
@@ -216,20 +216,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
-<!-- Nur das Widget laden, KEINE automatische Weiterleitung -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
+    <!-- ❌ Kein Identity-Widget mehr! -->
 </body>
 </html>
-
