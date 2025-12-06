@@ -1,6 +1,4 @@
 {
-  "titel": "Thomas Müller",
-  "logoBild": "/bilder/uploads/logo.png", 
   "kontakt": {
     "telefon": " ",
     "email": " ",
@@ -10,10 +8,18 @@
   "titel": " ",
   "galerieBilder": [],
   "kuenstlerFoto": "bilder/uploads/nicola.jpg",
+  "logoBild": "bilder/uploads/logo5.png",
   "heroHeadline": " ",
   "biografieTitel": "Nico",
   "metaTitle": ".",
   "metaDesc": ".",
+  "impressum": {
+    "name": ".",
+    "strasse": ".",
+    "ort": ".",
+    "telefon": ".",
+    "email": "."
+  },
   "heroBild": "/bilder/uploads/bauernhof.jpg",
   "heroSubline": " ",
   "untertitel": "-."
