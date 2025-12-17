@@ -223,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.galleryImages.length > 0) {
             console.log(`📸 ${window.galleryImages.length} Galerie-Bilder gefunden`);
             startGalleryCenterShow(window.galleryImages);
+            initAutoZoomGallery(); // AUTOMATISCHER ZOOM-SEQUENZ START
         } else {
             console.warn('⚠️ Keine Galerie-Bilder in JSON gefunden');
         }
@@ -397,6 +398,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 transform: translateY(0);
             }
         }
+
+        /* AUTO-ZOOM-GALERIE – NEU HINZUGEFÜGT */
+        .gallery-zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0;
+        }
+
+        .gallery-zoom-overlay img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: 
+                transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.3s ease;
+        }
+
+        .gallery-zoom-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .gallery-zoom-overlay.active img {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
     `;
     document.head.appendChild(style);
 
@@ -473,5 +513,61 @@ document.addEventListener('DOMContentLoaded', () => {
             const total = baseCount + Math.floor((now - start) / 3600000) + localHits;
             totalEl.innerText = total.toLocaleString('de-DE');
         }
+    }
+
+    // ============================================================
+    // AUTO-ZOOM SEQUENZ FÜR GALERIE – NEU HINZUGEFÜGT
+    // ============================================================
+    function startAutoZoomSequence(galleryItems, index = 0) {
+        // Respektiert "reduced motion" – Fallback auf statische Galerie
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+
+        if (index >= galleryItems.length) {
+            return; // Sequenz beendet
+        }
+
+        const item = galleryItems[index];
+        const imgSrc = item.dataset.img;
+        const title = item.dataset.title || '';
+
+        let overlay = document.getElementById('gallery-zoom-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'gallery-zoom-overlay';
+            overlay.className = 'gallery-zoom-overlay';
+            overlay.innerHTML = `<img src="" alt="${title}" />`;
+            document.body.appendChild(overlay);
+        }
+
+        const overlayImg = overlay.querySelector('img');
+        overlayImg.src = imgSrc;
+        overlayImg.alt = title;
+
+        // Zoom-In
+        overlay.classList.add('active');
+
+        const pauseDuration = 2000; // 2 Sekunden Pause bei vollem Zoom
+        const zoomOutDelay = 800;  // Dauer der Zoom-Out-Animation
+
+        setTimeout(() => {
+            // Zoom-Out
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                // Nächster Schritt in der Sequenz
+                startAutoZoomSequence(galleryItems, index + 1);
+            }, zoomOutDelay);
+        }, pauseDuration);
+    }
+
+    function initAutoZoomGallery() {
+        const galleryTriggers = Array.from(document.querySelectorAll('.gallery-trigger'));
+        if (galleryTriggers.length === 0) return;
+
+        // Startet 2 Sekunden nach Galerie-Rendering
+        setTimeout(() => {
+            startAutoZoomSequence(galleryTriggers);
+        }, 2000);
     }
 });
