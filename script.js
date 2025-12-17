@@ -220,13 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         window.galleryImages = data.galerieBilder || [];
         
-        if (window.galleryImages.length > 0) {
-            console.log(`📸 ${window.galleryImages.length} Galerie-Bilder gefunden`);
-            startGalleryCenterShow(window.galleryImages);
-            initAutoZoomGallery(); // GRUPPENBASIERTER AUTO-ZOOM
-        } else {
-            console.warn('⚠️ Keine Galerie-Bilder in JSON gefunden');
-        }
+        // ⚠️ Galerie wird NICHT automatisch gerendert – erst bei Button-Klick!
+        // Kein Aufruf von startGalleryCenterShow oder initAutoZoomGallery hier!
 
         setText('about-title', data.biografieTitel);
         setImg('about-img', data.kuenstlerFoto);
@@ -303,10 +298,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        if (viewCollectionBtn) {
+        if (viewCollectionBtn && gallerySection) {
             viewCollectionBtn.addEventListener('click', () => {
                 if(header) header.classList.remove('opacity-0', 'pointer-events-none');
-                if(gallerySection) gallerySection.scrollIntoView({ behavior: 'smooth' });
+                gallerySection.scrollIntoView({ behavior: 'smooth' });
+
+                // 🔑 NEU: Galerie erst beim Klick rendern und starten
+                if (window.galleryImages && window.galleryImages.length > 0 && !window.galleryRendered) {
+                    window.galleryRendered = true;
+                    renderAndStartGroupedGallery(window.galleryImages, gallerySection);
+                }
             });
         }
 
@@ -327,190 +328,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function startGalleryCenterShow(allImages) {
-        if (!allImages || allImages.length === 0) {
-            console.warn('⚠️ Keine Bilder für Galerie vorhanden');
-            return;
-        }
-
+    // ============================================================
+    // NEUE FUNKTION: RENDER UND START DER GRUPPIERTEN GALERIE
+    // ============================================================
+    function renderAndStartGroupedGallery(allImages, gallerySection) {
         const stage = document.getElementById('gallery-stage');
-        if(!stage) {
-            console.error('❌ Gallery-Stage Element nicht gefunden');
-            return;
-        }
+        if (!stage) return;
 
-        if(stage.dataset.rendered === 'true') {
-            console.log('ℹ️ Galerie bereits gerendert');
-            return;
-        }
-        stage.dataset.rendered = 'true';
+        // Galerie leeren (sicherheitshalber)
+        stage.innerHTML = '';
 
-        console.log(`📸 Galerie wird geladen mit ${allImages.length} Bildern`);
-
-        stage.innerHTML = "";
-        
+        // Alle Bilder als .gallery-item rendern (NICHT .gallery-trigger – keine Modal-Logik!)
         allImages.forEach((werk, index) => {
             const el = document.createElement('div');
-            el.className = "gallery-trigger relative w-full md:w-1/3 h-64 md:h-80 rounded-lg cursor-pointer overflow-hidden group";
-            el.dataset.img = werk.bild;
-            el.dataset.title = werk.titel;
-            el.dataset.desc = werk.beschreibung;
+            el.className = 'gallery-item relative w-full md:w-1/3 h-64 md:h-80 rounded-lg overflow-hidden opacity-0';
+            el.style.display = 'none'; // zunächst vollständig ausgeblendet
+            el.dataset.index = index;
             
             el.innerHTML = `
                 <img src="${werk.bild}" 
                      alt="${werk.titel || 'Galerie Bild'}" 
-                     class="w-full h-full object-cover rounded-lg shadow-xl transition-transform duration-500 group-hover:scale-110">
+                     class="w-full h-full object-cover rounded-lg shadow-xl">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                     <h3 class="text-white font-serif text-lg">${werk.titel}</h3>
                 </div>
             `;
             
             stage.appendChild(el);
-
-            if (typeof gsap !== 'undefined') {
-                gsap.from(el, {
-                    opacity: 0,
-                    y: 50,
-                    duration: 0.8,
-                    delay: index * 0.15,
-                    ease: "power2.out"
-                });
-            } else {
-                el.style.animation = `fadeInUp 0.8s ease-out ${index * 0.15}s forwards`;
-                el.style.opacity = '0';
-            }
         });
 
-        initGalleryModal();
-        
-        console.log('✅ Galerie erfolgreich gerendert');
+        // Galerie sichtbar machen (wenn sie versteckt war)
+        gallerySection.style.display = 'block';
+
+        // Start der Gruppen-Sequenz
+        startGroupedSequence(Array.from(stage.children));
     }
 
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
+    // ============================================================
+    // GRUPPEN-SEQUENZ: JE 3 BILDER, ENDLOSSCHLEIFE
+    // ============================================================
+    function startGroupedSequence(galleryItems) {
+        if (galleryItems.length === 0) return;
+
+        const groupSize = 3;
+        let currentGroupIndex = 0;
+
+        function showGroup(groupIndex) {
+            // Alle ausblenden
+            galleryItems.forEach(item => {
+                item.style.display = 'none';
+                item.style.opacity = '0';
+            });
+
+            const startIndex = groupIndex * groupSize;
+            const endIndex = Math.min(startIndex + groupSize, galleryItems.length);
+
+            // Aktuelle Gruppe einblenden
+            for (let i = startIndex; i < endIndex; i++) {
+                const item = galleryItems[i];
+                item.style.display = 'block';
+                // Optional: Fade-In
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transition = 'opacity 0.5s ease';
+                }, 10);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+            // Nächste Gruppe nach Pause
+            const pauseDuration = 3000; // 3 Sekunden
+            setTimeout(() => {
+                currentGroupIndex = (currentGroupIndex + 1) % Math.ceil(galleryItems.length / groupSize);
+                showGroup(currentGroupIndex);
+            }, pauseDuration);
         }
 
-        /* GRUPPEN-ZOOM OVERLAY – NEU */
-        .gallery-zoom-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 10000;
-            opacity: 0;
-        }
-
-        .gallery-zoom-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .gallery-zoom-overlay .zoom-group {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            align-items: center;
-            width: fit-content;
-            max-width: 90vw;
-            height: fit-content;
-        }
-
-        .gallery-zoom-overlay .zoom-group img {
-            max-height: 80vh;
-            max-width: 30vw;
-            height: auto;
-            width: auto;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-            opacity: 0;
-            transform: scale(0.8);
-            transition: 
-                transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
-                opacity 0.5s ease;
-        }
-
-        .gallery-zoom-overlay.active .zoom-group img {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* RESPONSIVE ANPASSUNG */
-        @media (max-width: 768px) {
-            .gallery-zoom-overlay .zoom-group {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .gallery-zoom-overlay .zoom-group img {
-                max-width: 80vw;
-                max-height: 30vh;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-
-    function initGalleryModal() {
-        const triggers = document.querySelectorAll('.gallery-trigger');
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImg');
-        const caption = document.getElementById('caption');
-        const description = document.getElementById('modalDescription');
-        const closeBtn = document.querySelector('.close');
-
-        if(!modal) {
-            console.warn('⚠️ Image Modal nicht gefunden');
-            return;
-        }
-
-        triggers.forEach(trigger => {
-            trigger.onclick = () => {
-                const src = trigger.dataset.img;
-                const title = trigger.dataset.title;
-                const desc = trigger.dataset.desc;
-                
-                if(modalImg) modalImg.src = src;
-                if(caption) caption.innerText = title;
-                if(description) description.innerText = desc || "";
-                
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                setTimeout(() => modal.classList.remove('opacity-0'), 10);
-            };
-        });
-
-        const close = () => {
-            modal.classList.add('opacity-0');
-            setTimeout(() => { 
-                modal.classList.remove('flex'); 
-                modal.classList.add('hidden'); 
-            }, 300);
-        };
-
-        if(closeBtn) closeBtn.onclick = close;
-        modal.onclick = (e) => { 
-            if(e.target === modal) close(); 
-        };
-        
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                close();
-            }
-        });
+        // Start mit erster Gruppe
+        showGroup(0);
     }
 
     function initVisitorStats() {
@@ -539,63 +432,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ============================================================
-    // GRUPPENBASIERTE AUTO-ZOOM SEQUENZ (JE 3 BILDER) – MIT ENDLOSSCHLEIFE
-    // ============================================================
-    function startAutoZoomSequence(galleryItems, groupIndex = 0) {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-        }
-
-        const groupSize = 3;
-        const totalGroups = Math.ceil(galleryItems.length / groupSize);
-        if (totalGroups === 0) return;
-
-        const safeGroupIndex = groupIndex % totalGroups;
-        const startIndex = safeGroupIndex * groupSize;
-        const group = galleryItems.slice(startIndex, startIndex + groupSize);
-
-        let overlay = document.getElementById('gallery-zoom-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'gallery-zoom-overlay';
-            overlay.className = 'gallery-zoom-overlay';
-            overlay.innerHTML = `<div class="zoom-group"></div>`;
-            document.body.appendChild(overlay);
-        }
-
-        const zoomGroup = overlay.querySelector('.zoom-group');
-        zoomGroup.innerHTML = '';
-
-        group.forEach(item => {
-            const img = document.createElement('img');
-            img.src = item.dataset.img;
-            img.alt = item.dataset.title || 'Galerie Bild';
-            zoomGroup.appendChild(img);
-        });
-
-        // Zoom-In
-        overlay.classList.add('active');
-
-        const pauseDuration = 2500; // 2.5 Sekunden Pause
-        const zoomOutDelay = 800;
-
-        setTimeout(() => {
-            // Zoom-Out
-            overlay.classList.remove('active');
-            setTimeout(() => {
-                // Nächste Gruppe in Endlosschleife
-                startAutoZoomSequence(galleryItems, groupIndex + 1);
-            }, zoomOutDelay);
-        }, pauseDuration);
-    }
-
-    function initAutoZoomGallery() {
-        const galleryTriggers = Array.from(document.querySelectorAll('.gallery-trigger'));
-        if (galleryTriggers.length === 0) return;
-
-        setTimeout(() => {
-            startAutoZoomSequence(galleryTriggers, 0);
-        }, 2000);
-    }
+    // ⚠️ initGalleryModal wird NICHT aufgerufen – keine Modals für diese Ansicht
+    // (da nur Gruppenanzeige gewünscht, kein Klickverhalten)
 });
