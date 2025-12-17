@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 1. INTRO LOGIK - KOMPLETT DEAKTIVIERT
+    // 1. INTRO LOGIK - KOMPLETT DEAKTIVIERT (DIRECT LOAD)
     // ============================================================
     const introLayer = document.getElementById('intro-layer');
     
@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return; 
     }
 
+    // Intro sofort überspringen
     console.log('🚀 Intro wird übersprungen - Direct Load');
     hideIntroImmediately();
     loadData();
@@ -218,10 +219,14 @@ document.addEventListener('DOMContentLoaded', () => {
         setText('hero-subline', data.heroSubline);
         setText('gallery-headline', data.galleryHeadline || "Die Kollektion");
         
+        // Globale Variable setzen
         window.galleryImages = data.galerieBilder || [];
         
-        // ⚠️ Galerie wird NICHT automatisch gerendert – erst bei Button-Klick!
-        // Kein Aufruf von startGalleryCenterShow oder initAutoZoomGallery hier!
+        // 🛠️ FIX: Galerie SOFORT anzeigen, sobald Daten da sind!
+        if (window.galleryImages.length > 0) {
+            const gallerySection = document.getElementById('galerie');
+            renderThreeImageGallery(window.galleryImages, gallerySection);
+        }
 
         setText('about-title', data.biografieTitel);
         setImg('about-img', data.kuenstlerFoto);
@@ -302,8 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             viewCollectionBtn.addEventListener('click', () => {
                 if(header) header.classList.remove('opacity-0', 'pointer-events-none');
                 gallerySection.scrollIntoView({ behavior: 'smooth' });
-
-                // 🔑 NEU: Galerie rendern – ohne Flag, immer wiederholbar
+                // Auch beim Klick sicherstellen, dass gerendert wird (doppelt hält besser)
                 renderThreeImageGallery(window.galleryImages, gallerySection);
             });
         }
@@ -326,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // NEUE FUNKTION: RENDER DER DREIER-GALERIE WIE IM BILD – MIT FIX FÜR RELATIVE PFADE
+    // RENDER DER DREIER-GALERIE
     // ============================================================
     function renderThreeImageGallery(allImages, gallerySection) {
         const stage = document.getElementById('gallery-stage');
@@ -335,10 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Leere den Container sicher
+        // Container leeren (verhindert Dopplungen)
         stage.innerHTML = '';
 
-        // Prüfe, ob Bilder vorhanden sind
         if (!allImages || allImages.length === 0) {
             console.warn('⚠️ Keine Galerie-Bilder zum Anzeigen');
             stage.innerHTML = '<p class="text-center text-white py-8">Keine Werke verfügbar.</p>';
@@ -348,87 +351,62 @@ document.addEventListener('DOMContentLoaded', () => {
         // Nur die ersten 3 Bilder verwenden
         const imagesToShow = allImages.slice(0, 3);
 
-        // CSS für die visuelle Anordnung – direkt eingefügt
-        const style = document.createElement('style');
-        style.textContent = `
-            .gallery-three-layout {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 12px;
-                position: relative;
-                width: 100%;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-
-            .gallery-three-item {
-                position: relative;
-                transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
-                border-radius: 8px;
-                overflow: hidden;
-                box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-                display: block;
-                opacity: 1;
-            }
-
-            .gallery-three-item.left {
-                transform: translateX(-80px) scale(0.85);
-                z-index: 1;
-            }
-
-            .gallery-three-item.center {
-                transform: scale(1);
-                z-index: 3;
-                box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-            }
-
-            .gallery-three-item.right {
-                transform: translateX(80px) scale(0.85);
-                z-index: 1;
-            }
-
-            .gallery-three-item img {
-                width: 100%;
-                height: auto;
-                object-fit: cover;
-                display: block;
-                opacity: 1;
-            }
-
-            @media (max-width: 768px) {
+        // Styles injizieren (verhindert FOUC - Flash of Unstyled Content)
+        if (!document.getElementById('gallery-styles')) {
+            const style = document.createElement('style');
+            style.id = 'gallery-styles';
+            style.textContent = `
                 .gallery-three-layout {
-                    flex-direction: column;
-                    gap: 16px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 12px;
+                    position: relative;
+                    width: 100%;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    opacity: 0;
+                    transition: opacity 1s ease;
                 }
                 .gallery-three-item {
-                    transform: scale(1) !important;
-                    width: 100% !important;
-                    max-width: none !important;
+                    position: relative;
+                    transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+                    display: block;
                 }
-                .gallery-three-item.left,
-                .gallery-three-item.right {
-                    transform: scale(0.95) !important;
+                .gallery-three-item.left { transform: translateX(-40px) scale(0.85); z-index: 1; }
+                .gallery-three-item.center { transform: scale(1); z-index: 3; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+                .gallery-three-item.right { transform: translateX(40px) scale(0.85); z-index: 1; }
+                
+                .gallery-three-item img {
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                    display: block;
                 }
-            }
-        `;
-        document.head.appendChild(style);
 
-        // Erstelle das Layout
+                @media (max-width: 768px) {
+                    .gallery-three-layout { flex-direction: column; gap: 16px; }
+                    .gallery-three-item.left, .gallery-three-item.right { transform: scale(0.95) !important; }
+                    .gallery-three-item.center { transform: scale(1) !important; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Layout erstellen
         const layout = document.createElement('div');
         layout.className = 'gallery-three-layout';
 
         imagesToShow.forEach((werk, index) => {
-            // Sicherheitsprüfung: Bild-URL vorhanden?
-            if (!werk.bild || werk.bild.trim() === '') {
-                console.warn(`⚠️ Bild ${index + 1} hat keine gültige URL.`);
-                return;
-            }
+            if (!werk.bild) return;
 
-            // ✅ Garantierte relative URL – falls nicht bereits mit / beginnend
+            // Pfad korrigieren (Sicherheitshalber)
             let imgUrl = werk.bild;
-            if (!imgUrl.startsWith('/')) {
+            if (!imgUrl.startsWith('/') && !imgUrl.startsWith('http')) {
                 imgUrl = '/' + imgUrl;
             }
 
@@ -441,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.innerHTML = `
                 <img src="${imgUrl}" 
                      alt="${werk.titel || 'Galerie Bild'}" 
-                     onerror="this.style.display='none'; this.parentNode.style.display='none'; console.error('❌ Bild konnte nicht geladen werden: ${imgUrl}')">
+                     onerror="this.style.display='none'; console.error('Bildfehler:', '${imgUrl}')">
             `;
 
             layout.appendChild(item);
@@ -449,30 +427,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         stage.appendChild(layout);
 
-        // Visuelles Einblenden – falls nötig
+        // Einblenden
         setTimeout(() => {
             layout.style.opacity = '1';
-            layout.style.transition = 'opacity 0.8s ease';
-        }, 10);
+        }, 50);
 
-        // Optional: Animation bei Hover (falls gewünscht)
+        // Hover Effekte
         const items = layout.querySelectorAll('.gallery-three-item');
         items.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 if (item.classList.contains('center')) return;
                 item.style.transform = item.classList.contains('left') 
-                    ? 'translateX(-100px) scale(0.9)' 
-                    : 'translateX(100px) scale(0.9)';
+                    ? 'translateX(-60px) scale(0.9)' 
+                    : 'translateX(60px) scale(0.9)';
+                item.style.zIndex = '10';
             });
             item.addEventListener('mouseleave', () => {
                 if (item.classList.contains('center')) return;
                 item.style.transform = item.classList.contains('left') 
-                    ? 'translateX(-80px) scale(0.85)' 
-                    : 'translateX(80px) scale(0.85)';
+                    ? 'translateX(-40px) scale(0.85)' 
+                    : 'translateX(40px) scale(0.85)';
+                item.style.zIndex = '1';
             });
         });
 
-        console.log(`✅ Galerie mit ${imagesToShow.length} Bildern erfolgreich gerendert.`);
+        console.log(`✅ Galerie gerendert (${imagesToShow.length} Bilder)`);
     }
 
     function initVisitorStats() {
@@ -500,6 +479,4 @@ document.addEventListener('DOMContentLoaded', () => {
             totalEl.innerText = total.toLocaleString('de-DE');
         }
     }
-
-    // ⚠️ initGalleryModal wird NICHT aufgerufen – keine Modals für diese Ansicht
 });
