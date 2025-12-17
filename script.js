@@ -303,10 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(header) header.classList.remove('opacity-0', 'pointer-events-none');
                 gallerySection.scrollIntoView({ behavior: 'smooth' });
 
-                // 🔑 NEU: Galerie erst beim Klick rendern und starten
+                // 🔑 NEU: Galerie erst beim Klick rendern – nur die ersten 3 Bilder
                 if (window.galleryImages && window.galleryImages.length > 0 && !window.galleryRendered) {
                     window.galleryRendered = true;
-                    renderAndStartGroupedGallery(window.galleryImages, gallerySection);
+                    renderThreeImageGallery(window.galleryImages, gallerySection);
                 }
             });
         }
@@ -329,81 +329,118 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // NEUE FUNKTION: RENDER UND START DER GRUPPIERTEN GALERIE
+    // NEUE FUNKTION: RENDER DER DREIER-GALERIE WIE IM BILD
     // ============================================================
-    function renderAndStartGroupedGallery(allImages, gallerySection) {
+    function renderThreeImageGallery(allImages, gallerySection) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
 
-        // Galerie leeren (sicherheitshalber)
+        // Leere den Container
         stage.innerHTML = '';
 
-        // Alle Bilder als .gallery-item rendern (NICHT .gallery-trigger – keine Modal-Logik!)
-        allImages.forEach((werk, index) => {
-            const el = document.createElement('div');
-            el.className = 'gallery-item relative w-full md:w-1/3 h-64 md:h-80 rounded-lg overflow-hidden opacity-0';
-            el.style.display = 'none'; // zunächst vollständig ausgeblendet
-            el.dataset.index = index;
-            
-            el.innerHTML = `
-                <img src="${werk.bild}" 
-                     alt="${werk.titel || 'Galerie Bild'}" 
-                     class="w-full h-full object-cover rounded-lg shadow-xl">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <h3 class="text-white font-serif text-lg">${werk.titel}</h3>
-                </div>
-            `;
-            
-            stage.appendChild(el);
-        });
+        // Nur die ersten 3 Bilder verwenden
+        const imagesToShow = allImages.slice(0, 3);
 
-        // Galerie sichtbar machen (wenn sie versteckt war)
-        gallerySection.style.display = 'block';
-
-        // Start der Gruppen-Sequenz
-        startGroupedSequence(Array.from(stage.children));
-    }
-
-    // ============================================================
-    // GRUPPEN-SEQUENZ: JE 3 BILDER, ENDLOSSCHLEIFE
-    // ============================================================
-    function startGroupedSequence(galleryItems) {
-        if (galleryItems.length === 0) return;
-
-        const groupSize = 3;
-        let currentGroupIndex = 0;
-
-        function showGroup(groupIndex) {
-            // Alle ausblenden
-            galleryItems.forEach(item => {
-                item.style.display = 'none';
-                item.style.opacity = '0';
-            });
-
-            const startIndex = groupIndex * groupSize;
-            const endIndex = Math.min(startIndex + groupSize, galleryItems.length);
-
-            // Aktuelle Gruppe einblenden
-            for (let i = startIndex; i < endIndex; i++) {
-                const item = galleryItems[i];
-                item.style.display = 'block';
-                // Optional: Fade-In
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transition = 'opacity 0.5s ease';
-                }, 10);
+        // CSS für die visuelle Anordnung
+        const style = document.createElement('style');
+        style.textContent = `
+            .gallery-three-layout {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 12px;
+                position: relative;
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
             }
 
-            // Nächste Gruppe nach Pause
-            const pauseDuration = 3000; // 3 Sekunden
-            setTimeout(() => {
-                currentGroupIndex = (currentGroupIndex + 1) % Math.ceil(galleryItems.length / groupSize);
-                showGroup(currentGroupIndex);
-            }, pauseDuration);
-        }
+            .gallery-three-item {
+                position: relative;
+                transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            }
 
-        // Start mit erster Gruppe
-        showGroup(0);
+            .gallery-three-item.left {
+                transform: translateX(-80px) scale(0.85);
+                z-index: 1;
+            }
+
+            .gallery-three-item.center {
+                transform: scale(1);
+                z-index: 3;
+                box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            }
+
+            .gallery-three-item.right {
+                transform: translateX(80px) scale(0.85);
+                z-index: 1;
+            }
+
+            @media (max-width: 768px) {
+                .gallery-three-layout {
+                    flex-direction: column;
+                    gap: 16px;
+                }
+                .gallery-three-item {
+                    transform: scale(1) !important;
+                    width: 100% !important;
+                    max-width: none !important;
+                }
+                .gallery-three-item.left,
+                .gallery-three-item.right {
+                    transform: scale(0.95) !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Erstelle das Layout
+        const layout = document.createElement('div');
+        layout.className = 'gallery-three-layout';
+
+        imagesToShow.forEach((werk, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-three-item';
+            if (index === 0) item.classList.add('left');
+            if (index === 1) item.classList.add('center');
+            if (index === 2) item.classList.add('right');
+
+            item.innerHTML = `
+                <img src="${werk.bild}" 
+                     alt="${werk.titel || 'Galerie Bild'}" 
+                     class="w-full h-auto object-cover">
+            `;
+
+            layout.appendChild(item);
+        });
+
+        stage.appendChild(layout);
+
+        // Visuelles Einblenden (optional)
+        setTimeout(() => {
+            layout.style.opacity = '1';
+            layout.style.transition = 'opacity 0.8s ease';
+        }, 100);
+
+        // Optional: Animation bei Hover (falls gewünscht)
+        const items = layout.querySelectorAll('.gallery-three-item');
+        items.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                if (item.classList.contains('center')) return;
+                item.style.transform = item.classList.contains('left') 
+                    ? 'translateX(-100px) scale(0.9)' 
+                    : 'translateX(100px) scale(0.9)';
+            });
+            item.addEventListener('mouseleave', () => {
+                if (item.classList.contains('center')) return;
+                item.style.transform = item.classList.contains('left') 
+                    ? 'translateX(-80px) scale(0.85)' 
+                    : 'translateX(80px) scale(0.85)';
+            });
+        });
     }
 
     function initVisitorStats() {
@@ -433,5 +470,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ⚠️ initGalleryModal wird NICHT aufgerufen – keine Modals für diese Ansicht
-    // (da nur Gruppenanzeige gewünscht, kein Klickverhalten)
 });
