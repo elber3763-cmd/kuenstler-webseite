@@ -326,6 +326,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ============================================================
+    // 4. GALERIE MIT AUTOMATISCHER ZOOM-ANIMATION
+    // ============================================================
+    
+    let galleryAnimationInterval = null;
+    let currentZoomIndex = 0;
+    let galleryElements = [];
+    let isAnimationPaused = false;
+
     function startGalleryCenterShow(allImages) {
         if (!allImages || allImages.length === 0) {
             console.warn('⚠️ Keine Bilder für Galerie vorhanden');
@@ -347,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`📸 Galerie wird geladen mit ${allImages.length} Bildern`);
 
         stage.innerHTML = "";
+        galleryElements = [];
         
         allImages.forEach((werk, index) => {
             const el = document.createElement('div');
@@ -354,17 +364,19 @@ document.addEventListener('DOMContentLoaded', () => {
             el.dataset.img = werk.bild;
             el.dataset.title = werk.titel;
             el.dataset.desc = werk.beschreibung;
+            el.dataset.index = index;
             
             el.innerHTML = `
                 <img src="${werk.bild}" 
                      alt="${werk.titel || 'Galerie Bild'}" 
-                     class="w-full h-full object-cover rounded-lg shadow-xl transition-transform duration-500 group-hover:scale-110">
+                     class="gallery-image w-full h-full object-cover rounded-lg shadow-xl transition-all duration-700 ease-in-out">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                     <h3 class="text-white font-serif text-lg">${werk.titel}</h3>
                 </div>
             `;
             
             stage.appendChild(el);
+            galleryElements.push(el);
 
             if (typeof gsap !== 'undefined') {
                 gsap.from(el, {
@@ -378,12 +390,89 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.style.animation = `fadeInUp 0.8s ease-out ${index * 0.15}s forwards`;
                 el.style.opacity = '0';
             }
+
+            el.addEventListener('mouseenter', () => {
+                isAnimationPaused = true;
+            });
+
+            el.addEventListener('mouseleave', () => {
+                isAnimationPaused = false;
+            });
         });
 
         initGalleryModal();
         
-        console.log('✅ Galerie erfolgreich gerendert');
+        setTimeout(() => {
+            startAutoZoomAnimation();
+        }, allImages.length * 150 + 1000);
+        
+        console.log('✅ Galerie erfolgreich gerendert mit Auto-Zoom');
     }
+
+    function startAutoZoomAnimation() {
+        if (galleryAnimationInterval) {
+            clearInterval(galleryAnimationInterval);
+        }
+
+        if (galleryElements.length === 0) return;
+
+        currentZoomIndex = 0;
+
+        const animateSingleImage = () => {
+            if (isAnimationPaused) return;
+
+            const currentEl = galleryElements[currentZoomIndex];
+            const img = currentEl.querySelector('.gallery-image');
+            
+            if (!img) return;
+
+            if (typeof gsap !== 'undefined') {
+                const tl = gsap.timeline();
+                
+                tl.to(img, {
+                    scale: 1.15,
+                    duration: 1.2,
+                    ease: "power2.inOut"
+                });
+                
+                tl.to(img, {
+                    scale: 1,
+                    duration: 1.2,
+                    ease: "power2.inOut",
+                    delay: 0.8
+                });
+                
+            } else {
+                img.style.transform = 'scale(1.15)';
+                
+                setTimeout(() => {
+                    img.style.transform = 'scale(1)';
+                }, 2000);
+            }
+
+            currentZoomIndex = (currentZoomIndex + 1) % galleryElements.length;
+        };
+
+        animateSingleImage();
+
+        galleryAnimationInterval = setInterval(() => {
+            animateSingleImage();
+        }, 3200);
+
+        console.log('🔄 Auto-Zoom Animation gestartet');
+    }
+
+    function stopAutoZoomAnimation() {
+        if (galleryAnimationInterval) {
+            clearInterval(galleryAnimationInterval);
+            galleryAnimationInterval = null;
+            console.log('⏸️ Auto-Zoom Animation gestoppt');
+        }
+    }
+
+    window.addEventListener('beforeunload', () => {
+        stopAutoZoomAnimation();
+    });
 
     const style = document.createElement('style');
     style.textContent = `
@@ -397,8 +486,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 transform: translateY(0);
             }
         }
+
+        .gallery-image {
+            transform-origin: center center;
+            will-change: transform;
+        }
     `;
     document.head.appendChild(style);
+
+    // ============================================================
+    // 5. MODAL FUNKTIONALITÄT
+    // ============================================================
 
     function initGalleryModal() {
         const triggers = document.querySelectorAll('.gallery-trigger');
@@ -426,6 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 setTimeout(() => modal.classList.remove('opacity-0'), 10);
+                
+                isAnimationPaused = true;
             };
         });
 
@@ -433,7 +533,8 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('opacity-0');
             setTimeout(() => { 
                 modal.classList.remove('flex'); 
-                modal.classList.add('hidden'); 
+                modal.classList.add('hidden');
+                isAnimationPaused = false;
             }, 300);
         };
 
@@ -448,6 +549,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ============================================================
+    // 6. VISITOR STATISTICS
+    // ============================================================
 
     function initVisitorStats() {
         const liveEl = document.getElementById('live-visitor-count');
