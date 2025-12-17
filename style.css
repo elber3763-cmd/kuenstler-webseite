@@ -1,0 +1,127 @@
+/* =========================================
+   1. GRUNDEINSTELLUNGEN
+   ========================================= */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #050505; /* Deep Black */
+    color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+}
+
+/* 3D Effekt Helper */
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+/* =========================================
+   2. SCROLLBAR STYLING
+   ========================================= */
+::-webkit-scrollbar { 
+    width: 10px; 
+}
+
+::-webkit-scrollbar-track { 
+    background: #000; 
+}
+
+::-webkit-scrollbar-thumb { 
+    background: #333; 
+    border-radius: 5px; 
+    border: 2px solid #000; /* Kleiner Rand für Eleganz */
+}
+
+::-webkit-scrollbar-thumb:hover { 
+    background: #555; 
+}
+
+/* =========================================
+   3. CUSTOM ARTISTIC CURSOR
+   ========================================= */
+/* Nur auf Geräten mit Maus (nicht Touch) aktivieren */
+@media (hover: hover) and (pointer: fine) {
+    body, a, button, input, textarea {
+        cursor: none !important; /* Standard-Cursor verstecken */
+    }
+
+    .cursor-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 8px;
+        height: 8px;
+        background-color: white;
+        border-radius: 50%;
+        pointer-events: none; 
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: difference; /* Ihr cooler Effekt */
+    }
+
+    .cursor-outline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+        mix-blend-mode: difference;
+    }
+
+    /* Klasse wird via JS hinzugefügt beim Hover über Links */
+    body.hovering .cursor-outline {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: transparent;
+    }
+}
+
+@media (hover: none) {
+    .cursor-dot, .cursor-outline {
+        display: none;
+    }
+}
+
+/* =========================================
+   4. MODAL / LIGHTBOX (Wichtig für Galerie)
+   ========================================= */
+#imageModal {
+    backdrop-filter: blur(10px); /* Milchglas-Effekt im Hintergrund */
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Schließen-Button Positionierung */
+#imageModal .close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    z-index: 10001;
+    font-family: sans-serif;
+    line-height: 1;
+}
+
+/* Bild im Modal begrenzen */
+#modalImg {
+    max-height: 85vh;
+    object-fit: contain;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================
+   5. NETLIFY IDENTITY WIDGET FIXES
+   ========================================= */
+/* Stellt sicher, dass das Login-Popup über allem liegt */
+div[data-netlify-identity-menu], 
+div[data-netlify-identity-modal] {
+    z-index: 99999 !important;
+}

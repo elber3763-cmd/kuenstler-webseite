@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datenschutz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- WICHTIG: Diese Bibliothek übersetzt ## und ** in schönes HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#0078D4', dark: '#1a1a1a', light: '#f3f4f6' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-light antialiased min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="py-6 border-b border-white/10 bg-black">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="font-serif text-2xl font-bold text-white tracking-widest">DATENSCHUTZ</div>
+            <a href="index.html" id="back-link" class="text-sm font-bold uppercase tracking-widest text-primary hover:text-white transition cursor-pointer">
+                ← Zurück
+            </a>
+        </div>
+    </header>
+    <!-- Inhalt -->
+    <main class="container mx-auto px-6 py-16 max-w-4xl flex-grow">
+        <h1 class="text-4xl font-serif mb-8 text-white">Datenschutzerklärung</h1>
+        
+        <!-- Hier wird der Text geladen -->
+        <div id="privacy-content" class="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-6">
+            <p class="animate-pulse">Lade Datenschutzerklärung...</p>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-white/10 mt-12">
+        <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
+            &copy; 2025 <span id="footer-copy">Nico Art</span>. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+    <!-- LOGIK -->
+    <script>
+        const cacheBuster = new Date().getTime();
+        fetch(`inhalt.json?v=${cacheBuster}`)
+            .then(response => response.json())
+            .then(data => {
+                // Footer Name setzen
+                if(data.titel) document.getElementById('footer-copy').innerText = data.titel;
+                // Datenschutz Text setzen
+                const privacyContainer = document.getElementById('privacy-content');
+                
+                if (data.impressum && data.impressum.privacy) {
+                    privacyContainer.innerHTML = marked.parse(data.impressum.privacy);
+                } else {
+                    privacyContainer.innerHTML = "<p>Bitte fügen Sie den Datenschutz-Text im Dashboard (unter 'Rechtliches') ein.</p>";
+                }
+            })
+            .catch(err => console.error("Fehler:", err));
+    </script>
+
+    <!-- SMART BACK NAVIGATION -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backLink = document.getElementById('back-link');
+            
+            if (backLink) {
+                backLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const referrer = document.referrer;
+                    const hasHistory = window.history.length > 1;
+                    const isInternal = referrer && (
+                        referrer.includes(window.location.hostname) || 
+                        referrer.includes('netlify.app')
+                    );
+                    
+                    if (isInternal && hasHistory) {
+                        console.log('↩️ Zurück via Browser History');
+                        window.history.back();
+                    } else {
+                        console.log('↩️ Zurück zur Startseite');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

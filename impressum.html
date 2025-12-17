@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- WICHTIG: Marked Bibliothek für Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#0078D4', dark: '#1a1a1a', light: '#f3f4f6' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-light antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="py-6 border-b border-white/10 bg-black">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="font-serif text-2xl font-bold text-white tracking-widest">IMPRESSUM</div>
+            <a href="index.html" id="back-link" class="text-sm font-bold uppercase tracking-widest text-primary hover:text-white transition cursor-pointer">
+                ← Zurück
+            </a>
+        </div>
+    </header>
+
+    <!-- Inhalt -->
+    <main class="container mx-auto px-6 py-16 max-w-3xl flex-grow">
+        
+        <h1 class="text-4xl font-serif mb-8 text-white">Angaben gemäß § 5 TMG</h1>
+
+        <div class="space-y-8 text-gray-300 leading-relaxed">
+            
+            <!-- Adresse -->
+            <div class="bg-[#1e1e1e] p-8 rounded-xl border border-white/5">
+                <h2 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Betreiber & Kontakt</h2>
+                <p id="imp-name" class="font-bold text-lg text-primary mb-1">Lade Daten...</p>
+                <p id="imp-strasse"></p>
+                <p id="imp-ort"></p>
+                <br>
+                <p><strong>Telefon:</strong> <span id="imp-tel"></span></p>
+                <p><strong>E-Mail:</strong> <span id="imp-mail"></span></p>
+            </div>
+
+            <!-- Steuer & Inhalt -->
+            <div class="bg-[#1e1e1e] p-8 rounded-xl border border-white/5">
+                <h2 class="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Rechtliche Angaben</h2>
+                
+                <div class="mb-4">
+                    <h3 class="font-bold text-white text-sm uppercase tracking-wide opacity-70">Umsatzsteuer-ID / Steuernummer</h3>
+                    <p id="imp-steuer">-</p>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-white text-sm uppercase tracking-wide opacity-70">Verantwortlich für den Inhalt</h3>
+                    <p>Verantwortlich nach § 55 Abs. 2 RStV:</p>
+                    <p id="imp-verantwortlich"></p>
+                </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="pt-8">
+                <h2 class="text-xl font-bold text-white mb-4">Haftungsausschluss & Rechtliches</h2>
+                <div id="imp-disclaimer" class="prose prose-invert max-w-none text-gray-400 text-sm">
+                    <p>Lade Inhalte...</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-8 border-t border-white/10 mt-12">
+        <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
+            &copy; 2025 <span id="footer-copy">Nico Art</span>. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+
+    <!-- LOGIK -->
+    <script>
+        const cacheBuster = new Date().getTime();
+
+        fetch(`inhalt.json?v=${cacheBuster}`)
+            .then(response => response.json())
+            .then(data => {
+                const imp = data.impressum || {};
+
+                const setText = (id, text) => {
+                    const el = document.getElementById(id);
+                    if(el) el.innerText = text || "-";
+                };
+
+                setText('imp-name', imp.name);
+                setText('imp-verantwortlich', imp.name);
+                setText('imp-strasse', imp.strasse);
+                setText('imp-ort', imp.ort);
+                setText('imp-tel', imp.telefon);
+                setText('imp-mail', imp.email);
+                setText('imp-steuer', imp.steuer);
+                
+                // Markdown Umwandlung für Disclaimer
+                const disclaimerContainer = document.getElementById('imp-disclaimer');
+                if(imp.disclaimer) {
+                    disclaimerContainer.innerHTML = marked.parse(imp.disclaimer);
+                } else {
+                    disclaimerContainer.innerHTML = "<p>Kein Haftungsausschluss hinterlegt.</p>";
+                }
+
+                if(data.titel) {
+                    document.getElementById('footer-copy').innerText = data.titel;
+                }
+            })
+            .catch(err => console.error("Fehler beim Laden des Impressums:", err));
+    </script>
+
+    <!-- SMART BACK NAVIGATION -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backLink = document.getElementById('back-link');
+            
+            if (backLink) {
+                backLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const referrer = document.referrer;
+                    const hasHistory = window.history.length > 1;
+                    const isInternal = referrer && (
+                        referrer.includes(window.location.hostname) || 
+                        referrer.includes('netlify.app')
+                    );
+                    
+                    if (isInternal && hasHistory) {
+                        console.log('↩️ Zurück via Browser History');
+                        window.history.back();
+                    } else {
+                        console.log('↩️ Zurück zur Startseite');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

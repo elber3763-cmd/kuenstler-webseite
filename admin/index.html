@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+  
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/create-react-class@15.7.0/create-react-class.min.js"></script>
+</head>
+<body>
+  <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+  
+  <script>
+    var RangeControl = createReactClass({
+      handleChange: function(e) {
+        this.props.onChange(e.target.value);
+      },
+      render: function() {
+        var val = this.props.value;
+        return React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '15px' } },
+          React.createElement('input', {
+            type: 'range',
+            value: val || 0,
+            onChange: this.handleChange,
+            min: -300,
+            max: 300,
+            step: 1,
+            style: { flexGrow: 1, cursor: 'pointer' }
+          }),
+          React.createElement('span', { 
+            style: { width: '50px', textAlign: 'right', fontWeight: 'bold', fontFamily: 'monospace' } 
+          }, (val || 0) + 'px')
+        );
+      }
+    });
+
+    var RangePreview = createReactClass({
+      render: function() {
+        return React.createElement('div', {}, (this.props.value || 0) + 'px');
+      }
+    });
+
+    CMS.registerWidget('range', RangeControl, RangePreview);
+
+    var HomePreview = createReactClass({
+      render: function() {
+        var entry = this.props.entry;
+        var getAsset = this.props.getAsset;
+
+        var logoPath = entry.getIn(['data', 'design', 'site_logo']);
+        var logoSrc = logoPath ? getAsset(logoPath).toString() : '';
+        
+        var logoW = entry.getIn(['data', 'design', 'logo_width']) || '300px';
+        var logoH = entry.getIn(['data', 'design', 'logo_height']) || 'auto';
+        var align = entry.getIn(['data', 'design', 'logo_alignment']) || 'left';
+        var offX = entry.getIn(['data', 'design', 'logo_offset_x']) || 0;
+        var offY = entry.getIn(['data', 'design', 'logo_offset_y']) || 0;
+        var bg = entry.getIn(['data', 'design', 'background_color']) || '#1a1a1a';
+
+        var wrapperStyle = {
+          display: 'flex',
+          justifyContent: align === 'center' ? 'center' : (align === 'right' ? 'flex-end' : 'flex-start'),
+          alignItems: 'center',
+          padding: '20px',
+          backgroundColor: bg,
+          position: 'relative',
+          minHeight: '150px',
+          borderBottom: '1px solid #444'
+        };
+
+        var imgStyle = {
+          width: logoW,
+          height: logoH,
+          objectFit: 'contain',
+          transform: 'translate(' + offX + 'px, ' + offY + 'px)',
+          display: 'block',
+          transition: 'all 0.1s ease'
+        };
+
+        return React.createElement('div', {},
+          React.createElement('h3', {style: {padding: '10px', borderBottom: '1px solid #ddd', margin: 0, background: '#fff', color: '#333'}}, 'Live-Vorschau Header'),
+          React.createElement('div', { style: wrapperStyle },
+            logoSrc 
+              ? React.createElement('img', { src: logoSrc, style: imgStyle })
+              : React.createElement('div', {style: {color: 'rgba(255,255,255,0.5)'}}, 'Kein Logo ausgewählt')
+          )
+        );
+      }
+    });
+
+    CMS.registerPreviewTemplate('home', HomePreview);
+  </script>
+</body>
+</html>

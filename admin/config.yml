@@ -1,0 +1,161 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Diese Ordner müssen im Repo existieren
+media_folder: "bilder/uploads"
+public_folder: "bilder/uploads"
+
+collections:
+  - name: "pages"
+    label: "Seiteninhalte"
+    files:
+      - file: "inhalt.json"
+        label: "Startseite & Inhalt"
+        name: "home"
+        fields:
+          # --- DESIGN SETTINGS ---
+          - label: "Design Einstellungen"
+            name: "design"
+            widget: "object"
+            fields:
+              - {label: "Webseiten Logo", name: "site_logo", widget: "image", required: false}
+              - {label: "Logo anzeigen?", name: "show_logo", widget: "boolean", default: true}
+              - {label: "Logo Breite (z.B. 300px)", name: "logo_width", widget: "string", default: "300px", required: false}
+              - {label: "Logo Höhe (z.B. auto)", name: "logo_height", widget: "string", default: "auto", required: false}
+              
+              - label: "Logo Ausrichtung"
+                name: "logo_alignment"
+                widget: "select"
+                options: ["left", "center", "right"]
+                default: "center"
+              
+              # Widget "range" existiert nicht standardmäßig, daher "number"
+              - {label: "Logo Verschiebung X (Pixel)", name: "logo_offset_x", widget: "number", default: 0, required: false}
+              - {label: "Logo Verschiebung Y (Pixel)", name: "logo_offset_y", widget: "number", default: 0, required: false}
+              
+              - {label: "Primärfarbe (Links/Buttons)", name: "primary_color", widget: "color", default: "#0078D4"}
+              - {label: "Sekundärfarbe (Texte)", name: "secondary_color", widget: "color", default: "#666666"}
+              - {label: "Akzentfarbe", name: "accent_color", widget: "color", default: "#F97316"}
+              - {label: "Hintergrundfarbe (Dunkel)", name: "background_color", widget: "color", default: "#1a1a1a"}
+              
+              # ERWEITERTE SCHRIFTARTEN
+              - label: "Schriftart: Überschriften (Serif)"
+                name: "font_heading"
+                widget: "select"
+                default: "Playfair Display"
+                options: 
+                  - "Playfair Display"
+                  - "Cormorant Garamond"
+                  - "Merriweather"
+                  - "Libre Baskerville"
+                  - "Cinzel"
+                  - "Lora"
+                  - "Bodoni Moda"
+              
+              - label: "Schriftart: Fließtext (Sans-Serif)"
+                name: "font_body"
+                widget: "select"
+                default: "Inter"
+                options: 
+                  - "Inter"
+                  - "Roboto"
+                  - "Open Sans"
+                  - "Lato"
+                  - "Montserrat"
+                  - "Raleway"
+                  - "Source Sans Pro"
+
+          # --- WELCOME / INTRO ---
+          - label: "Willkommen: Überschrift"
+            name: "welcome_title"
+            widget: "string"
+            default: "Willkommen"
+            required: false
+          
+          - label: "Willkommen: Untertitel"
+            name: "welcome_subtitle"
+            widget: "string"
+            required: false
+            
+          - label: "Willkommen: Text"
+            name: "welcome_body"
+            widget: "text"
+            required: false
+
+          # --- HERO ---
+          - label: "Hero: Überschrift"
+            name: "heroHeadline"
+            widget: "string"
+          - label: "Hero: Subline"
+            name: "heroSubline"
+            widget: "text"
+          - label: "Hintergrundbild (Video Poster)"
+            name: "heroBild"
+            widget: "image"
+
+          # --- GALERIE ÜBERSCHRIFT ---
+          - label: "Galerie: Überschrift"
+            name: "galleryHeadline"
+            widget: "string"
+            default: "Die Kollektion"
+
+          # --- GALERIE BILDER ---
+          - label: "Galerie Bilder"
+            name: "galerieBilder"
+            widget: "list"
+            fields:
+              - {label: "Titel", name: "titel", widget: "string"}
+              - {label: "Bild", name: "bild", widget: "image"}
+              - {label: "Beschreibung", name: "beschreibung", widget: "text"}
+
+          # --- BIOGRAFIE ---
+          - label: "Künstler: Titel/Name"
+            name: "biografieTitel"
+            widget: "string"
+          - label: "Künstler: Text"
+            name: "biografieText"
+            widget: "markdown"
+          - label: "Künstler: Foto"
+            name: "kuenstlerFoto"
+            widget: "image"
+
+          # --- KONTAKT ---
+          - label: "Kontaktinfos"
+            name: "kontakt"
+            widget: "object"
+            fields:
+              - {label: "E-Mail", name: "email", widget: "string"}
+              - {label: "Telefon", name: "telefon", widget: "string"}
+              - {label: "WhatsApp Text", name: "chatText", widget: "string"}
+              - {label: "WhatsApp Link", name: "chatLink", widget: "string"}
+
+          # --- SOCIAL MEDIA ---
+          - label: "Social Media Links"
+            name: "social"
+            widget: "object"
+            fields:
+              - {label: "LinkedIn URL", name: "linkedin", widget: "string", required: false}
+              - {label: "Facebook URL", name: "facebook", widget: "string", required: false}
+              - {label: "Instagram URL", name: "instagram", widget: "string", required: false}
+              - {label: "TikTok URL", name: "tiktok", widget: "string", required: false}
+              - {label: "X (Twitter) URL", name: "x", widget: "string", required: false}
+
+          # --- IMPRESSUM ---
+          - label: "Rechtliches (Impressum & Datenschutz)"
+            name: "impressum"
+            widget: "object"
+            fields:
+              - {label: "Name / Betreiber", name: "name", widget: "string"}
+              - {label: "Straße", name: "strasse", widget: "string"}
+              - {label: "Ort", name: "ort", widget: "string"}
+              - {label: "Telefon", name: "telefon", widget: "string"}
+              - {label: "E-Mail", name: "email", widget: "string"}
+              - {label: "Steuernummer", name: "steuer", widget: "string"}
+              - {label: "Datenschutzerklärung (Markdown)", name: "privacy", widget: "markdown"}
+              - {label: "Haftungsausschluss (Markdown)", name: "disclaimer", widget: "markdown"}
+          
+          # --- FOOTER ---
+          - label: "Footer Name"
+            name: "titel"
+            widget: "string"
