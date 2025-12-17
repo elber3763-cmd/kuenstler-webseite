@@ -303,11 +303,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(header) header.classList.remove('opacity-0', 'pointer-events-none');
                 gallerySection.scrollIntoView({ behavior: 'smooth' });
 
-                // 🔑 NEU: Galerie erst beim Klick rendern – nur die ersten 3 Bilder
-                if (window.galleryImages && window.galleryImages.length > 0 && !window.galleryRendered) {
-                    window.galleryRendered = true;
-                    renderThreeImageGallery(window.galleryImages, gallerySection);
-                }
+                // 🔑 NEU: Galerie rendern – ohne Flag, immer wiederholbar
+                renderThreeImageGallery(window.galleryImages, gallerySection);
             });
         }
 
@@ -329,19 +326,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // NEUE FUNKTION: RENDER DER DREIER-GALERIE WIE IM BILD
+    // NEUE FUNKTION: RENDER DER DREIER-GALERIE WIE IM BILD – MIT FIX FÜR BILDER
     // ============================================================
     function renderThreeImageGallery(allImages, gallerySection) {
         const stage = document.getElementById('gallery-stage');
-        if (!stage) return;
+        if (!stage) {
+            console.error('❌ #gallery-stage Element nicht gefunden!');
+            return;
+        }
 
-        // Leere den Container
+        // Leere den Container sicher
         stage.innerHTML = '';
+
+        // Prüfe, ob Bilder vorhanden sind
+        if (!allImages || allImages.length === 0) {
+            console.warn('⚠️ Keine Galerie-Bilder zum Anzeigen');
+            stage.innerHTML = '<p class="text-center text-white py-8">Keine Werke verfügbar.</p>';
+            return;
+        }
 
         // Nur die ersten 3 Bilder verwenden
         const imagesToShow = allImages.slice(0, 3);
 
-        // CSS für die visuelle Anordnung
+        // CSS für die visuelle Anordnung – direkt eingefügt
         const style = document.createElement('style');
         style.textContent = `
             .gallery-three-layout {
@@ -353,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 width: 100%;
                 max-width: 1200px;
                 margin: 0 auto;
+                padding: 20px;
             }
 
             .gallery-three-item {
@@ -361,6 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 border-radius: 8px;
                 overflow: hidden;
                 box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+                display: block;
+                opacity: 1;
             }
 
             .gallery-three-item.left {
@@ -377,6 +387,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .gallery-three-item.right {
                 transform: translateX(80px) scale(0.85);
                 z-index: 1;
+            }
+
+            .gallery-three-item img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                display: block;
+                opacity: 1;
             }
 
             @media (max-width: 768px) {
@@ -402,6 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
         layout.className = 'gallery-three-layout';
 
         imagesToShow.forEach((werk, index) => {
+            // Sicherheitsprüfung: Bild-URL vorhanden?
+            if (!werk.bild || werk.bild.trim() === '') {
+                console.warn(`⚠️ Bild ${index + 1} hat keine gültige URL.`);
+                return;
+            }
+
             const item = document.createElement('div');
             item.className = 'gallery-three-item';
             if (index === 0) item.classList.add('left');
@@ -411,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.innerHTML = `
                 <img src="${werk.bild}" 
                      alt="${werk.titel || 'Galerie Bild'}" 
-                     class="w-full h-auto object-cover">
+                     onerror="this.style.display='none'; this.parentNode.style.display='none'; console.error('❌ Bild konnte nicht geladen werden: ${werk.bild}')">
             `;
 
             layout.appendChild(item);
@@ -419,11 +443,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         stage.appendChild(layout);
 
-        // Visuelles Einblenden (optional)
+        // Visuelles Einblenden – falls nötig
         setTimeout(() => {
             layout.style.opacity = '1';
             layout.style.transition = 'opacity 0.8s ease';
-        }, 100);
+        }, 10);
 
         // Optional: Animation bei Hover (falls gewünscht)
         const items = layout.querySelectorAll('.gallery-three-item');
@@ -441,6 +465,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     : 'translateX(80px) scale(0.85)';
             });
         });
+
+        console.log(`✅ Galerie mit ${imagesToShow.length} Bildern erfolgreich gerendert.`);
     }
 
     function initVisitorStats() {
