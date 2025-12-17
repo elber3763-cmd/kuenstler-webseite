@@ -516,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // AUTO-ZOOM SEQUENZ FÜR GALERIE – NEU HINZUGEFÜGT
+    // AUTO-ZOOM SEQUENZ FÜR GALERIE – MIT ENDLOSSCHLEIFE
     // ============================================================
     function startAutoZoomSequence(galleryItems, index = 0) {
         // Respektiert "reduced motion" – Fallback auf statische Galerie
@@ -524,11 +524,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (index >= galleryItems.length) {
-            return; // Sequenz beendet
-        }
-
-        const item = galleryItems[index];
+        // Endlosschleife: Index zyklisch halten
+        const safeIndex = index % galleryItems.length;
+        const item = galleryItems[safeIndex];
         const imgSrc = item.dataset.img;
         const title = item.dataset.title || '';
 
@@ -555,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Zoom-Out
             overlay.classList.remove('active');
             setTimeout(() => {
-                // Nächster Schritt in der Sequenz
+                // Nächster Schritt in der Endlosschleife
                 startAutoZoomSequence(galleryItems, index + 1);
             }, zoomOutDelay);
         }, pauseDuration);
@@ -567,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Startet 2 Sekunden nach Galerie-Rendering
         setTimeout(() => {
-            startAutoZoomSequence(galleryTriggers);
+            startAutoZoomSequence(galleryTriggers, 0);
         }, 2000);
     }
 });
