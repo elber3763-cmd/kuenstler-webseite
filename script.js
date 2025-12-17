@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // NEUE FUNKTION: RENDER DER DREIER-GALERIE WIE IM BILD – MIT FIX FÜR BILDER
+    // NEUE FUNKTION: RENDER DER DREIER-GALERIE WIE IM BILD – MIT FIX FÜR RELATIVE PFADE
     // ============================================================
     function renderThreeImageGallery(allImages, gallerySection) {
         const stage = document.getElementById('gallery-stage');
@@ -426,6 +426,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // ✅ Garantierte relative URL – falls nicht bereits mit / beginnend
+            let imgUrl = werk.bild;
+            if (!imgUrl.startsWith('/')) {
+                imgUrl = '/' + imgUrl;
+            }
+
             const item = document.createElement('div');
             item.className = 'gallery-three-item';
             if (index === 0) item.classList.add('left');
@@ -433,9 +439,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index === 2) item.classList.add('right');
 
             item.innerHTML = `
-                <img src="${werk.bild}" 
+                <img src="${imgUrl}" 
                      alt="${werk.titel || 'Galerie Bild'}" 
-                     onerror="this.style.display='none'; this.parentNode.style.display='none'; console.error('❌ Bild konnte nicht geladen werden: ${werk.bild}')">
+                     onerror="this.style.display='none'; this.parentNode.style.display='none'; console.error('❌ Bild konnte nicht geladen werden: ${imgUrl}')">
             `;
 
             layout.appendChild(item);
