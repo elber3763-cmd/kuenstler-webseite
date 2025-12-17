@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.galleryImages.length > 0) {
             console.log(`📸 ${window.galleryImages.length} Galerie-Bilder gefunden`);
             startGalleryCenterShow(window.galleryImages);
-            initAutoZoomGallery(); // AUTOMATISCHER ZOOM-SEQUENZ START
+            initAutoZoomGallery(); // GRUPPENBASIERTER AUTO-ZOOM
         } else {
             console.warn('⚠️ Keine Galerie-Bilder in JSON gefunden');
         }
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        /* AUTO-ZOOM-GALERIE – NEU HINZUGEFÜGT */
+        /* GRUPPEN-ZOOM OVERLAY – NEU */
         .gallery-zoom-overlay {
             position: fixed;
             top: 0;
@@ -411,31 +411,55 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: 0;
         }
 
-        .gallery-zoom-overlay img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            max-width: 90vw;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
-            opacity: 0;
-            pointer-events: none;
-            transition: 
-                transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
-                opacity 0.3s ease;
-        }
-
         .gallery-zoom-overlay.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .gallery-zoom-overlay.active img {
-            transform: translate(-50%, -50%) scale(1);
+        .gallery-zoom-overlay .zoom-group {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            width: fit-content;
+            max-width: 90vw;
+            height: fit-content;
+        }
+
+        .gallery-zoom-overlay .zoom-group img {
+            max-height: 80vh;
+            max-width: 30vw;
+            height: auto;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: 
+                transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.5s ease;
+        }
+
+        .gallery-zoom-overlay.active .zoom-group img {
             opacity: 1;
+            transform: scale(1);
+        }
+
+        /* RESPONSIVE ANPASSUNG */
+        @media (max-width: 768px) {
+            .gallery-zoom-overlay .zoom-group {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .gallery-zoom-overlay .zoom-group img {
+                max-width: 80vw;
+                max-height: 30vh;
+            }
         }
     `;
     document.head.appendChild(style);
@@ -516,45 +540,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // AUTO-ZOOM SEQUENZ FÜR GALERIE – MIT ENDLOSSCHLEIFE
+    // GRUPPENBASIERTE AUTO-ZOOM SEQUENZ (JE 3 BILDER) – MIT ENDLOSSCHLEIFE
     // ============================================================
-    function startAutoZoomSequence(galleryItems, index = 0) {
-        // Respektiert "reduced motion" – Fallback auf statische Galerie
+    function startAutoZoomSequence(galleryItems, groupIndex = 0) {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             return;
         }
 
-        // Endlosschleife: Index zyklisch halten
-        const safeIndex = index % galleryItems.length;
-        const item = galleryItems[safeIndex];
-        const imgSrc = item.dataset.img;
-        const title = item.dataset.title || '';
+        const groupSize = 3;
+        const totalGroups = Math.ceil(galleryItems.length / groupSize);
+        if (totalGroups === 0) return;
+
+        const safeGroupIndex = groupIndex % totalGroups;
+        const startIndex = safeGroupIndex * groupSize;
+        const group = galleryItems.slice(startIndex, startIndex + groupSize);
 
         let overlay = document.getElementById('gallery-zoom-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
             overlay.id = 'gallery-zoom-overlay';
             overlay.className = 'gallery-zoom-overlay';
-            overlay.innerHTML = `<img src="" alt="${title}" />`;
+            overlay.innerHTML = `<div class="zoom-group"></div>`;
             document.body.appendChild(overlay);
         }
 
-        const overlayImg = overlay.querySelector('img');
-        overlayImg.src = imgSrc;
-        overlayImg.alt = title;
+        const zoomGroup = overlay.querySelector('.zoom-group');
+        zoomGroup.innerHTML = '';
+
+        group.forEach(item => {
+            const img = document.createElement('img');
+            img.src = item.dataset.img;
+            img.alt = item.dataset.title || 'Galerie Bild';
+            zoomGroup.appendChild(img);
+        });
 
         // Zoom-In
         overlay.classList.add('active');
 
-        const pauseDuration = 2000; // 2 Sekunden Pause bei vollem Zoom
-        const zoomOutDelay = 800;  // Dauer der Zoom-Out-Animation
+        const pauseDuration = 2500; // 2.5 Sekunden Pause
+        const zoomOutDelay = 800;
 
         setTimeout(() => {
             // Zoom-Out
             overlay.classList.remove('active');
             setTimeout(() => {
-                // Nächster Schritt in der Endlosschleife
-                startAutoZoomSequence(galleryItems, index + 1);
+                // Nächste Gruppe in Endlosschleife
+                startAutoZoomSequence(galleryItems, groupIndex + 1);
             }, zoomOutDelay);
         }, pauseDuration);
     }
@@ -563,7 +594,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const galleryTriggers = Array.from(document.querySelectorAll('.gallery-trigger'));
         if (galleryTriggers.length === 0) return;
 
-        // Startet 2 Sekunden nach Galerie-Rendering
         setTimeout(() => {
             startAutoZoomSequence(galleryTriggers, 0);
         }, 2000);
