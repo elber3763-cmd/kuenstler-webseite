@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             setupContent(data);
             if (data.galerieBilder && data.galerieBilder.length > 0) {
-                // Hier starten wir die "Viewport Cinema" Animation
-                startViewportCinemaGallery(data.galerieBilder);
+                // Startet die Kombination: 3er Gruppen + Zoom
+                startGroupCinemaGallery(data.galerieBilder);
             }
         })
         .catch(err => console.error("Fehler:", err));
@@ -114,38 +114,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 4. VIEWPORT CINEMA GALERIE (Sprengt den Rahmen)
+    // 4. HYBRID GALERIE: 3 BILDER + ZOOM OUT OF FRAME
     // ============================================================
-    function startViewportCinemaGallery(images) {
+    function startGroupCinemaGallery(allImages) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
         stage.innerHTML = ''; 
 
-        // CSS Injection: WICHTIG - OVERFLOW VISIBLE AUF ALLEN ELTERN
+        // Styles: Horizontal, 3 Stück, Overflow Visible für den Zoom
         const style = document.createElement('style');
         style.textContent = `
-            /* Erlaubt Bildern, den Bereich zu verlassen */
-            #galerie, #gallery-stage {
-                overflow: visible !important; 
+            #gallery-stage {
                 position: relative;
+                width: 100%;
+                max-width: 1400px;
+                min-height: 500px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                /* WICHTIG: Damit Zoom über den Rand geht */
+                overflow: visible !important; 
                 z-index: 10;
             }
-            #gallery-stage {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            /* Container für die Gruppe */
+            .gallery-group {
+                display: flex;
                 gap: 20px;
                 width: 100%;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
+                justify-content: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0; /* Start unsichtbar */
+                pointer-events: none;
             }
             .gallery-item {
-                position: relative;
+                flex: 1;
+                max-width: 30%; /* 3 Stück nebeneinander */
                 aspect-ratio: 3/4;
-                cursor: pointer;
-                /* Wichtig: Kein Clipping */
+                position: relative;
+                border-radius: 8px;
+                /* Kein Overflow Hidden, damit Bild wachsen kann */
                 overflow: visible !important; 
                 z-index: 1;
+                pointer-events: auto;
+                cursor: pointer;
             }
             .gallery-item img {
                 width: 100%;
@@ -153,98 +168,127 @@ document.addEventListener('DOMContentLoaded', () => {
                 object-fit: cover;
                 border-radius: 8px;
                 display: block;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
                 will-change: transform;
+            }
+            @media (max-width: 768px) {
+                #gallery-stage { min-height: 300px; }
+                .gallery-group { flex-direction: row; gap: 5px; } /* Auch mobil 3 Stück */
+                .gallery-item { max-width: 32%; }
             }
         `;
         document.head.appendChild(style);
 
-        // Grid aufbauen
-        const itemElements = [];
-        images.forEach(imgData => {
-            if(!imgData.bild) return;
-            const div = document.createElement('div');
-            div.className = 'gallery-item';
-            
-            // Modal beim Klick (trotz Animation möglich)
-            div.onclick = () => openModal(imgData.bild, imgData.titel, imgData.beschreibung);
-
-            const img = document.createElement('img');
-            let src = imgData.bild;
-            if(!src.startsWith('http') && !src.startsWith('/')) src = '/' + src;
-            img.src = src;
-            img.alt = imgData.titel || 'Werk';
-            
-            div.appendChild(img);
-            stage.appendChild(div);
-            itemElements.push(div); 
-        });
-
-        // Animation starten
-        if(typeof gsap !== 'undefined') {
-            startFreeFloatingAnimation(itemElements);
+        // Chunks erstellen (3er Gruppen)
+        const chunks = [];
+        for (let i = 0; i < allImages.length; i += 3) {
+            chunks.push(allImages.slice(i, i + 3));
         }
-    }
 
-    function startFreeFloatingAnimation(elements) {
-        // Timeline wiederholt sich unendlich
-        // repeatRefresh: true berechnet Positionen jedes Mal neu (wichtig bei Scroll/Resize)
-        const masterTl = gsap.timeline({ repeat: -1, repeatDelay: 0.5, repeatRefresh: true });
+        let currentChunkIndex = 0;
 
-        elements.forEach((el) => {
-            const img = el.querySelector('img');
+        function playNextGroup() {
+            // Alte Gruppe löschen (falls vorhanden)
+            stage.innerHTML = '';
+
+            // Neue Gruppe erstellen
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'gallery-group';
             
-            masterTl.to(img, {
-                duration: 1.2,
-                ease: "power3.inOut",
+            const currentImages = chunks[currentChunkIndex];
+            const itemElements = [];
+
+            currentImages.forEach(imgData => {
+                if(!imgData.bild) return;
                 
-                // 1. Z-Index extrem hoch setzen, damit es über Header/Footer liegt
-                zIndex: 9999, 
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'gallery-item';
                 
-                // 2. Position zur BILDSCHIRM-MITTE (Viewport) berechnen
-                x: () => {
-                    const rect = el.getBoundingClientRect();
-                    const screenCenter = window.innerWidth / 2;
-                    const elCenter = rect.left + rect.width / 2;
-                    return screenCenter - elCenter;
-                },
-                y: () => {
-                    const rect = el.getBoundingClientRect();
-                    const screenCenter = window.innerHeight / 2;
-                    const elCenter = rect.top + rect.height / 2;
-                    return screenCenter - elCenter;
-                },
+                // Modal Klick (funktioniert auch während Animation)
+                itemDiv.onclick = () => openModal(imgData.bild, imgData.titel, imgData.beschreibung);
+
+                const img = document.createElement('img');
+                let src = imgData.bild;
+                if(!src.startsWith('http') && !src.startsWith('/')) src = '/' + src;
+                img.src = src;
+                img.alt = imgData.titel || 'Werk';
                 
-                // 3. Zoom-Faktor (Responsive)
-                scale: () => {
-                    // Mobil etwas kleiner, Desktop groß
-                    return window.innerWidth < 768 ? 1.5 : 2.2; 
-                },
-                
-                // 4. Styling für den "Pop-Out" Effekt
-                boxShadow: "0 0 0 100vw rgba(0,0,0,0.85)", // Dunkelt den Hintergrund ab!
-                borderColor: "#fff",
-                borderWidth: "1px",
-                borderStyle: "solid"
-            })
-            
-            // Kurze Pause in der Mitte
-            .to(img, { duration: 1.5 }) 
-            
-            // Zurück zum Platz
-            .to(img, {
-                duration: 1.0,
-                ease: "power2.inOut",
-                x: 0,
-                y: 0,
-                scale: 1,
-                zIndex: 1, // Zurücksetzen
-                boxShadow: "0 4px 10px rgba(0,0,0,0.3)", // Normaler Schatten
-                borderWidth: "0px",
-                // Workaround: Schattenreste entfernen
-                onComplete: () => { gsap.set(img, { clearProps: "boxShadow,borderColor,borderWidth,zIndex" }); }
+                itemDiv.appendChild(img);
+                groupDiv.appendChild(itemDiv);
+                itemElements.push(img); // Bilder merken für Zoom-Animation
             });
-        });
+
+            stage.appendChild(groupDiv);
+
+            // GSAP Timeline
+            if(typeof gsap !== 'undefined') {
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        // Nächste Gruppe
+                        currentChunkIndex = (currentChunkIndex + 1) % chunks.length;
+                        playNextGroup();
+                    }
+                });
+
+                // 1. Gruppe einblenden
+                tl.to(groupDiv, { opacity: 1, duration: 0.5 });
+
+                // 2. Jedes Bild einzeln in die Mitte zoomen (Viewport Center)
+                itemElements.forEach((img) => {
+                    tl.to(img, {
+                        duration: 1.5,
+                        ease: "power3.inOut",
+                        
+                        zIndex: 9999, // Über alles
+                        
+                        // Berechnung zur BILDSCHIRM-MITTE
+                        x: () => {
+                            const rect = img.getBoundingClientRect();
+                            const screenCenter = window.innerWidth / 2;
+                            const elCenter = rect.left + rect.width / 2;
+                            return screenCenter - elCenter;
+                        },
+                        y: () => {
+                            const rect = img.getBoundingClientRect();
+                            const screenCenter = window.innerHeight / 2;
+                            const elCenter = rect.top + rect.height / 2;
+                            return screenCenter - elCenter;
+                        },
+                        
+                        // Zoom-Faktor
+                        scale: () => window.innerWidth < 768 ? 1.8 : 2.5,
+                        
+                        boxShadow: "0 0 0 100vw rgba(0,0,0,0.9)", // Abdunkeln
+                        borderColor: "#fff",
+                        borderWidth: "2px",
+                        borderStyle: "solid"
+                    })
+                    
+                    // Halten
+                    .to(img, { duration: 1.5 })
+                    
+                    // Zurück
+                    .to(img, {
+                        duration: 1.0,
+                        ease: "power2.inOut",
+                        x: 0, 
+                        y: 0, 
+                        scale: 1, 
+                        zIndex: 1,
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+                        borderWidth: "0px",
+                        onComplete: () => gsap.set(img, { clearProps: "zIndex" })
+                    });
+                });
+
+                // 3. Gruppe ausblenden
+                tl.to(groupDiv, { opacity: 0, duration: 0.5 });
+            }
+        }
+
+        if(chunks.length > 0) {
+            playNextGroup();
+        }
     }
 
     // ============================================================
