@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Bildende Kunst | Galerie</title>
-    
-    <!-- WICHTIG: Netlify Identity Widget für CMS-Login -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
     <!-- Favicon Platzhalter (wird via JS überschrieben) -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" id="dynamic-favicon">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- ERWEITERTE SCHRIFTARTEN -->
+    <!-- ERWEITERTE SCHRIFTARTEN (Serif & Sans-Serif) -->
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&family=Lato:wght@300;400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Montserrat:wght@300;400;600&family=Open+Sans:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600&family=Roboto:wght@300;400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- DYNAMIC THEME CONFIGURATION -->
     <style>
         :root {
+            /* Fallback/Default Colors if JS fails or loads late */
             --color-primary: #0078D4;
             --color-secondary: #666666;
             --color-dark: #1a1a1a;
             --color-light: #f3f4f6;
             --color-accent: #F97316;
+            
+            /* Fallback Fonts */
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Inter', sans-serif;
         }
@@ -55,77 +55,100 @@
 </head>
 <body class="bg-dark text-light overflow-x-hidden antialiased">
 
+    <!-- CUSTOM CURSOR ELEMENTS -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-<!-- INTRO OVERLAY (Neue Version laut Screenshot) -->
-<div id="intro-layer" class="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center px-6 text-center transition-opacity duration-1000">
-    
-    <div class="max-w-3xl w-full flex flex-col items-center animate-fade-in-up">
-        
-        <!-- 1. RUNDES PORTRAIT -->
-        <div class="relative w-48 h-48 md:w-64 md:h-64 mb-8 group">
-            <!-- Dekorativer Schein im Hintergrund -->
-            <div class="absolute inset-0 bg-white/5 rounded-full blur-2xl transform scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+<!-- INTRO OVERLAY -->
+    <div id="intro-layer" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center px-6 text-center transition-opacity duration-1000">
+        <div class="max-w-2xl w-full flex flex-col items-center gap-8">
             
-            <!-- Bild-Container -->
-            <div class="w-full h-full rounded-full overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10">
-                <!-- Platzhalter (wird durch JS ersetzt) -->
-                <img id="intro-artist-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Künstler Portrait" class="w-full h-full object-cover transform transition-transform duration-[2s] group-hover:scale-110">
+            <!-- KÜNSTLER BILD -->
+            <div class="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(255,255,255,0.05)] mb-2 bg-[#0a0a0a] flex items-center justify-center group">
+                <!-- Platzhalter Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 text-gray-800 absolute" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <!-- Das eigentliche Bild -->
+                <img id="intro-artist-img" src="" alt="" class="w-full h-full object-cover relative z-10 transition-transform duration-1000 group-hover:scale-105" style="display:none;" onload="this.style.display='block'">
+                
+                <!-- Feiner Glanz über dem Bild -->
+                <div class="absolute inset-0 rounded-full ring-1 ring-inset ring-white/10"></div>
             </div>
-        </div>
 
-        <!-- 2. TYPOGRAFIE -->
-        <div class="space-y-4 mb-12">
-            <!-- Haupttitel (Weiß, Serif) -->
-            <h1 id="intro-title" class="font-serif text-5xl md:text-7xl text-white tracking-wider leading-tight">
-                Willkommen
-            </h1>
-            
-            <!-- Untertitel (Rot/Braun, Kursiv) -->
-            <p id="intro-subtitle" class="font-serif italic text-xl md:text-2xl text-[#b93c3c] tracking-wide mt-2">
-                Zwischen Realität und Abstraktion
-            </p>
-            
-            <!-- Beschreibungstext (Grau, Fein) -->
-            <p id="intro-body" class="text-gray-400 font-light text-lg leading-relaxed max-w-xl mx-auto mt-6">
-                Lade Inhalte...
-            </p>
-        </div>
-
-        <!-- 3. BUTTON (Outline -> Rot Hover) -->
-        <button id="intro-enter-btn" class="group relative px-10 py-4 rounded-full border border-white/20 bg-transparent text-white overflow-hidden transition-all duration-500 hover:border-[#8a1c1c] hover:shadow-[0_0_30px_rgba(138,28,28,0.4)]">
-            
-            <!-- Roter Hintergrund-Slide Effekt -->
-            <div class="absolute inset-0 bg-[#8a1c1c] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-            
-            <!-- Text & Pfeil -->
-            <div class="relative z-10 flex items-center gap-4">
-                <span class="uppercase tracking-[0.25em] text-xs font-bold">Eintreten</span>
-                <span class="transform group-hover:translate-x-1 transition-transform duration-300">
-                    →
-                </span>
+            <div class="space-y-6">
+                <h2 id="intro-title" class="font-serif text-4xl md:text-6xl text-white tracking-widest drop-shadow-2xl">Willkommen</h2>
+                <p id="intro-subtitle" class="text-xl md:text-2xl text-primary font-serif italic opacity-90"></p>
+                <p id="intro-body" class="text-secondary opacity-80 font-light leading-relaxed text-lg max-w-lg mx-auto"></p>
             </div>
-        </button>
 
+            <!-- NEUER "EINTRETEN" BUTTON (Korrigierter Hover-Effekt) -->
+            <button id="intro-enter-btn" class="group relative mt-8 px-16 py-5 bg-transparent overflow-hidden rounded-full transition-all duration-500 hover:shadow-[0_0_40px_rgba(0,120,212,0.6)] border border-white/30 hover:border-primary">
+                
+                <!-- 1. Füllung (Jetzt 100% Sichtbar beim Hover) -->
+                <div class="absolute inset-0 bg-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out"></div>
+                
+                <!-- 2. Text & Icon -->
+                <div class="relative z-10 flex items-center justify-center gap-4">
+                    <span class="text-white uppercase tracking-[0.3em] text-sm font-bold">
+                        Eintreten
+                    </span>
+                    <!-- Pfeil bewegt sich nach rechts -->
+                    <span class="text-white group-hover:translate-x-2 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </span>
+                </div>
+            </button>
+
+        </div>
     </div>
-</div>
 
     <!-- NAVIGATION -->
     <header id="main-header" class="fixed w-full top-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 shadow-2xl h-24 transition-all duration-1000 opacity-0 pointer-events-none">
         <div class="container mx-auto px-6 h-full flex justify-end items-center relative">
+            
+            <!-- NAV LINKS -->
             <nav class="hidden md:block">
                 <ul class="flex space-x-4 items-center h-full">
-                    <li><a href="#hero" class="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-secondary hover:border-primary hover:text-primary hover:shadow-[0_0_20px_rgba(0,120,212,0.5)] transition-all duration-300">Startseite</a></li>
-                    <li><a href="#galerie" class="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-secondary hover:border-primary hover:text-primary hover:shadow-[0_0_20px_rgba(0,120,212,0.5)] transition-all duration-300">Galerie</a></li>
-                    <li><a href="#ueber-mich" class="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-secondary hover:border-primary hover:text-primary hover:shadow-[0_0_20px_rgba(0,120,212,0.5)] transition-all duration-300">Über mich</a></li>
-                    <li><a href="#kontakt" class="ml-4 px-8 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-full transition-all uppercase text-xs tracking-widest font-bold hover:shadow-[0_0_20px_rgba(0,120,212,0.5)]">Kontakt</a></li>
+                    <!-- STARTSEITE: Rahmen & Glow -->
+                    <li>
+                        <a href="#hero" class="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-secondary hover:border-primary hover:text-primary hover:shadow-[0_0_20px_rgba(0,120,212,0.5)] transition-all duration-300">
+                            Startseite
+                        </a>
+                    </li>
+                    
+                    <!-- GALERIE: Rahmen & Glow -->
+                    <li>
+                        <a href="#galerie" class="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-secondary hover:border-primary hover:text-primary hover:shadow-[0_0_20px_rgba(0,120,212,0.5)] transition-all duration-300">
+                            Galerie
+                        </a>
+                    </li>
+                    
+                    <!-- ÜBER MICH: Rahmen & Glow -->
+                    <li>
+                        <a href="#ueber-mich" class="px-6 py-2 border border-white/10 rounded-full text-xs font-bold uppercase tracking-widest text-secondary hover:border-primary hover:text-primary hover:shadow-[0_0_20px_rgba(0,120,212,0.5)] transition-all duration-300">
+                            Über mich
+                        </a>
+                    </li>
+                    
+                    <!-- KONTAKT: CTA Button -->
+                    <li>
+                        <a href="#kontakt" class="ml-4 px-8 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-full transition-all uppercase text-xs tracking-widest font-bold hover:shadow-[0_0_20px_rgba(0,120,212,0.5)]">
+                            Kontakt
+                        </a>
+                    </li>
                 </ul>
             </nav>
+
+            <!-- MOBILE MENU ICON -->
             <div class="md:hidden cursor-pointer text-white ml-6" id="mobile-menu-icon">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </div>
         </div>
+        
+        <!-- Mobile Navigation -->
         <nav id="mobile-nav" class="md:hidden hidden bg-black absolute w-full h-screen top-24 left-0 border-t border-white/10 z-50">
             <ul class="flex flex-col p-10 space-y-8 text-center text-xl font-serif">
                 <li><a href="#hero" class="text-white hover:text-primary">Startseite</a></li>
@@ -136,35 +159,33 @@
         </nav>
     </header>
 
-    <!-- HERO VIDEO -->
+<!-- HERO VIDEO -->
     <section id="hero" class="relative h-screen flex flex-col justify-center items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
+            
+            <!-- HIER DEN CLOUDINARY LINK EINFÜGEN -->
             <video id="hero-video" class="w-full h-full object-cover scale-110 opacity-60" autoplay muted loop playsinline poster="bilder/uploads/hintergrund.png">
-                <source src="assets/video/hero.mp4" type="video/mp4">
+                <!-- Ersetze den Link unten mit DEINEM kopierten Cloudinary-Link -->
+                <source src="https://res.cloudinary.com/dk8wfpiwz/video/upload/v1765406824/hero_cu7cn8.mp4">
             </video>
+            
             <div class="absolute inset-0 bg-black/40"></div>
         </div>
+        
+        <!-- Rest des Hero-Bereichs (Text & Button) bleibt gleich... -->
         <div class="relative z-10 text-center px-6">
-            <h1 id="hero-headline" class="font-serif text-5xl md:text-7xl text-white mb-6 opacity-0 translate-y-10 transition-all duration-1000">&nbsp;</h1>
-            <p id="hero-subline" class="text-lg text-secondary opacity-90 mb-10 max-w-2xl mx-auto opacity-0 translate-y-10 transition-all duration-1000 delay-300"></p>
-            
-            <button id="view-collection-btn" 
-                class="opacity-0 translate-y-10 transition-all duration-1000 delay-500 
-                       px-12 py-5 md:px-20 md:py-6 
-                       bg-red-800 hover:bg-red-600 
-                       text-white font-bold text-sm md:text-xl uppercase tracking-[0.25em] 
-                       rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_50px_rgba(220,38,38,0.8)] 
-                       hover:scale-105 hover:-translate-y-2 transform border border-red-700/50 backdrop-blur-sm">
-                Kollektion ansehen
-            </button>
+           <!-- ... (hier nichts ändern) ... -->
         </div>
     </section>
 
     <!-- GALERIE -->
     <section id="galerie" class="py-24 pb-48 bg-black relative">
         <div class="container mx-auto px-6">
+            
+            <!-- LOGO CONTAINER (Wird über CMS gesteuert) -->
             <div id="logo-container-gal" class="flex w-full mb-8 hidden">
-                <img id="gallery-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gallery Logo" class="object-contain max-w-full">
+                <!-- WICHTIG: Kein h-auto, um CMS-Höhe zu respektieren -->
+                <img id="gallery-logo" src="" alt="Gallery Logo" class="object-contain max-w-full">
             </div>
 
             <div class="text-center mb-20">
@@ -178,11 +199,9 @@
     <!-- ÜBER MICH -->
     <section id="ueber-mich" class="py-24 bg-[#111] relative z-20">
         <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/2"><img id="about-img" class="rounded-lg shadow-2xl grayscale hover:grayscale-0 transition duration-700" src=""></div>
             <div class="w-full md:w-1/2">
-                <img id="about-img" class="rounded-lg shadow-2xl grayscale hover:grayscale-0 transition duration-700" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Über mich Portrait">
-            </div>
-            <div class="w-full md:w-1/2">
-                <h2 id="about-title" class="text-3xl font-serif text-white mb-6">&nbsp;</h2>
+                <h2 id="about-title" class="text-3xl font-serif text-white mb-6"></h2>
                 <div id="about-text-content" class="text-secondary opacity-80 space-y-4"></div>
             </div>
         </div>
@@ -196,7 +215,8 @@
             </div>
             <div class="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
                 <div class="w-full lg:w-1/3 space-y-6">
-                    <!-- Telefon -->
+                    
+                    <!-- TELEFON (mit Glow) -->
                     <div class="group bg-[#151515] p-6 rounded-2xl border border-white/5 hover:border-primary transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,120,212,0.3)] flex items-center gap-6">
                         <div class="relative w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-[#2a2a2a] to-black border border-white/10 group-hover:border-primary transition-all duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-primary blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
@@ -207,7 +227,8 @@
                             <a href="#" id="contact-phone" class="text-lg text-white font-sans font-medium tracking-wide underline decoration-primary/50 hover:decoration-primary transition-all"></a>
                         </div>
                     </div>
-                    <!-- E-Mail -->
+
+                    <!-- E-MAIL (mit Glow) -->
                     <div class="group bg-[#151515] p-6 rounded-2xl border border-white/5 hover:border-primary transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,120,212,0.3)] flex items-center gap-6">
                         <div class="relative w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-[#2a2a2a] to-black border border-white/10 group-hover:border-primary transition-all duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-primary blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
@@ -218,7 +239,8 @@
                             <a href="#" id="contact-email" class="text-lg text-white font-sans font-medium tracking-wide underline decoration-primary/50 hover:decoration-primary transition-all"></a>
                         </div>
                     </div>
-                    <!-- WhatsApp -->
+
+                    <!-- WHATSAPP -->
                     <div class="group bg-[#151515] p-6 rounded-2xl border border-white/5 hover:border-green-500 transition-all duration-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center gap-6">
                         <div class="relative w-16 h-16 flex-shrink-0 flex items-center justify-center rounded-full bg-gradient-to-br from-[#2a2a2a] to-black border border-white/10 group-hover:border-green-500 transition-all duration-500 group-hover:scale-110">
                             <div class="absolute inset-0 bg-green-500 blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
@@ -230,17 +252,96 @@
                         </div>
                     </div>
                 </div>
+<!-- RECHTE SEITE: FORMULAR (Mit JavaScript-Steuerung) -->
                 <div class="w-full lg:w-2/3 bg-[#1e1e1e] p-8 md:p-10 rounded-2xl shadow-2xl border-t-4 border-primary">
-                    <form name="kontakt" method="POST" data-netlify="true" action="/danke.html" class="space-y-6">
-                        <input type="hidden" name="form-name" value="kontakt">
-                        <p class="hidden"><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
+                    
+                    <!-- WICHTIG: id="contact-form" hinzugefügt, action bleibt deine Formspree-ID -->
+                    <form id="contact-form" action="https://formspree.io/f/manrpbdg" method="POST" class="space-y-6">
+                        
+                        <!-- Keine _next Input mehr nötig, das macht jetzt das Script -->
+                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-2"><label class="text-sm font-bold text-secondary opacity-80">IHR NAME</label><input type="text" name="name" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all"></div>
-                            <div class="space-y-2"><label class="text-sm font-bold text-secondary opacity-80">IHRE E-MAIL</label><input type="email" name="email" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all"></div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-secondary opacity-80">IHR NAME</label>
+                                <input type="text" name="name" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-secondary opacity-80">IHRE E-MAIL</label>
+                                <input type="email" name="email" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all">
+                            </div>
                         </div>
-                        <div class="space-y-2"><label class="text-sm font-bold text-secondary opacity-80">NACHRICHT</label><textarea name="message" rows="5" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all"></textarea></div>
-                        <button type="submit" class="w-full py-4 bg-primary text-white font-bold rounded-lg shadow-lg hover:bg-white hover:text-primary hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1">NACHRICHT SENDEN</button>
+                        
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-secondary opacity-80">NACHRICHT</label>
+                            <textarea name="message" rows="5" required class="w-full bg-dark border border-gray-700 rounded-lg p-3 text-white focus:border-primary outline-none transition-all"></textarea>
+                        </div>
+                        
+                        <!-- Button mit Status-ID -->
+                        <button id="submit-btn" type="submit" class="w-full py-4 bg-primary text-white font-bold rounded-lg shadow-lg hover:bg-white hover:text-primary hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+                            NACHRICHT SENDEN
+                        </button>
+                        
+                        <!-- Fehlermeldung Platzhalter -->
+                        <p id="form-status" class="text-red-500 text-sm hidden text-center"></p>
                     </form>
+
+                    <!-- JAVASCRIPT LOGIK FÜR DIE WEITERLEITUNG -->
+                    <script>
+                        const form = document.getElementById("contact-form");
+                        const button = document.getElementById("submit-btn");
+                        const status = document.getElementById("form-status");
+
+                        async function handleSubmit(event) {
+                            event.preventDefault(); // Verhindert das Standard-Verhalten
+                            
+                            // Button Feedback
+                            const originalText = button.innerText;
+                            button.innerText = "WIRD GESENDET...";
+                            button.disabled = true;
+                            button.classList.add("opacity-50", "cursor-not-allowed");
+
+                            const data = new FormData(event.target);
+
+                            fetch(event.target.action, {
+                                method: form.method,
+                                body: data,
+                                headers: {
+                                    'Accept': 'application/json'
+                                }
+                            }).then(response => {
+                                if (response.ok) {
+                                    // ERFOLG: Manuelle Weiterleitung zur Danke-Seite
+                                    // Funktioniert 100% sicher, egal was Formspree sagt
+                                    window.location.href = "danke.html";
+                                } else {
+                                    // FEHLER bei Formspree
+                                    response.json().then(data => {
+                                        if (Object.hasOwn(data, 'errors')) {
+                                            status.innerText = data["errors"].map(error => error["message"]).join(", ");
+                                        } else {
+                                            status.innerText = "Es gab ein Problem beim Senden. Bitte versuchen Sie es später erneut.";
+                                        }
+                                        status.classList.remove("hidden");
+                                        resetButton(originalText);
+                                    });
+                                }
+                            }).catch(error => {
+                                // NETZWERKFEHLER
+                                status.innerText = "Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung.";
+                                status.classList.remove("hidden");
+                                resetButton(originalText);
+                            });
+                        }
+
+                        function resetButton(text) {
+                            button.innerText = text;
+                            button.disabled = false;
+                            button.classList.remove("opacity-50", "cursor-not-allowed");
+                        }
+
+                        form.addEventListener("submit", handleSubmit);
+                    </script>
+                </div>
                 </div>
             </div>
         </div>
@@ -260,13 +361,11 @@
             <div class="flex items-center gap-4">
                 <a id="social-linkedin" href="#" target="_blank" class="text-secondary hover:text-white transition-colors duration-300 hidden"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
                 <a id="social-facebook" href="#" target="_blank" class="text-secondary hover:text-white transition-colors duration-300 hidden"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
-                
-                <!-- FIX: Absolut sichere Standard-Geometrie für Instagram -->
-                <a id="social-instagram" href="#" target="_blank" class="text-secondary hover:text-white transition-colors duration-300 hidden"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg></a>
-                
+                <a id="social-instagram" href="#" target="_blank" class="text-secondary hover:text-white transition-colors duration-300 hidden"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
                 <a id="social-x" href="#" target="_blank" class="text-secondary hover:text-white transition-colors duration-300 hidden"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             </div>
 
+            <!-- Rechter Bereich: Visitor Stats -->
             <div class="text-xs text-secondary opacity-50 flex items-center gap-2 bg-[#111] px-4 py-2 rounded-full border border-white/5">
                 <span class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -283,7 +382,7 @@
     <div id="imageModal" class="fixed inset-0 z-[9999] hidden bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <span class="close absolute top-5 right-8 text-white text-5xl cursor-pointer hover:text-primary transition">&times;</span>
         <div class="max-w-5xl w-full text-center">
-            <img class="max-h-[70vh] mx-auto rounded-lg shadow-2xl border border-white/10" id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Detailansicht">
+            <img class="max-h-[70vh] mx-auto rounded-lg shadow-2xl border border-white/10" id="modalImg" alt="Detailansicht">
             <div id="caption" class="mt-6 text-white font-serif text-2xl tracking-wider"></div>
             <p id="modalDescription" class="mt-4 text-secondary opacity-80 text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-light"></p>
         </div>
@@ -293,18 +392,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
-    
-    <!-- Netlify Identity Redirect Helper -->
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
 </body>
 </html>
+
+
+
+
+
+
+
