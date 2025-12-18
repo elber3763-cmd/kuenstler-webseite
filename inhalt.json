@@ -2,101 +2,72 @@
   "kontakt": {
     "telefon": "0174875923",
     "email": "elber3763@gmail.com",
-    "chatText": "01784232626",
+    "chatText": "WhatsApp",
     "chatLink": "https://wa.me/491784232626"
   },
-  "biografieText": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.<br><br>In meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.",
+  "biografieText": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.<br><br>In meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen.",
   "titel": "Nico Mahler",
   "galleryHeadline": "Die Kollektion",
   "galerieBilder": [
     {
       "titel": "Zwischen Himmel und Haut",
-      "beschreibung": "Ein Gesicht, gemalt wie der Himmel – Wolken ziehen über geschlossene Lider, als wären Gedanken Wetterphänomene. Dieses Werk verbindet Mensch und Natur in einer surrealen Synthese: Die Haut wird zur Atmosphäre, das Individuum zur Landschaft. Es ist ein visuelles Gedicht über Verbundenheit, Vergänglichkeit und die stille Kraft des Inneren. Die Komposition lädt zur kontemplativen Betrachtung ein – zwischen Traum und Topografie, zwischen Körper und Kosmos",
+      "beschreibung": "Ein Gesicht, gemalt wie der Himmel – Wolken ziehen über geschlossene Lider.",
       "bild": "bilder/uploads/pexels-photo-1988686.jpeg"
     },
     {
       "titel": "Konzentration der Farben",
-      "beschreibung": "Ein Porträt, das zwischen Realismus und Explosion oszilliert. Die Augen blicken analytisch, die Farben sprechen emotional – ein Diskurs zwischen Kontrolle und Ausdruck.",
-      "bild": "bilder/uploads/bauernhof.jpg"
+      "beschreibung": "Ein Porträt, das zwischen Realismus und Explosion oszilliert.",
+      "bild": "bilder/uploads/fabverläufe.jpg"
     },
     {
       "titel": "Topografie des Inneren",
-      "beschreibung": "Ein menschlicher Körper verschmilzt mit Landschaft und Symbol. Die Komposition ist ein visuelles Essay über Identität, Erinnerung und die kartografische Kraft der Kunst.",
-      "bild": "bilder/uploads/image-3-.jpg"
-    },
-    {
-      "titel": "Kosmische Strömung",
-      "beschreibung": "Flüssige Farbe als geologische Bewegung – ein Werk, das wie ein Planetenschnitt wirkt. Die Tiefe entsteht durch Pigment, die Bedeutung durch Struktur.",
-      "bild": "bilder/uploads/image-4-.jpg"
-    },
-    {
-      "titel": "Impuls und Fläche",
-      "beschreibung": "Ein abstrakter Dialog aus Bewegung und Widerstand. Die Farben stoßen sich ab und ziehen sich an – ein energetisches Feld zwischen Chaos und Komposition.",
-      "bild": "bilder/uploads/image.jpg"
-    },
-    {
-      "titel": "Horizont in Flammen",
-      "beschreibung": "Ein dramatischer Farbverlauf zwischen Himmel, Wasser und Erde. Dieses Werk ist ein emotionaler Gradient – von Licht zu Tiefe, von Wärme zu Reflexion.",
-      "bild": "bilder/uploads/pexels-photo-1570779.jpeg"
-    },
-    {
-      "titel": "Diagonal der Spannung",
-      "beschreibung": "Ein Schnitt durch die Fläche – Orange trifft auf Blau, Textur auf Leere. Die Komposition ist ein visuelles Argument für Kontrast als Erkenntnisform.",
+      "beschreibung": "Ein menschlicher Körper verschmilzt mit Landschaft und Symbol.",
       "bild": "bilder/uploads/pexels-photo-1585325.jpeg"
     },
     {
-      "titel": "Stille im Spiegel",
-      "beschreibung": "Ein alpiner See reflektiert die Welt – Berge, Himmel, Bewegung. Die Szene ist ein kontemplatives Gedicht über Natur, Perspektive und die Ruhe im Detail.",
+      "titel": "Kosmische Strömung",
+      "beschreibung": "Flüssige Farbe als geologische Bewegung.",
+      "bild": "bilder/uploads/pexels-photo-1509534.jpeg"
+    },
+    {
+      "titel": "Impuls und Fläche",
+      "beschreibung": "Ein abstrakter Dialog aus Bewegung und Widerstand.",
+      "bild": "bilder/uploads/pexels-photo-1070527.jpeg"
+    },
+    {
+      "titel": "Horizont in Flammen",
+      "beschreibung": "Ein dramatischer Farbverlauf zwischen Himmel, Wasser und Erde.",
+      "bild": "bilder/uploads/image.jpg"
+    },
+    {
+      "titel": "Diagonal der Spannung",
+      "beschreibung": "Ein Schnitt durch die Fläche – Orange trifft auf Blau.",
       "bild": "bilder/uploads/pexels-photo-354939.jpeg"
     },
     {
+      "titel": "Stille im Spiegel",
+      "beschreibung": "Ein alpiner See reflektiert die Welt.",
+      "bild": "bilder/uploads/pexels-photo-1570779.jpeg"
+    },
+    {
       "titel": "Takt der Erde",
-      "beschreibung": "Ein ländlicher Pfad, belebt von Tieren, Menschen und Licht. Dieses Werk ist ein visuelles Gedicht über Rhythmus, Gemeinschaft und die stille Ordnung der Natur. Die Komposition erinnert an eine pastorale Partitur – jeder Schatten ein Takt, jeder Schritt ein Vers.",
-      "bild": "bilder/uploads/image-3-.jpg"
+      "beschreibung": "Ein ländlicher Pfad, belebt von Tieren, Menschen und Licht.",
+      "bild": "bilder/uploads/pexels-photo-1762973.jpeg"
     }
   ],
   "kuenstlerFoto": "bilder/uploads/nicola.jpg",
-  "logoBild": "/bilder/uploads/logo7.png",
-  "social": {
-    "linkedin": "https://www.linkedin.com",
-    "facebook": "https://www.facebook.com",
-    "instagram": "https://www.instagram.com",
-    "tiktok": "https://www.tiktok.com",
-    "x": "https://x.com"
-  },
-  "heroHeadline": "Wo Kunst zur Eleganz wird – und Eleganz zur inneren Bewegung",
+  "heroHeadline": "Wo Kunst zur Eleganz wird",
   "biografieTitel": "Nico",
-  "metaTitle": ".",
-  "welcome_subtitle": "Zwischen Realität und Abstraktion",
-  "metaDesc": ".",
-  "impressum": {
-    "name": "Nico Mahler",
-    "strasse": "Muster Str. 10",
-    "ort": "13245 Musterland",
-    "telefon": "015478956",
-    "email": "mustermann@gmail.com",
-    "steuer": "12345 / 585824",
-    "privacy": "**Datenschutzerklärung**\n\nDer Schutz Ihrer persönlichen Daten ist mir ein wichtiges Anliegen...",
-    "disclaimer": "**Haftungsausschluss & Rechtliches**\n\nDie Inhalte dieser Webseite..."
-  },
-  "heroBild": "bilder/uploads/hintergrund.png",
-  "heroSubline": "Diese Gemälde entfalten die Tiefe von Momenten, die sich sonst nie greifen lassen: ein Hauch von Vergänglichkeit, eingefangen in Farbe; ein Flüstern von Licht, das sich über die Leinwand legt; eine stille Erhabenheit, die jeden Raum beseelt. Hier verbindet sich künstlerisches Handwerk mit emotionaler Intensität zu einer visuellen Erfahrung von außergewöhnlicher Raffinesse.",
   "welcome_title": "Willkommen",
+  "welcome_subtitle": "Zwischen Realität und Abstraktion",
+  "welcome_body": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Treten Sie ein in eine Welt, in der Farben sprechen und Formen fühlen.",
   "design": {
-    "logo_offset_x": 0,
-    "logo_offset_y": 0,
-    "site_logo": "bilder/uploads/new_nicofineart_schwarz_rot.png",
     "primary_color": "#d41400",
-    "show_logo": true,
-    "accent_color": "#F97316",
-    "logo_alignment": "center",
-    "background_color": "#1a1a1a",
+    "background_color": "#050505",
     "font_heading": "Playfair Display",
-    "logo_width": "150px",
-    "font_body": "Open Sans",
-    "secondary_color": "#d6cfcf",
-    "logo_height": "auto"
-  },
-  "untertitel": "Eine kuratierte Welt zeitloser Ästhetik, geschaffen für Menschen, die nicht nur sehen, sondern fühlen möchten.",
-  "welcome_body": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Treten Sie ein in eine Welt, in der Farben sprechen und Formen fühlen."
+    "font_body": "Inter",
+    "show_logo": true,
+    "site_logo": "bilder/uploads/logo7.png",
+    "logo_width": "180px"
+  }
 }
