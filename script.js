@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             setupContent(data);
             if (data.galerieBilder && data.galerieBilder.length > 0) {
-                startGroupCinemaGallery(data.galerieBilder);
+                startSmartGroupGallery(data.galerieBilder);
             }
         })
         .catch(err => console.error("Fehler:", err));
@@ -113,13 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 4. HYBRID GALERIE: 3 BILDER + RESPONSIVE FIT ZOOM
+    // 4. SMART GALERIE: 3er Gruppen + Header-Aware Zoom + Scroll-Check
     // ============================================================
-    function startGroupCinemaGallery(allImages) {
+    function startSmartGroupGallery(allImages) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
         stage.innerHTML = ''; 
 
+        // CSS
         const style = document.createElement('style');
         style.textContent = `
             #gallery-stage {
@@ -131,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                /* Visible erlaubt Zoom, aber ScrollTrigger kontrolliert Sichtbarkeit */
                 overflow: visible !important; 
                 z-index: 10;
             }
@@ -143,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                opacity: 0; 
+                opacity: 0;
                 pointer-events: none;
             }
             .gallery-item {
@@ -156,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 z-index: 1;
                 pointer-events: auto;
                 cursor: pointer;
+                transition: transform 0.3s ease;
             }
             .gallery-item img {
                 width: 100%;
@@ -168,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             @media (max-width: 768px) {
                 #gallery-stage { min-height: 300px; }
-                .gallery-group { flex-direction: row; gap: 5px; } 
+                .gallery-group { gap: 5px; } 
                 .gallery-item { max-width: 32%; }
             }
         `;
@@ -180,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let currentChunkIndex = 0;
+        let mainTimeline = null; // Referenz für ScrollTrigger
 
         function playNextGroup() {
             stage.innerHTML = '';
@@ -191,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             currentImages.forEach(imgData => {
                 if(!imgData.bild) return;
-                
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'gallery-item';
                 itemDiv.onclick = () => openModal(imgData.bild, imgData.titel, imgData.beschreibung);
@@ -210,24 +213,40 @@ document.addEventListener('DOMContentLoaded', () => {
             stage.appendChild(groupDiv);
 
             if(typeof gsap !== 'undefined') {
-                const tl = gsap.timeline({
+                // Timeline erstellen
+                mainTimeline = gsap.timeline({
+                    // Wenn Timeline fertig, nächste Gruppe
                     onComplete: () => {
                         currentChunkIndex = (currentChunkIndex + 1) % chunks.length;
                         playNextGroup();
                     }
                 });
 
-                tl.to(groupDiv, { opacity: 1, duration: 0.5 });
+                // 🟢 SCROLLTRIGGER LOGIK
+                // Animation läuft NUR, wenn die Galerie im Bild ist
+                ScrollTrigger.create({
+                    trigger: "#galerie",
+                    start: "top bottom", // Wenn Galerie unten reinkommt
+                    end: "bottom top",   // Wenn Galerie oben rausgeht
+                    animation: mainTimeline,
+                    toggleActions: "play pause resume pause" // Spielt nur wenn sichtbar
+                });
 
+                // 1. Gruppe einblenden
+                mainTimeline.to(groupDiv, { opacity: 1, duration: 0.5 });
+
+                // 2. Zoom Sequenz
                 itemElements.forEach((img) => {
                     const parentItem = img.parentElement;
 
-                    tl.set(parentItem, { zIndex: 1000 });
+                    // Parent nach vorne holen
+                    mainTimeline.set(parentItem, { zIndex: 1000 });
 
-                    tl.to(img, {
+                    mainTimeline.to(img, {
                         duration: 1.5,
                         ease: "power3.inOut",
                         
+                        // FIX 1: Header berücksichtigen bei Position (y)
                         x: () => {
                             const rect = img.getBoundingClientRect();
                             const screenCenter = window.innerWidth / 2;
@@ -236,36 +255,44 @@ document.addEventListener('DOMContentLoaded', () => {
                         },
                         y: () => {
                             const rect = img.getBoundingClientRect();
-                            const screenCenter = window.innerHeight / 2;
-                            const elCenter = rect.top + rect.height / 2;
-                            return screenCenter - elCenter;
+                            const header = document.getElementById('main-header');
+                            const headerHeight = header ? header.offsetHeight : 0;
+                            
+                            // Verfügbare Höhe unter dem Header
+                            const availHeight = window.innerHeight - headerHeight;
+                            
+                            // Mittelpunkt des verfügbaren Bereichs
+                            const targetY = headerHeight + (availHeight / 2);
+                            const elCenterY = rect.top + rect.height / 2;
+                            
+                            return targetY - elCenterY;
                         },
                         
-                        // 🟢 FIX: Dynamische Skalierung (Contain Logic)
+                        // FIX 2: Skalierung so, dass es unter den Header passt (Contain)
                         scale: () => {
                             const rect = img.getBoundingClientRect();
+                            const header = document.getElementById('main-header');
+                            const headerHeight = header ? header.offsetHeight : 0;
                             
-                            // Maximal 85% der Bildschirmbreite oder -höhe nutzen
-                            const maxW = window.innerWidth * 0.85;
-                            const maxH = window.innerHeight * 0.85;
+                            // Maximaler Platz (mit etwas Abstand)
+                            const maxW = window.innerWidth * 0.90;
+                            const maxH = (window.innerHeight - headerHeight) * 0.85;
                             
-                            // Berechne notwendigen Scale-Faktor für beide Dimensionen
                             const scaleW = maxW / rect.width;
                             const scaleH = maxH / rect.height;
                             
-                            // Nimm den KLEINEREN Faktor -> Bild passt immer ganz rein
                             return Math.min(scaleW, scaleH);
                         },
                         
-                        boxShadow: "0 0 0 100vw rgba(0,0,0,0.9)",
+                        boxShadow: "0 0 0 100vw rgba(0,0,0,0.9)", // Abdunkeln
                         borderColor: "#fff",
                         borderWidth: "2px",
                         borderStyle: "solid"
                     })
                     
-                    .to(img, { duration: 1.5 }) // Halten
+                    .to(img, { duration: 1.5 }) // Pause in der Mitte
                     
-                    .to(img, {
+                    .to(img, { // Zurück
                         duration: 1.0,
                         ease: "power2.inOut",
                         x: 0, 
@@ -278,7 +305,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     .set(parentItem, { zIndex: 1 });
                 });
 
-                tl.to(groupDiv, { opacity: 0, duration: 0.5 });
+                // 3. Gruppe ausblenden
+                mainTimeline.to(groupDiv, { opacity: 0, duration: 0.5 });
             }
         }
 
