@@ -1,73 +1,102 @@
 {
   "kontakt": {
-    "telefon": "0174875923",
-    "email": "elber3763@gmail.com",
-    "chatText": "WhatsApp",
+    "telefon": " 0174875923",
+    "email": " elber3763@gmail.com",
+    "chatText": "01784232626",
     "chatLink": "https://wa.me/491784232626"
   },
-  "biografieText": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.<br><br>In meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen.",
-  "titel": "Nico Mahler",
+  "biografieText": " Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Seit über 15 Jahren erforsche ich die Grenzen zwischen Realität und Abstraktion. Meine Arbeiten entstehen aus dem Dialog zwischen Farbe, Struktur und Licht.\\nIn meinem Atelier in Berlin entwickle ich Werke, die Ruhe ausstrahlen und gleichzeitig Energie freisetzen. Jedes Bild ist eine Einladung an den Betrachter, kurz innezuhalten und die Tiefe des Moments zu spüren.",
+  "titel": " ",
   "galleryHeadline": "Die Kollektion",
   "galerieBilder": [
     {
       "titel": "Zwischen Himmel und Haut",
-      "beschreibung": "Ein Gesicht, gemalt wie der Himmel – Wolken ziehen über geschlossene Lider.",
+      "beschreibung": "Ein Gesicht, gemalt wie der Himmel – Wolken ziehen über geschlossene Lider, als wären Gedanken Wetterphänomene. Dieses Werk verbindet Mensch und Natur in einer surrealen Synthese: Die Haut wird zur Atmosphäre, das Individuum zur Landschaft. Es ist ein visuelles Gedicht über Verbundenheit, Vergänglichkeit und die stille Kraft des Inneren. Die Komposition lädt zur kontemplativen Betrachtung ein – zwischen Traum und Topografie, zwischen Körper und Kosmos",
       "bild": "bilder/uploads/pexels-photo-1988686.jpeg"
     },
     {
       "titel": "Konzentration der Farben",
-      "beschreibung": "Ein Porträt, das zwischen Realismus und Explosion oszilliert.",
+      "beschreibung": "Ein Porträt, das zwischen Realismus und Explosion oszilliert. Die Augen blicken analytisch, die Farben sprechen emotional – ein Diskurs zwischen Kontrolle und Ausdruck.",
       "bild": "bilder/uploads/fabverläufe.jpg"
     },
     {
       "titel": "Topografie des Inneren",
-      "beschreibung": "Ein menschlicher Körper verschmilzt mit Landschaft und Symbol.",
+      "beschreibung": "Ein menschlicher Körper verschmilzt mit Landschaft und Symbol. Die Komposition ist ein visuelles Essay über Identität, Erinnerung und die kartografische Kraft der Kunst.",
       "bild": "bilder/uploads/pexels-photo-1585325.jpeg"
     },
     {
       "titel": "Kosmische Strömung",
-      "beschreibung": "Flüssige Farbe als geologische Bewegung.",
+      "beschreibung": "Flüssige Farbe als geologische Bewegung – ein Werk, das wie ein Planetenschnitt wirkt. Die Tiefe entsteht durch Pigment, die Bedeutung durch Struktur.",
       "bild": "bilder/uploads/pexels-photo-1509534.jpeg"
     },
     {
       "titel": "Impuls und Fläche",
-      "beschreibung": "Ein abstrakter Dialog aus Bewegung und Widerstand.",
+      "beschreibung": "Ein abstrakter Dialog aus Bewegung und Widerstand. Die Farben stoßen sich ab und ziehen sich an – ein energetisches Feld zwischen Chaos und Komposition.",
       "bild": "bilder/uploads/pexels-photo-1070527.jpeg"
     },
     {
       "titel": "Horizont in Flammen",
-      "beschreibung": "Ein dramatischer Farbverlauf zwischen Himmel, Wasser und Erde.",
+      "beschreibung": "Ein dramatischer Farbverlauf zwischen Himmel, Wasser und Erde. Dieses Werk ist ein emotionaler Gradient – von Licht zu Tiefe, von Wärme zu Reflexion.",
       "bild": "bilder/uploads/image.jpg"
     },
     {
       "titel": "Diagonal der Spannung",
-      "beschreibung": "Ein Schnitt durch die Fläche – Orange trifft auf Blau.",
+      "beschreibung": "Ein Schnitt durch die Fläche – Orange trifft auf Blau, Textur auf Leere. Die Komposition ist ein visuelles Argument für Kontrast als Erkenntnisform.",
       "bild": "bilder/uploads/pexels-photo-354939.jpeg"
     },
     {
       "titel": "Stille im Spiegel",
-      "beschreibung": "Ein alpiner See reflektiert die Welt.",
+      "beschreibung": "Ein alpiner See reflektiert die Welt – Berge, Himmel, Bewegung. Die Szene ist ein kontemplatives Gedicht über Natur, Perspektive und die Ruhe im Detail.",
       "bild": "bilder/uploads/pexels-photo-1570779.jpeg"
     },
     {
       "titel": "Takt der Erde",
-      "beschreibung": "Ein ländlicher Pfad, belebt von Tieren, Menschen und Licht.",
+      "beschreibung": "Ein ländlicher Pfad, belebt von Tieren, Menschen und Licht. Dieses Werk ist ein visuelles Gedicht über Rhythmus, Gemeinschaft und die stille Ordnung der Natur. Die Komposition erinnert an eine pastorale Partitur – jeder Schatten ein Takt, jeder Schritt ein Vers.",
       "bild": "bilder/uploads/pexels-photo-1762973.jpeg"
     }
   ],
   "kuenstlerFoto": "bilder/uploads/nicola.jpg",
-  "heroHeadline": "Wo Kunst zur Eleganz wird",
+  "logoBild": "/bilder/uploads/logo7.png",
+  "social": {
+    "linkedin": "https://www.linkedin.com",
+    "facebook": "https://www.facebook.com",
+    "instagram": "https://www.instagram.com",
+    "tiktok": "https://www.tiktok.com",
+    "x": "https://x.com"
+  },
+  "heroHeadline": " Wo Kunst zur Eleganz wird – und Eleganz zur inneren Bewegung",
   "biografieTitel": "Nico",
-  "welcome_title": "Willkommen",
+  "metaTitle": ".",
   "welcome_subtitle": "Zwischen Realität und Abstraktion",
-  "welcome_body": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Treten Sie ein in eine Welt, in der Farben sprechen und Formen fühlen.",
+  "metaDesc": ".",
+  "impressum": {
+    "name": "Nico Mahler",
+    "strasse": "Muster Str. 10",
+    "ort": "13245 Musterland",
+    "telefon": "015478956",
+    "email": "mustermann@gmail.com",
+    "steuer": "12345 / 585824",
+    "privacy": "**Datenschutzerklärung**\n\nDer Schutz Ihrer persönlichen Daten ist mir ein wichtiges Anliegen. Diese Webseite dient der Präsentation künstlerischer Werke und erhebt grundsätzlich nur die Daten, die für eine sichere, funktionale und benutzerfreundliche Nutzung erforderlich sind.\n\n**Verantwortliche Stelle**  \nVerantwortlich für die Datenverarbeitung im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:\nThomas Müller\nKontakt: \\[E-Mail-Adresse oder Kontaktformular einfügen]\n\n**Erhebung und Verarbeitung personenbezogener Daten**  \nBeim Besuch dieser Webseite werden automatisch technische Daten erfasst (z. B. IP-Adresse, Browsertyp, Zugriffszeit), um die Stabilität und Sicherheit der Seite zu gewährleisten. Eine darüber hinausgehende Verarbeitung erfolgt nur, wenn Sie aktiv Kontakt aufnehmen – etwa über ein Formular oder per E-Mail.\n\n**Verwendung von Cookies**  \nDiese Webseite verwendet gegebenenfalls Cookies, um die Benutzererfahrung zu verbessern. Sie können die Verwendung von Cookies in Ihrem Browser jederzeit einschränken oder deaktivieren.\n\n**Weitergabe von Daten**  \nEs erfolgt keine Weitergabe Ihrer Daten an Dritte, es sei denn, dies ist gesetzlich vorgeschrieben oder zur Vertragsabwicklung erforderlich.\n\n**Ihre Rechte**  \nSie haben jederzeit das Recht auf Auskunft über die gespeicherten Daten, deren Berichtigung, Löschung oder Einschränkung der Verarbeitung. Ebenso können Sie der Verarbeitung widersprechen oder eine erteilte Einwilligung widerrufen.\n\n**Sicherheit**  \nIch setze technische und organisatorische Maßnahmen ein, um Ihre Daten vor Verlust, Manipulation und unbefugtem Zugriff zu schützen.\n\n\n\n\n",
+    "disclaimer": "**Haftungsausschluss & Rechtliches**\n\nDie Inhalte dieser Webseite wurden mit größter Sorgfalt erstellt und dienen der Präsentation künstlerischer Arbeiten. Dennoch übernehme ich keine Gewähr für die Richtigkeit, Vollständigkeit und Aktualität der bereitgestellten Informationen.\n\nAls Diensteanbieter bin ich gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG bin ich jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen werde ich diese Inhalte umgehend entfernen.\n\n**Haftung für Links**  \nDiese Webseite enthält Verweise (Links) zu externen Webseiten Dritter, auf deren Inhalte ich keinen Einfluss habe. Deshalb kann ich für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Zum Zeitpunkt der Verlinkung wurden die Seiten auf mögliche Rechtsverstöße überprüft; rechtswidrige Inhalte waren nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werde ich derartige Links umgehend entfernen.\n\n**Urheberrecht**  \nDie auf dieser Webseite veröffentlichten Inhalte und Werke unterliegen dem deutschen Urheberrecht. Jede Art der Vervielfältigung, Bearbeitung, Verbreitung und Verwertung außerhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet."
+  },
+  "heroBild": "bilder/uploads/hintergrund.png",
+  "heroSubline": " Diese Gemälde entfalten die Tiefe von Momenten, die sich sonst nie greifen lassen: ein Hauch von Vergänglichkeit, eingefangen in Farbe; ein Flüstern von Licht, das sich über die Leinwand legt; eine stille Erhabenheit, die jeden Raum beseelt. Hier verbindet sich künstlerisches Handwerk mit emotionaler Intensität zu einer visuellen Erfahrung von außergewöhnlicher Raffinesse.",
+  "welcome_title": "Willkommen",
   "design": {
+    "logo_offset_x": 0,
+    "logo_offset_y": 0,
+    "site_logo": "bilder/uploads/nicofineart_schwarz_rot.png",
     "primary_color": "#d41400",
-    "background_color": "#050505",
-    "font_heading": "Playfair Display",
-    "font_body": "Inter",
     "show_logo": true,
-    "site_logo": "bilder/uploads/logo7.png",
-    "logo_width": "180px"
-  }
+    "accent_color": "#F97316",
+    "logo_alignment": "center",
+    "background_color": "#1a1a1a",
+    "font_heading": "Playfair Display",
+    "logo_width": "150px",
+    "font_body": "Open Sans",
+    "secondary_color": "#d6cfcf",
+    "logo_height": "auto"
+  },
+  "untertitel": "Eine kuratierte Welt zeitloser Ästhetik, geschaffen für Menschen, die nicht nur sehen, sondern fühlen möchten.",
+  "welcome_body": "Kunst ist für mich nicht nur Darstellung, sondern Kommunikation. Treten Sie ein in eine Welt, in der Farben sprechen und Formen fühlen."
 }
