@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             setupContent(data);
             if (data.galerieBilder && data.galerieBilder.length > 0) {
-                // Startet die korrigierte Galerie
                 startGroupCinemaGallery(data.galerieBilder);
             }
         })
@@ -114,14 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 4. GALERIE MIT Z-INDEX FIX
+    // 4. HYBRID GALERIE: 3 BILDER + RESPONSIVE FIT ZOOM
     // ============================================================
     function startGroupCinemaGallery(allImages) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
         stage.innerHTML = ''; 
 
-        // CSS
         const style = document.createElement('style');
         style.textContent = `
             #gallery-stage {
@@ -155,10 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 position: relative;
                 border-radius: 8px;
                 overflow: visible !important; 
-                z-index: 1; /* Standard Ebene */
+                z-index: 1;
                 pointer-events: auto;
                 cursor: pointer;
-                transition: z-index 0s; /* Sofortige Umschaltung */
             }
             .gallery-item img {
                 width: 100%;
@@ -220,25 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                // 1. Gruppe einblenden
                 tl.to(groupDiv, { opacity: 1, duration: 0.5 });
 
-                // 2. Sequenz
                 itemElements.forEach((img) => {
-                    // WICHTIGER FIX: Wir setzen den Z-Index des ELTERN-ELEMENTS (.gallery-item)
-                    // bevor die Animation des Bildes startet.
-                    
                     const parentItem = img.parentElement;
 
-                    // Schritt A: Parent nach vorne holen
                     tl.set(parentItem, { zIndex: 1000 });
 
-                    // Schritt B: Bild animieren
                     tl.to(img, {
                         duration: 1.5,
                         ease: "power3.inOut",
                         
-                        // Koordinaten zur Bildschirmmitte
                         x: () => {
                             const rect = img.getBoundingClientRect();
                             const screenCenter = window.innerWidth / 2;
@@ -252,17 +241,30 @@ document.addEventListener('DOMContentLoaded', () => {
                             return screenCenter - elCenter;
                         },
                         
-                        scale: () => window.innerWidth < 768 ? 1.8 : 2.5,
+                        // 🟢 FIX: Dynamische Skalierung (Contain Logic)
+                        scale: () => {
+                            const rect = img.getBoundingClientRect();
+                            
+                            // Maximal 85% der Bildschirmbreite oder -höhe nutzen
+                            const maxW = window.innerWidth * 0.85;
+                            const maxH = window.innerHeight * 0.85;
+                            
+                            // Berechne notwendigen Scale-Faktor für beide Dimensionen
+                            const scaleW = maxW / rect.width;
+                            const scaleH = maxH / rect.height;
+                            
+                            // Nimm den KLEINEREN Faktor -> Bild passt immer ganz rein
+                            return Math.min(scaleW, scaleH);
+                        },
+                        
                         boxShadow: "0 0 0 100vw rgba(0,0,0,0.9)",
                         borderColor: "#fff",
                         borderWidth: "2px",
                         borderStyle: "solid"
                     })
                     
-                    // Schritt C: Halten
-                    .to(img, { duration: 1.5 })
+                    .to(img, { duration: 1.5 }) // Halten
                     
-                    // Schritt D: Zurück animieren
                     .to(img, {
                         duration: 1.0,
                         ease: "power2.inOut",
@@ -273,11 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         borderWidth: "0px"
                     })
 
-                    // Schritt E: Parent Z-Index zurücksetzen
                     .set(parentItem, { zIndex: 1 });
                 });
 
-                // 3. Gruppe ausblenden
                 tl.to(groupDiv, { opacity: 0, duration: 0.5 });
             }
         }
