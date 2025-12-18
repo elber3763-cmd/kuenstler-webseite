@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             setupContent(data);
             if (data.galerieBilder && data.galerieBilder.length > 0) {
-                // Startet die Kombination: 3er Gruppen + Zoom
+                // Startet die korrigierte Galerie
                 startGroupCinemaGallery(data.galerieBilder);
             }
         })
@@ -114,14 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 4. HYBRID GALERIE: 3 BILDER + ZOOM OUT OF FRAME
+    // 4. GALERIE MIT Z-INDEX FIX
     // ============================================================
     function startGroupCinemaGallery(allImages) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
         stage.innerHTML = ''; 
 
-        // Styles: Horizontal, 3 Stück, Overflow Visible für den Zoom
+        // CSS
         const style = document.createElement('style');
         style.textContent = `
             #gallery-stage {
@@ -133,11 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /* WICHTIG: Damit Zoom über den Rand geht */
                 overflow: visible !important; 
                 z-index: 10;
             }
-            /* Container für die Gruppe */
             .gallery-group {
                 display: flex;
                 gap: 20px;
@@ -147,20 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                opacity: 0; /* Start unsichtbar */
+                opacity: 0; 
                 pointer-events: none;
             }
             .gallery-item {
                 flex: 1;
-                max-width: 30%; /* 3 Stück nebeneinander */
+                max-width: 30%;
                 aspect-ratio: 3/4;
                 position: relative;
                 border-radius: 8px;
-                /* Kein Overflow Hidden, damit Bild wachsen kann */
                 overflow: visible !important; 
-                z-index: 1;
+                z-index: 1; /* Standard Ebene */
                 pointer-events: auto;
                 cursor: pointer;
+                transition: z-index 0s; /* Sofortige Umschaltung */
             }
             .gallery-item img {
                 width: 100%;
@@ -173,13 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             @media (max-width: 768px) {
                 #gallery-stage { min-height: 300px; }
-                .gallery-group { flex-direction: row; gap: 5px; } /* Auch mobil 3 Stück */
+                .gallery-group { flex-direction: row; gap: 5px; } 
                 .gallery-item { max-width: 32%; }
             }
         `;
         document.head.appendChild(style);
 
-        // Chunks erstellen (3er Gruppen)
         const chunks = [];
         for (let i = 0; i < allImages.length; i += 3) {
             chunks.push(allImages.slice(i, i + 3));
@@ -188,10 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentChunkIndex = 0;
 
         function playNextGroup() {
-            // Alte Gruppe löschen (falls vorhanden)
             stage.innerHTML = '';
-
-            // Neue Gruppe erstellen
             const groupDiv = document.createElement('div');
             groupDiv.className = 'gallery-group';
             
@@ -203,8 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'gallery-item';
-                
-                // Modal Klick (funktioniert auch während Animation)
                 itemDiv.onclick = () => openModal(imgData.bild, imgData.titel, imgData.beschreibung);
 
                 const img = document.createElement('img');
@@ -215,16 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 itemDiv.appendChild(img);
                 groupDiv.appendChild(itemDiv);
-                itemElements.push(img); // Bilder merken für Zoom-Animation
+                itemElements.push(img); 
             });
 
             stage.appendChild(groupDiv);
 
-            // GSAP Timeline
             if(typeof gsap !== 'undefined') {
                 const tl = gsap.timeline({
                     onComplete: () => {
-                        // Nächste Gruppe
                         currentChunkIndex = (currentChunkIndex + 1) % chunks.length;
                         playNextGroup();
                     }
@@ -233,15 +223,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. Gruppe einblenden
                 tl.to(groupDiv, { opacity: 1, duration: 0.5 });
 
-                // 2. Jedes Bild einzeln in die Mitte zoomen (Viewport Center)
+                // 2. Sequenz
                 itemElements.forEach((img) => {
+                    // WICHTIGER FIX: Wir setzen den Z-Index des ELTERN-ELEMENTS (.gallery-item)
+                    // bevor die Animation des Bildes startet.
+                    
+                    const parentItem = img.parentElement;
+
+                    // Schritt A: Parent nach vorne holen
+                    tl.set(parentItem, { zIndex: 1000 });
+
+                    // Schritt B: Bild animieren
                     tl.to(img, {
                         duration: 1.5,
                         ease: "power3.inOut",
                         
-                        zIndex: 9999, // Über alles
-                        
-                        // Berechnung zur BILDSCHIRM-MITTE
+                        // Koordinaten zur Bildschirmmitte
                         x: () => {
                             const rect = img.getBoundingClientRect();
                             const screenCenter = window.innerWidth / 2;
@@ -255,30 +252,29 @@ document.addEventListener('DOMContentLoaded', () => {
                             return screenCenter - elCenter;
                         },
                         
-                        // Zoom-Faktor
                         scale: () => window.innerWidth < 768 ? 1.8 : 2.5,
-                        
-                        boxShadow: "0 0 0 100vw rgba(0,0,0,0.9)", // Abdunkeln
+                        boxShadow: "0 0 0 100vw rgba(0,0,0,0.9)",
                         borderColor: "#fff",
                         borderWidth: "2px",
                         borderStyle: "solid"
                     })
                     
-                    // Halten
+                    // Schritt C: Halten
                     .to(img, { duration: 1.5 })
                     
-                    // Zurück
+                    // Schritt D: Zurück animieren
                     .to(img, {
                         duration: 1.0,
                         ease: "power2.inOut",
                         x: 0, 
                         y: 0, 
                         scale: 1, 
-                        zIndex: 1,
                         boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
-                        borderWidth: "0px",
-                        onComplete: () => gsap.set(img, { clearProps: "zIndex" })
-                    });
+                        borderWidth: "0px"
+                    })
+
+                    // Schritt E: Parent Z-Index zurücksetzen
+                    .set(parentItem, { zIndex: 1 });
                 });
 
                 // 3. Gruppe ausblenden
