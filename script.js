@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 cursorOutline.style.top = `${posY}px`;
             }
         });
-        // Hover Effekte
         document.addEventListener('mouseover', (e) => {
             if(e.target.closest('a, button, input, textarea, .gallery-item')) {
                 document.body.classList.add('hovering');
@@ -54,20 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
     // 1. DATEN LADEN & INIT
     // ============================================================
-    // Intro sofort ausblenden für schnellen Start
     const introLayer = document.getElementById('intro-layer');
     if(introLayer) introLayer.style.display = 'none';
     const header = document.getElementById('main-header');
     if(header) header.classList.remove('opacity-0', 'pointer-events-none');
 
-    // Daten holen
     const cacheBuster = new Date().getTime();
     fetch(`inhalt.json?v=${cacheBuster}`)
         .then(res => res.json())
         .then(data => {
             setupContent(data);
-            
-            // 🚀 GALERIE SOFORT STARTEN
             if (data.galerieBilder && data.galerieBilder.length > 0) {
                 initCinemaGallery(data.galerieBilder);
             }
@@ -88,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if(el && src) el.src = src; 
         };
 
-        // Text & Bilder
         setText('hero-headline', data.heroHeadline);
         setText('hero-subline', data.heroSubline);
         setText('gallery-headline', data.galleryHeadline || "Die Kollektion");
@@ -100,13 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setText('footer-name', data.titel);
 
-        // Design Config (Farben etc.)
         if (data.design) {
             const root = document.documentElement;
             if(data.design.primary_color) root.style.setProperty('--color-primary', data.design.primary_color);
             if(data.design.background_color) root.style.setProperty('--color-dark', data.design.background_color);
             
-            // Logo
             const logoImg = document.getElementById('gallery-logo');
             const logoContainer = document.getElementById('logo-container-gal');
             if(data.design.show_logo !== false && logoImg && data.design.site_logo) {
@@ -118,16 +110,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 3. CINEMA GALERIE LOGIK (Das Herzstück) 🎬
+    // 3. CINEMA GALERIE LOGIK (KORRIGIERT: Innerhalb Galerie-Container)
     // ============================================================
     function initCinemaGallery(images) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
-        stage.innerHTML = ''; // Reset
+        stage.innerHTML = ''; 
 
-        // CSS für das Grid injizieren
+        // Grid Styles
         const style = document.createElement('style');
         style.textContent = `
+            /* Container muss relativ sein, damit wir Bezugspunkte haben */
+            #galerie {
+                position: relative;
+                z-index: 10;
+                overflow: hidden; /* Wichtig: Nichts darf den Bereich verlassen */
+            }
             #gallery-stage {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -136,14 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: 20px;
-                position: relative; /* Wichtig für Kontext */
+                position: relative;
             }
             .gallery-item {
                 position: relative;
                 aspect-ratio: 3/4;
                 cursor: pointer;
                 border-radius: 8px;
-                overflow: visible !important; /* WICHTIG: Damit Bild Rahmen verlassen kann */
+                /* Wir brauchen visible hier für den Schatten, aber der Parent clipped */
+                overflow: visible !important; 
                 z-index: 1;
             }
             .gallery-item img {
@@ -151,101 +150,117 @@ document.addEventListener('DOMContentLoaded', () => {
                 height: 100%;
                 object-fit: cover;
                 border-radius: 8px;
-                transition: opacity 0.3s;
                 display: block;
                 box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                /* Hardware Beschleunigung für flüssiges Rendering */
+                will-change: transform; 
             }
         `;
         document.head.appendChild(style);
 
-        // DOM Elemente erstellen
         const itemElements = [];
         images.forEach(imgData => {
             if(!imgData.bild) return;
-            
             const div = document.createElement('div');
             div.className = 'gallery-item';
-            
             const img = document.createElement('img');
-            // Pfad Korrektur
             let src = imgData.bild;
             if(!src.startsWith('http') && !src.startsWith('/')) src = '/' + src;
             img.src = src;
             img.alt = imgData.titel || 'Werk';
-            
             div.appendChild(img);
             stage.appendChild(div);
-            itemElements.push(div); // Referenz speichern für Animation
+            itemElements.push(div); 
         });
 
-        // 🎥 GSAP ANIMATION STARTEN
         if(typeof gsap !== 'undefined') {
-            startAnimationLoop(itemElements);
+            startRestrictedAnimationLoop(itemElements);
         }
     }
 
-    function startAnimationLoop(elements) {
-        // Master Timeline (endlos wiederholend)
-        const masterTl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+    function startRestrictedAnimationLoop(elements) {
+        // repeatRefresh: true sorgt dafür, dass Positionen bei jedem Durchlauf neu berechnet werden
+        const masterTl = gsap.timeline({ repeat: -1, repeatDelay: 0.5, repeatRefresh: true });
+
+        // Referenz: Die gesamte Galerie-Sektion (schwarzer Bereich)
+        const gallerySection = document.getElementById('galerie');
 
         elements.forEach((el, index) => {
             const img = el.querySelector('img');
             
-            // Berechnung der Distanz zur Bildschirmmitte
-            // Wir nutzen 'function-based values' in GSAP, damit es bei jedem Durchlauf neu berechnet wird (falls User scrollt/resized)
-            
             masterTl.to(img, {
                 duration: 1.5,
                 ease: "power3.inOut",
-                
-                // 1. Z-Index erhöhen, damit es über allem liegt
                 zIndex: 1000,
                 
-                // 2. Zur Mitte bewegen
+                // --- KORREKTUR: ZUR MITTE DER SEKTION, NICHT DES BILDSCHIRMS ---
                 x: () => {
-                    const rect = el.getBoundingClientRect();
-                    const screenCenterX = window.innerWidth / 2;
-                    const elCenterX = rect.left + rect.width / 2;
-                    return screenCenterX - elCenterX;
+                    if (!gallerySection) return 0;
+                    
+                    const elRect = el.getBoundingClientRect();
+                    const secRect = gallerySection.getBoundingClientRect();
+                    
+                    // Mitte der Galerie-Sektion
+                    const secCenterX = secRect.left + secRect.width / 2;
+                    // Mitte des aktuellen Bildes
+                    const elCenterX = elRect.left + elRect.width / 2;
+                    
+                    // Differenz ist der Weg
+                    return secCenterX - elCenterX;
                 },
                 y: () => {
-                    const rect = el.getBoundingClientRect();
-                    const screenCenterY = window.innerHeight / 2;
-                    const elCenterY = rect.top + rect.height / 2;
-                    return screenCenterY - elCenterY;
+                    if (!gallerySection) return 0;
+
+                    const elRect = el.getBoundingClientRect();
+                    const secRect = gallerySection.getBoundingClientRect();
+                    
+                    // Mitte der Galerie-Sektion (etwas nach oben versetzt, um Titel nicht zu verdecken)
+                    // Wir nehmen den Center des sichtbaren Bereichs der Sektion
+                    const secCenterY = secRect.top + secRect.height / 2;
+                    const elCenterY = elRect.top + elRect.height / 2;
+                    
+                    return secCenterY - elCenterY;
                 },
                 
-                // 3. Skalieren (Responsive: Mobil weniger Zoom als Desktop)
+                // --- ZOOM BEGRENZEN ---
                 scale: () => {
-                    const isMobile = window.innerWidth < 768;
-                    return isMobile ? 1.5 : 2.5; 
+                    // Wir berechnen, wie viel Platz in der Sektion ist
+                    if (!gallerySection) return 1.5;
+                    const secHeight = gallerySection.offsetHeight;
+                    // Bild soll max 80% der Sektionshöhe einnehmen
+                    const targetHeight = secHeight * 0.7; 
+                    const currentHeight = el.offsetHeight;
+                    
+                    let factor = targetHeight / currentHeight;
+                    // Begrenzung nach oben, damit es nicht pixelig wird
+                    if (factor > 2.5) factor = 2.5; 
+                    return factor;
                 },
                 
-                // 4. Style aufhübschen
                 boxShadow: "0 50px 100px rgba(0,0,0,0.8)",
                 borderColor: "#fff",
                 borderWidth: "2px",
                 borderStyle: "solid"
             })
             
-            // Kurze Pause in der Mitte (das Bild wird "bewundert")
+            // Halten in der Mitte
             .to(img, { duration: 2.0 }) 
             
-            // Zurück zum Ursprung
+            // Zurück zum Gitter
             .to(img, {
                 duration: 1.2,
                 ease: "power2.inOut",
                 x: 0,
                 y: 0,
                 scale: 1,
-                zIndex: 1, // Zurücksetzen
+                zIndex: 1, 
                 boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
                 borderWidth: "0px"
             });
         });
     }
 
-    // Interaktionen (Mobile Menu etc.)
+    // Interaktionen
     const mobileMenuIcon = document.getElementById('mobile-menu-icon');
     const mobileNav = document.getElementById('mobile-nav');
     if (mobileMenuIcon && mobileNav) {
