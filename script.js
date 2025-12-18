@@ -18,7 +18,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // ============================================================
-    // 0. CUSTOM CURSOR & INITIALISIERUNG
+    // 0. CUSTOM CURSOR & GSAP SETUP
     // ============================================================
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorOutline = document.querySelector('.cursor-outline');
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 1. INTRO LOGIK - SOFORT AUSBLENDEN (Direct Load)
+    // 1. INTRO LOGIK
     // ============================================================
     const introLayer = document.getElementById('intro-layer');
     if(introLayer) introLayer.style.display = 'none';
@@ -68,10 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
             setupContent(data);
-            
-            // Startet die neue horizontale Gruppen-Galerie
             if (data.galerieBilder && data.galerieBilder.length > 0) {
-                startHorizontalGroupGallery(data.galerieBilder);
+                // Hier starten wir die "Viewport Cinema" Animation
+                startViewportCinemaGallery(data.galerieBilder);
             }
         })
         .catch(err => console.error("Fehler:", err));
@@ -115,143 +114,141 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ============================================================
-    // 4. NEUE HORIZONTALE 3er-GRUPPEN GALERIE
+    // 4. VIEWPORT CINEMA GALERIE (Sprengt den Rahmen)
     // ============================================================
-    function startHorizontalGroupGallery(allImages) {
+    function startViewportCinemaGallery(images) {
         const stage = document.getElementById('gallery-stage');
         if (!stage) return;
         stage.innerHTML = ''; 
 
-        // CSS für horizontales Layout injizieren
+        // CSS Injection: WICHTIG - OVERFLOW VISIBLE AUF ALLEN ELTERN
         const style = document.createElement('style');
         style.textContent = `
-            #gallery-stage {
+            /* Erlaubt Bildern, den Bereich zu verlassen */
+            #galerie, #gallery-stage {
+                overflow: visible !important; 
                 position: relative;
-                width: 100%;
-                max-width: 1400px;
-                min-height: 500px; /* Feste Höhe verhindert Springen */
-                margin: 0 auto;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                overflow: hidden;
+                z-index: 10;
             }
-            .gallery-group {
-                display: flex;
+            #gallery-stage {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
                 gap: 20px;
                 width: 100%;
-                justify-content: center;
-                position: absolute; /* Übereinander legen für Crossfade */
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                opacity: 0; /* Start unsichtbar */
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
             }
             .gallery-item {
-                flex: 1;
-                max-width: 33%; /* Genau 3 Bilder */
-                aspect-ratio: 3/4;
                 position: relative;
-                border-radius: 8px;
-                overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-                transform-origin: center center;
+                aspect-ratio: 3/4;
+                cursor: pointer;
+                /* Wichtig: Kein Clipping */
+                overflow: visible !important; 
+                z-index: 1;
             }
             .gallery-item img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                transition: transform 0.5s ease;
-            }
-            /* Kleiner Zoom beim Hover */
-            .gallery-item:hover img {
-                transform: scale(1.05);
-            }
-            
-            /* Mobile Anpassung: Trotzdem 3 anzeigen, aber kleiner */
-            @media (max-width: 768px) {
-                #gallery-stage { min-height: 300px; }
-                .gallery-group { gap: 10px; padding: 0 10px; }
+                border-radius: 8px;
+                display: block;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+                will-change: transform;
             }
         `;
         document.head.appendChild(style);
 
-        // Bilder in 3er Gruppen aufteilen
-        const chunks = [];
-        for (let i = 0; i < allImages.length; i += 3) {
-            chunks.push(allImages.slice(i, i + 3));
-        }
+        // Grid aufbauen
+        const itemElements = [];
+        images.forEach(imgData => {
+            if(!imgData.bild) return;
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            
+            // Modal beim Klick (trotz Animation möglich)
+            div.onclick = () => openModal(imgData.bild, imgData.titel, imgData.beschreibung);
 
-        let currentChunkIndex = 0;
+            const img = document.createElement('img');
+            let src = imgData.bild;
+            if(!src.startsWith('http') && !src.startsWith('/')) src = '/' + src;
+            img.src = src;
+            img.alt = imgData.titel || 'Werk';
+            
+            div.appendChild(img);
+            stage.appendChild(div);
+            itemElements.push(div); 
+        });
 
-        // Funktion zum Rendern und Animieren einer Gruppe
-        function showNextGroup() {
-            // Container für diese Gruppe
-            const groupDiv = document.createElement('div');
-            groupDiv.className = 'gallery-group';
-
-            const currentImages = chunks[currentChunkIndex];
-
-            currentImages.forEach(imgData => {
-                if(!imgData.bild) return;
-                
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'gallery-item';
-                
-                // Modal Klick Event
-                itemDiv.onclick = () => openModal(imgData.bild, imgData.titel, imgData.beschreibung);
-
-                const img = document.createElement('img');
-                let src = imgData.bild;
-                if(!src.startsWith('http') && !src.startsWith('/')) src = '/' + src;
-                img.src = src;
-                img.alt = imgData.titel || 'Werk';
-                
-                itemDiv.appendChild(img);
-                groupDiv.appendChild(itemDiv);
-            });
-
-            stage.appendChild(groupDiv);
-
-            // GSAP Timeline für Ein- und Ausblenden
-            if(typeof gsap !== 'undefined') {
-                const tl = gsap.timeline({
-                    onComplete: () => {
-                        // Wenn fertig: Aufräumen und nächste Gruppe
-                        groupDiv.remove();
-                        currentChunkIndex = (currentChunkIndex + 1) % chunks.length;
-                        showNextGroup();
-                    }
-                });
-
-                // 1. Einblenden (Fade In + leichtes Aufsteigen)
-                tl.fromTo(groupDiv, 
-                    { opacity: 0, y: 20, scale: 0.95 },
-                    { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power2.out" }
-                )
-                // 2. Wartezeit (5 Sekunden sichtbar bleiben)
-                .to({}, { duration: 5 })
-                
-                // 3. Ausblenden (Fade Out + nach oben weg)
-                .to(groupDiv, { 
-                    opacity: 0, 
-                    y: -20, 
-                    scale: 1.05, 
-                    duration: 1, 
-                    ease: "power2.in" 
-                });
-            }
-        }
-
-        // Erste Gruppe starten
-        if(chunks.length > 0) {
-            initGalleryModal(); // Modal bereitstellen
-            showNextGroup();
+        // Animation starten
+        if(typeof gsap !== 'undefined') {
+            startFreeFloatingAnimation(itemElements);
         }
     }
 
+    function startFreeFloatingAnimation(elements) {
+        // Timeline wiederholt sich unendlich
+        // repeatRefresh: true berechnet Positionen jedes Mal neu (wichtig bei Scroll/Resize)
+        const masterTl = gsap.timeline({ repeat: -1, repeatDelay: 0.5, repeatRefresh: true });
+
+        elements.forEach((el) => {
+            const img = el.querySelector('img');
+            
+            masterTl.to(img, {
+                duration: 1.2,
+                ease: "power3.inOut",
+                
+                // 1. Z-Index extrem hoch setzen, damit es über Header/Footer liegt
+                zIndex: 9999, 
+                
+                // 2. Position zur BILDSCHIRM-MITTE (Viewport) berechnen
+                x: () => {
+                    const rect = el.getBoundingClientRect();
+                    const screenCenter = window.innerWidth / 2;
+                    const elCenter = rect.left + rect.width / 2;
+                    return screenCenter - elCenter;
+                },
+                y: () => {
+                    const rect = el.getBoundingClientRect();
+                    const screenCenter = window.innerHeight / 2;
+                    const elCenter = rect.top + rect.height / 2;
+                    return screenCenter - elCenter;
+                },
+                
+                // 3. Zoom-Faktor (Responsive)
+                scale: () => {
+                    // Mobil etwas kleiner, Desktop groß
+                    return window.innerWidth < 768 ? 1.5 : 2.2; 
+                },
+                
+                // 4. Styling für den "Pop-Out" Effekt
+                boxShadow: "0 0 0 100vw rgba(0,0,0,0.85)", // Dunkelt den Hintergrund ab!
+                borderColor: "#fff",
+                borderWidth: "1px",
+                borderStyle: "solid"
+            })
+            
+            // Kurze Pause in der Mitte
+            .to(img, { duration: 1.5 }) 
+            
+            // Zurück zum Platz
+            .to(img, {
+                duration: 1.0,
+                ease: "power2.inOut",
+                x: 0,
+                y: 0,
+                scale: 1,
+                zIndex: 1, // Zurücksetzen
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)", // Normaler Schatten
+                borderWidth: "0px",
+                // Workaround: Schattenreste entfernen
+                onComplete: () => { gsap.set(img, { clearProps: "boxShadow,borderColor,borderWidth,zIndex" }); }
+            });
+        });
+    }
+
     // ============================================================
-    // 5. MODAL LOGIK (Standard)
+    // 5. MODAL LOGIK
     // ============================================================
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
@@ -268,16 +265,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if(descText) descText.textContent = desc || "";
     };
 
-    function initGalleryModal() {
-        if(closeBtn) {
-            closeBtn.onclick = function() {
-                modal.style.opacity = "0";
-                setTimeout(() => modal.classList.add("hidden"), 300);
-            };
-        }
-        if(modal) {
-            modal.onclick = (e) => { if(e.target === modal) closeBtn.click(); };
-        }
+    if(closeBtn) {
+        closeBtn.onclick = function() {
+            modal.style.opacity = "0";
+            setTimeout(() => modal.classList.add("hidden"), 300);
+        };
+    }
+    if(modal) {
+        modal.onclick = (e) => { if(e.target === modal) closeBtn.click(); };
     }
 
     // Interaktionen
